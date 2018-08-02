@@ -1,0 +1,24 @@
+{
+  "dataSource": {
+    "host": "localhost",
+    "database": "kong",
+    "dialect": "mysql",
+    "username": "root",
+    "password": "root"
+  },
+  "redis": {
+    "host": "localhost",
+    "port": "6379"
+  },
+  "log": {
+    "level": "debug",
+    "outputPath": ""
+  },
+  "auth": {
+    "jwt": {
+      "secret": "helloWorld",
+      "issuer": "auth-center.etoutiao.cn",
+      "audience": "kong.etoutiao.cn"
+    }
+  }
+}

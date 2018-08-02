@@ -1,0 +1,47 @@
+{
+  "name": "kong",
+  "version": "0.0.0",
+  "engines": {
+    "node": ">=7.6.0"
+  },
+  "private": true,
+  "scripts": {
+    "lint": "eslint .",
+    "kong-dev": "nodemon ./kong/index",
+    "kong-back-dev": "nodemon ./kong-back/index",
+    "kong-mq-listener-dev": "nodemon ./kong-mq-listener/index"
+  },
+  "dependencies": {
+    "bluebird": "^3.5.1",
+    "config": "^2.0.1",
+    "cookie-parser": "~1.4.3",
+    "crypto-random-string": "^1.0.0",
+    "debug": "~2.6.9",
+    "ejs": "~2.5.7",
+    "express": "~4.16.0",
+    "http-errors": "~1.6.2",
+    "jsonwebtoken": "^8.3.0",
+    "module-alias": "^2.1.0",
+    "morgan": "~1.9.0",
+    "mysql2": "^1.5.3",
+    "npm": "^6.2.0",
+    "passport": "^0.4.0",
+    "passport-jwt": "^4.0.0",
+    "randomstring": "^1.1.5",
+    "redis": "^2.8.0",
+    "sequelize": "^4.38.0",
+    "winston": "^3.0.0"
+  },
+  "devDependencies": {
+    "eslint": "^5.2.0",
+    "eslint-plugin-node": "^7.0.1"
+  },
+  "_moduleAliases": {
+    "@root": ".",
+    "@base": "./base",
+    "@config": "./config",
+    "@util": "./base/util",
+    "@serv": "./base/service",
+    "@const": "./base/constant"
+  }
+}
