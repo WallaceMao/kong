@@ -1,12 +1,16 @@
-const createError = require('http-errors');
-
-const responseUtil = require('@util/httpUtil')
+const httpUtil = require('@util/httpUtil')
 const systemCode = require('@const/systemCode')
 
 const init = app => {
-  // catch 404 and forward to error handler
+  //  显式返回401无权限
+  app.get('/401', async (req, res) => {
+    return res.status(401).json(httpUtil.renderResult(systemCode.SYS_FORBIDDEN))
+  })
+  //  所有链接都不匹配的时候返回404
   app.use((req, res, next) => {
-    next(createError(404));
+    // next(createError(404));
+    res.status(404).json(httpUtil.renderResult(systemCode.SYS_NOT_FOUND))
+    next()
   });
 
 // error handler

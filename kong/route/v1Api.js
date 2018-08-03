@@ -10,7 +10,7 @@ router.post('/project/:projectCode/validateCode', async (req, res, next) => {
   try {
     const phoneNumber = req.body.phoneNumber
     if(!phoneNumber){
-      return res.json(responseUtil.renderResult(systemCode.PARAMETER_ERROR))
+      return res.json(responseUtil.renderResult(systemCode.BIZ_PARAMETER_ERROR))
     }
     await validateCodeService.handleValidateCode(phoneNumber)
     res.json(responseUtil.success())
@@ -25,13 +25,13 @@ router.post('/project/:projectCode/login', async (req, res, next) => {
     const phoneNumber = req.body.phoneNumber
     const validateCode = req.body.validateCode
     if(!phoneNumber || !validateCode){
-      return res.json(responseUtil.renderResult(systemCode.PARAMETER_ERROR))
+      return res.json(responseUtil.renderResult(systemCode.BIZ_PARAMETER_ERROR))
     }
     //  验证验证码
     if(await validateCodeService.checkValidateCode(phoneNumber, validateCode)){
       return res.json(responseUtil.success())
     }else{
-      return res.json(responseUtil.renderResult(systemCode.FORBIDDEN))
+      return res.json(responseUtil.renderResult(systemCode.SYS_FORBIDDEN))
     }
   } catch (err) {
     next(err)

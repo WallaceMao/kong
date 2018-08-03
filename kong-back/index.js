@@ -2,44 +2,13 @@ require('module-alias/register')
 
 global.logger = require('@config/logConfig').serverLogger
 
-/**
- * Normalize a port into a number, string, or false.
- */
-
-function normalizePort(val) {
-  const port = parseInt(val, 10)
-
-  if (isNaN(port)) {
-    // named pipe
-    return val
-  }
-
-  if (port >= 0) {
-    // port number
-    return port
-  }
-
-  return false
-}
-
-/**
- * Module dependencies.
- */
-
-const debug = require('debug')('kong:server')
+const config = require('config')
 const http = require('http')
+const debug = require('debug')('kong-back:server')
 const app = require('./app')
 
-/**
- * Get port from environment and store in Express.
- */
-
-const port = normalizePort(process.env.PORT || '3000')
+const port = config.web.kongBack.port
 app.set('port', port)
-
-/**
- * Create HTTP server.
- */
 
 const server = http.createServer(app)
 
@@ -48,13 +17,8 @@ const server = http.createServer(app)
  */
 
 function onError(error) {
-  if (error.syscall !== 'listen') {
-    throw error
-  }
 
-  const bind = typeof port === 'string'
-    ? `Pipe ${port}`
-    : `Port ${port}`
+  const bind = `Port ${port}`
 
   // handle specific listen errors with friendly messages
   switch (error.code) {
@@ -74,10 +38,7 @@ function onError(error) {
  */
 
 function onListening() {
-  const addr = server.address()
-  const bind = typeof addr === 'string'
-    ? `pipe ${addr}`
-    : `port ${addr.port}`
+  const bind = `port ${server.address().port}`
   debug(`Listening on ${bind}`)
 }
 

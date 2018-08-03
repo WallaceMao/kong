@@ -1,8 +1,8 @@
-const indexRouter = require('../routes/index')
-const projectAdmin = require('../routes/projectAdmin')
-const systemUser = require('../routes/systemUser')
-const commonUser = require('../routes/commonUser')
-const project = require('../routes/project')
+const indexRouter = require('../route/index')
+const projectAdmin = require('../../kong-back/route/projectAdmin')
+const systemUser = require('../../kong-back/route/systemUser')
+const commonUser = require('../route/commonUser')
+const project = require('../route/project')
 // const usersRouter = require('../routes/users')
 // const v1ApiRouter = require('../routes/v1Api')
 

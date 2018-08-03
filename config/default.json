@@ -19,6 +19,17 @@
       "secret": "helloWorld",
       "issuer": "auth-center.etoutiao.cn",
       "audience": "kong.etoutiao.cn"
+    },
+    "session": {
+      "secret": "helloWorld"
+    }
+  },
+  "web": {
+    "kong": {
+      "port": 3000
+    },
+    "kongBack": {
+      "port": 3001
     }
   }
 }
