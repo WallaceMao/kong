@@ -20,10 +20,14 @@ const init = app => {
     // res.locals.error = req.app.get('env') === 'development' ? err : {};
 
     // next(err)
-    // render the error page
-    global.logger.error('system error: %s', err)
-    res.status(err.status || 500);
-    res.json(responseUtil.renderResult(systemCode.SYS_ERROR));
+    // render the error page\
+    const errStatus = err.status || 500
+    if(errStatus === 500){
+      // 只输出500的错误
+      global.logger.error('system error: %s', err)
+    }
+    res.status(errStatus);
+    res.json(httpUtil.renderResult(systemCode.SYS_ERROR));
     next()
   })
 }

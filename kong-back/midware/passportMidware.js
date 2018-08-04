@@ -1,6 +1,8 @@
 const passport = require('passport')
-
 const LocalStrategy = require('passport-local').Strategy
+const createError = require('http-errors')
+
+const userService = require('@serv/projectAdminService')
 
 const init = app => {
   app.use(passport.initialize())
@@ -14,8 +16,13 @@ const init = app => {
     done(null, JSON.parse(str))
   });
 
-  passport.use(new LocalStrategy((username, password, done) => {
-    return done(null ,{username: username})
+  passport.use(new LocalStrategy(async (username, password, done) => {
+    const user = await userService.checkPassword(username, password)
+    if(user){
+      return done(null ,user)
+    }else{
+      return done(createError(401))
+    }
   }))
 }
 

@@ -8,7 +8,7 @@ const Sequelize = require('sequelize')
 const UserInfo = database.define('UserInfo', {
   id: { type: Sequelize.BIGINT(20), field: 'id', allowNull: false, autoIncrement: true, primaryKey: true },
   version: { type: Sequelize.BIGINT(20), field: 'version', allowNull: false, defaultValue: 0 },
-  createdAt: { type: Sequelize.DATE, field: 'created_at', allowNull: false },
+  createdAt: { type: Sequelize.DATE, field: 'created_at', allowNull: true },
   updatedAt: { type: Sequelize.DATE, field: 'updated_at', allowNull: true },
   deletedAt: { type: Sequelize.DATE, field: 'deleted_at', allowNull: true },
   projectCode: { type: Sequelize.STRING(64), field: 'project_code', allowNull: false },
@@ -16,7 +16,7 @@ const UserInfo = database.define('UserInfo', {
   name: { type: Sequelize.STRING(255), field: 'name', allowNull: false },
   phoneNumber: { type: Sequelize.STRING(32), field: 'phone_number', allowNull: false },
   avatar: { type: Sequelize.STRING(255), field: 'avatar', allowNull: true },
-  isSystemUser: { type: Sequelize.BOOLEAN, field: 'is_system_user', allowNull: false, defaultValue: 0 },
+  isSeedUser: { type: Sequelize.BOOLEAN, field: 'is_seed_user', allowNull: false, defaultValue: 0 },
   status: { type: Sequelize.STRING(32), field: 'status', allowNull: false }
 }, {
   // 表注释信息

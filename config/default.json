@@ -22,6 +22,10 @@
     },
     "session": {
       "secret": "helloWorld"
+    },
+    "password": {
+      "algorithm": "sha512",
+      "secret": "helloWorld"
     }
   },
   "web": {

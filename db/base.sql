@@ -38,7 +38,7 @@ CREATE TABLE `bc_user_info`  (
   `name` varchar(255) NOT NULL COMMENT '用户姓名',
   `phone_number` varchar(32) NOT NULL COMMENT '手机号',
   `avatar` varchar(255) NULL COMMENT '头像链接',
-  `is_system_user` bit(1) NOT NULL DEFAULT 0 COMMENT '是否为系统账号，系统账号没有上级',
+  `is_seed_user` bit(1) NOT NULL DEFAULT 0 COMMENT '是否为种子账号，种子账号没有上级',
   `status` varchar(32) NOT NULL COMMENT '状态',
   PRIMARY KEY (`id`),
   UNIQUE INDEX `bc_user_info_user_code`(`user_code`) USING BTREE,

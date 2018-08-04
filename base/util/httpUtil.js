@@ -1,10 +1,15 @@
 const systemCode = require('../constant/systemCode')
 
 const renderResult = (code, obj) => {
-  if(code === systemCode.OK){
-    obj = obj || {}
-    obj.errcode = parseInt(code)
-    return obj
+  if(code.toString() === systemCode.OK){
+    // obj是Array和Object，走不同的渲染方法
+    const result = {
+      errcode: parseInt(code)
+    }
+    if(obj){
+      result.result = obj
+    }
+    return result
   }else{
     return {
       errcode: parseInt(code),

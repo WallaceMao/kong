@@ -8,7 +8,7 @@ const Sequelize = require('sequelize')
 const UserInviteInfo = database.define('UserInviteInfo', {
   id: { type: Sequelize.BIGINT(20), field: 'id', allowNull: false, autoIncrement: true, primaryKey: true },
   version: { type: Sequelize.BIGINT(20), field: 'version', allowNull: false, defaultValue: 0 },
-  createdAt: { type: Sequelize.DATE, field: 'created_at', allowNull: false },
+  createdAt: { type: Sequelize.DATE, field: 'created_at', allowNull: true },
   updatedAt: { type: Sequelize.DATE, field: 'updated_at', allowNull: true },
   deletedAt: { type: Sequelize.DATE, field: 'deleted_at', allowNull: true },
   projectCode: { type: Sequelize.STRING(64), field: 'project_code', allowNull: false },
