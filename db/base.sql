@@ -41,7 +41,8 @@ CREATE TABLE `bc_user_info`  (
   `is_seed_user` bit(1) NOT NULL DEFAULT 0 COMMENT '是否为种子账号，种子账号没有上级',
   `status` varchar(32) NOT NULL COMMENT '状态',
   PRIMARY KEY (`id`),
-  UNIQUE INDEX `bc_user_info_user_code`(`user_code`) USING BTREE,
+  UNIQUE INDEX `bc_user_info_project_code_user_code`(`project_code`, `user_code`) USING BTREE,
+  UNIQUE INDEX `bc_user_info_project_code_phone_number`(`project_code`, `phone_number`) USING BTREE,
   INDEX `bc_user_name`(`name`) USING BTREE,
   INDEX `bc_user_phone_number`(`phone_number`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT='项目用户信息表';
@@ -57,8 +58,8 @@ CREATE TABLE `bc_user_invite_info`  (
   `invite_code` varchar(64) NOT NULL COMMENT '邀请使用的验证码',
   `invite_status` varchar(32) NOT NULL COMMENT '邀请状态',
   PRIMARY KEY (`id`),
-  UNIQUE INDEX `bc_user_invite_info_user_code`(`user_code`) USING BTREE,
-  UNIQUE INDEX `bc_user_invite_info_invite_code`(`invite_code`) USING BTREE
+  UNIQUE INDEX `bc_user_invite_info_user_code`(`project_code`, `user_code`) USING BTREE,
+  UNIQUE INDEX `bc_user_invite_info_invite_code`(`project_code`, `invite_code`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT='项目用户邀请信息表';
 
 CREATE TABLE `bc_user_relation`  (

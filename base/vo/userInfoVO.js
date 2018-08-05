@@ -25,3 +25,5 @@ const renderObject = userInfo => {
 }
 
 module.exports.render = render
+module.exports.renderList = renderList
+module.exports.renderObject = renderObject

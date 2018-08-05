@@ -7,13 +7,14 @@ const { ensureLoggedIn } = require('connect-ensure-login')
 const httpUtil = require('@util/httpUtil')
 const systemCode = require('@const/systemCode')
 const userInfoService = require('@serv/userInfoService')
+const bizUserService = require('@serv/bizUserService')
 const userInfoVO = require('@vo/userInfoVO')
 
 /**
  * 获取指定项目的系统用户的成员列表
  */
 router.get('/',
-  // ensureLoggedIn('/401'),
+  ensureLoggedIn('/401'),
   async (req, res, next) => {
     try {
       const projectCode = req.params.projectCode
@@ -32,7 +33,7 @@ router.get('/',
  * 获取指定项目的指定id的系统用户的成员列表
  */
 router.get('/:userCode',
-  // ensureLoggedIn('/401'),
+  ensureLoggedIn('/401'),
   async (req, res, next) => {
     try {
       const projectCode = req.params.projectCode
@@ -52,7 +53,7 @@ router.get('/:userCode',
  * 获取指定项目的系统用户
  */
 router.post('/',
-  // ensureLoggedIn('/401'),
+  ensureLoggedIn('/401'),
   async (req, res, next) => {
     try {
       const projectCode = req.params.projectCode
@@ -62,7 +63,7 @@ router.post('/',
         return res.json(httpUtil.renderResult(systemCode.BIZ_PARAMETER_ERROR))
       }
 
-      await userInfoService.createSeedUserInfo(projectCode, name, phoneNumber)
+      await bizUserService.createSeedUser(projectCode, name, phoneNumber)
       return res.json(httpUtil.success())
     } catch (err) {
       next(err)
@@ -73,7 +74,7 @@ router.post('/',
  * 更改获取指定项目的系统用户的成员
  */
 router.put('/:userCode',
-  // ensureLoggedIn('/401'),
+  ensureLoggedIn('/401'),
   async (req, res, next) => {
     try {
       const projectCode = req.params.projectCode
@@ -93,7 +94,7 @@ router.put('/:userCode',
  * 删除获取指定项目的系统用户的成员
  */
 router.delete('/:userCode',
-  // ensureLoggedIn('/401'),
+  ensureLoggedIn('/401'),
   async (req, res, next) => {
     try {
       const projectCode = req.params.projectCode

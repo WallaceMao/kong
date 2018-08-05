@@ -1,5 +1,6 @@
 const database = require('./database')
 const Sequelize = require('sequelize')
+const UserInfo = require('./UserInfo')
 
 /**
  * 项目用户之间的关联关系：
@@ -38,5 +39,9 @@ const UserRelation = database.define('UserRelation', {
   // 删除时间
   deletedAt: 'deleted_at'
 });
+
+//
+UserRelation.belongsTo(UserInfo, {foreignKey: 'upUserCode', targetKey: 'userCode', as: 'upUser'})
+UserRelation.belongsTo(UserInfo, {foreignKey: 'downUserCode', targetKey: 'userCode', as: 'downUser'})
 
 module.exports = UserRelation

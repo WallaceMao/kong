@@ -21,9 +21,9 @@ const opts = {
 
 const init = app => {
   app.use(passport.initialize())
-  passport.use(new JwtStrategy(opts, (jwt_payload, done) => {
+  passport.use(new JwtStrategy(opts, (userInfo, done) => {
     //  验证jwt是否有权限
-    return done(null ,{user: 'Wallace Mao'})
+    return done(null ,userInfo)
   }))
 }
 

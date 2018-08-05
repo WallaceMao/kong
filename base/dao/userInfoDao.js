@@ -1,3 +1,4 @@
+const sequelize = require('sequelize')
 const UserInfo = require('../domain/UserInfo')
 
 /**
@@ -74,6 +75,20 @@ const findAllByIsSeedUser = async (projectCode, isSeedUser) => {
     }
   })
 }
+/**
+ * 根据手机号查询
+ * @param projectCode
+ * @param phoneNumber
+ * @returns {Promise<*>}
+ */
+const findByPhoneNumber = async (projectCode, phoneNumber) => {
+  return UserInfo.findAll({
+    where: {
+      projectCode: projectCode,
+      phoneNumber: phoneNumber
+    }
+  })
+}
 
 module.exports.findById = findById
 module.exports.create = create
@@ -81,3 +96,4 @@ module.exports.updateByUserCode = updateByUserCode
 module.exports.deleteByUserCode = deleteByUserCode
 module.exports.findByUserCode = findByUserCode
 module.exports.findAllByIsSeedUser = findAllByIsSeedUser
+module.exports.findByPhoneNumber = findByPhoneNumber

@@ -1,4 +1,5 @@
 const userInfoDao = require('../dao/userInfoDao')
+const userRelationDao = require('../dao/userRelationDao')
 const userInfoConst = require('../constant/userInfo')
 const randomUtil = require('../util/randomUtil')
 
@@ -17,7 +18,16 @@ const getProjectSeedUserInfoList = async projectCode => {
  * @returns {Promise<*|{id, projectCode, userCode, name, phoneNumber, avatar, isSeedUser, status}>}
  */
 const getUserInfoByUserCode = async (projectCode, userCode) => {
-  return await userInfoDao.findByUserCode(projectCode, userCode)
+  return userInfoDao.findByUserCode(projectCode, userCode)
+}
+/**
+ * 根据projectCode和phoneNumber获取用户
+ * @param projectCode
+ * @param userCode
+ * @returns {Promise<*|{id, projectCode, userCode, name, phoneNumber, avatar, isSeedUser, status}>}
+ */
+const getUserInfoByPhoneNumber = async (projectCode, phoneNumber) => {
+  return userInfoDao.findByPhoneNumber(projectCode, phoneNumber)
 }
 
 /**
@@ -25,33 +35,18 @@ const getUserInfoByUserCode = async (projectCode, userCode) => {
  * @param projectCode
  * @param name
  * @param phoneNumber
+ * @param isSeedUser
  * @returns {Promise<*|Promise<props>>}
  */
-const createSeedUserInfo = async (projectCode, name, phoneNumber) => {
+const createUserInfo = async (projectCode, name, phoneNumber, isSeedUser) => {
   const userCode = await randomUtil.generateIdentifier()
+  // 创建用户基本信息
   return userInfoDao.create({
     projectCode: projectCode,
     userCode: userCode,
     name: name,
     phoneNumber: phoneNumber,
-    isSeedUser: true,
-    status: userInfoConst.status.OPEN
-  })
-}
-/**
- * 创建普通的UserInfo
- * @param projectCode
- * @param name
- * @param phoneNumber
- * @returns {Promise<*|Promise<props>>}
- */
-const createCommonUserInfo = async (projectCode, name, phoneNumber) => {
-  return userInfoDao.create({
-    projectCode: projectCode,
-    userCode: randomUtil.generateIdentifier(),
-    name: name,
-    phoneNumber: phoneNumber,
-    isSeedUser: false,
+    isSeedUser: !!isSeedUser,
     status: userInfoConst.status.OPEN
   })
 }
@@ -86,11 +81,20 @@ const updateUserInfo = async (projectCode, userCode, props) => {
 const removeUserInfo = async (projectCode, userCode) => {
   return userInfoDao.deleteByUserCode(projectCode, userCode)
 }
-
+/**
+ * 获取userCode的用户的下线用户列表
+ * @param projectCode
+ * @param userCode
+ * @returns {Promise<void>}
+ */
+const getDownUserRelationList = async (projectCode, userCode) => {
+  return userRelationDao.findAllByUpUserCode(projectCode, userCode)
+}
 
 module.exports.getProjectSeedUserInfoList = getProjectSeedUserInfoList
 module.exports.getUserInfoByUserCode = getUserInfoByUserCode
-module.exports.createSeedUserInfo = createSeedUserInfo
-module.exports.createCommonUserInfo = createCommonUserInfo
+module.exports.getUserInfoByPhoneNumber = getUserInfoByPhoneNumber
+module.exports.getDownUserRelationList = getDownUserRelationList
+module.exports.createUserInfo = createUserInfo
 module.exports.updateUserInfo = updateUserInfo
 module.exports.removeUserInfo = removeUserInfo

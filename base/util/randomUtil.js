@@ -7,6 +7,14 @@ const generateIdentifier = async length => {
   return cryptoRandomString(length)
 }
 
+const generateInviteCode = async length => {
+  length = length || constant.INVITE_CODE_LENGTH
+  return randomString.generate({
+    length: length,
+    charset: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+  });
+}
+
 const generateValidateCode = async length => {
   length = length || constant.VALIDATE_CODE_LENGTH
   return randomString.generate({
@@ -17,3 +25,4 @@ const generateValidateCode = async length => {
 
 module.exports.generateIdentifier = generateIdentifier
 module.exports.generateValidateCode = generateValidateCode
+module.exports.generateInviteCode = generateInviteCode

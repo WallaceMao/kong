@@ -12,7 +12,7 @@ const UserAccountInfo = database.define('UserAccountInfo', {
   updatedAt: { type: Sequelize.DATE, field: 'updated_at', allowNull: true },
   deletedAt: { type: Sequelize.DATE, field: 'deleted_at', allowNull: true },
   projectCode: { type: Sequelize.STRING(64), field: 'project_code', allowNull: false },
-  upUserCode: { type: Sequelize.STRING(64), field: 'up_user_code', allowNull: false },
+  userCode: { type: Sequelize.STRING(64), field: 'user_code', allowNull: false },
   balanceValue: { type: Sequelize.DECIMAL(10, 2), field: 'balance_value', allowNull: false, defaultValue: 0 },
   balanceValueUnit: { type: Sequelize.STRING(24), field: 'balance_value_unit', allowNull: false },
   invitePackageSum: { type: Sequelize.BIGINT(10), field: 'invite_package_sum', allowNull: false, defaultValue: 0 },
