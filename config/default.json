@@ -35,5 +35,9 @@
     "kongBack": {
       "port": 3001
     }
+  },
+  "sms": {
+    "userId": "",
+    "secret": ""
   }
 }

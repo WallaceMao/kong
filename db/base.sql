@@ -9,6 +9,7 @@ CREATE TABLE `bc_project` (
   `project_note` varchar(512) NULL COMMENT '项目描述',
   `telegram_join_link` varchar(255) NULL COMMENT '电报群的邀请链接',
   `reward_rule` varchar(128) NULL COMMENT '奖励规则名称',
+  `default_unit` varchar(24) NOT NULL COMMENT '默认的计量单位的名称',
   `status` varchar(32) NOT NULL COMMENT '状态',
   PRIMARY KEY (`id`),
   UNIQUE INDEX `bc_project_code`(`project_code`) USING BTREE
@@ -37,7 +38,7 @@ CREATE TABLE `bc_project_reward_config`  (
   `config_key` varchar(128) NOT NULL COMMENT '配置的key值',
   `config_value` varchar(128) NOT NULL COMMENT '配置的value值，String类型',
   PRIMARY KEY (`id`),
-  UNIQUE INDEX `bc_project_reward_config_project_code`(`project_code`) USING BTREE
+  UNIQUE INDEX `bc_project_reward_config_config_key`(`project_code`, `config_key`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT='项目奖励配置参数表';
 
 CREATE TABLE `bc_user_info`  (
@@ -99,8 +100,8 @@ CREATE TABLE `bc_user_account_info`  (
   `user_code` varchar(64) NOT NULL COMMENT '用户代码',
   `balance_value` decimal(10, 2) NOT NULL DEFAULT 0 COMMENT '主账户余额',
   `balance_value_unit` varchar(24) NOT NULL COMMENT '主账户余额计量单位',
-  `invite_package_sum` bigint(10) NOT NULL DEFAULT 0 COMMENT '邀请红包的数量',
-  `invite_package_claimed` bigint(10) NOT NULL DEFAULT 0 COMMENT '已被领取的邀请红包的数量',
+  `invite_reward_limit` bigint(10) NOT NULL DEFAULT -1 COMMENT '邀请红包的数量',
+  `invite_reward_claimed` bigint(10) NOT NULL DEFAULT 0 COMMENT '已被领取的邀请红包的数量',
   `account_status` varchar(32) NOT NULL COMMENT '状态',
   PRIMARY KEY (`id`),
   UNIQUE INDEX `bc_user_account_user_code`(`user_code`) USING BTREE
@@ -123,24 +124,3 @@ CREATE TABLE `bc_user_reward_record`  (
   INDEX `bc_user_reward_record_related_user_code`(`related_user_code`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT='项目用户账单详细信息表';
 
-
--- 账户收支表，先不做账户收支，只做奖励
---CREATE TABLE `bc_user_bill_record`  (
---  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
---  `version` bigint(20) NOT NULL DEFAULT 0 COMMENT '乐观锁',
---  `created_at` datetime NOT NULL COMMENT '创建时间',
---  `updated_at` datetime NULL COMMENT '更新时间',
---  `deleted_at` datetime NULL COMMENT '删除时间',
---  `user_code` varchar(64) NOT NULL COMMENT '获得收益的用户代码',
---  `direction`
---  `from`
---  `related_user_code`
---  `type`
---  `from_user_code` varchar(64) NOT NULL COMMENT '收益来自于的用户代码',
---  `reward_value` decimal(10, 2) NOT NULL COMMENT '获得的奖励的值',
---  `reward_value_unit` varchar(24) NOT NULL COMMENT '获得的奖励的计量单位',
---  `` varchar(64) NOT NULL COMMENT '项目代码',
---  PRIMARY KEY (`id`),
---  INDEX `bc_user_bill_record_main_user_code`(`main_user_code`) USING BTREE,
---  INDEX `bc_user_bill_record_from_user_code`(`from_user_code`) USING BTREE,
---) ENGINE = InnoDB AUTO_INCREMENT = 1 DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT='项目用户账单收支明细信息表';

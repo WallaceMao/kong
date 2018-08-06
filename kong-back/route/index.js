@@ -6,6 +6,7 @@ const passport = require('passport')
 const { ensureLoggedIn } = require('connect-ensure-login')
 
 const httpUtil = require('@util/httpUtil')
+const cryptoUtil = require('@util/cryptoUtil')
 
 router.get('/', ensureLoggedIn('/401'), async (req, res) => {
   return res.json(httpUtil.success())
@@ -14,5 +15,19 @@ router.get('/', ensureLoggedIn('/401'), async (req, res) => {
 router.post('/login', passport.authenticate('local'), async (req, res) => {
   return res.json(httpUtil.success())
 })
+
+/**
+ * 生成password的hash方法，正式环境下移除
+ * @deprecated
+ */
+router.get('/password-hash',
+  async (req, res, next) => {
+    try {
+      const hash = await cryptoUtil.getPasswordHash('123456')
+      return res.json(httpUtil.renderResult(0, {hash: hash}))
+    } catch (err) {
+      next(err)
+    }
+  })
 
 module.exports = router

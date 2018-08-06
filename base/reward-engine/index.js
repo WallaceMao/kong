@@ -33,7 +33,7 @@ const checkProjectRewardConfig = async () => {
     if(!rule){
       throw new Error(`reward engine start error: rewardRule not exist: ${rule}`)
     }
-    // 然后调用rule的check方法进行检查
+    // 然后调用rule的config方法进行检查
     rule.check(p.projectCode)
   })
 }
@@ -41,15 +41,16 @@ const checkProjectRewardConfig = async () => {
 /**
  * 执行奖励
  */
-const executeReward = (projectCode, triggeredUserCode, type, params) => {
+const executeReward = async (projectCode, triggeredUserCode, type, params) => {
   // 根据projectCode从数据库读取project的rewardRuleId和rewardRuleConfig
-  const project = projectService.getProjectInfo(projectCode)
-  const projectRewardConfig = projectService.getRewardConfig(projectCode)
+  const project = await projectService.getProjectInfo(projectCode)
 
   // 加载RewardRule
   if(project.rewardRule){
     const rule = ruleMap[project.rewardRule]
-    rule[type](projectRewardConfig, projectCode, triggeredUserCode, params)
+    if(rule[type]){
+      await rule[type](projectCode, triggeredUserCode, params)
+    }
   }
 }
 

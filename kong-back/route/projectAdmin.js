@@ -6,7 +6,6 @@ const router = express.Router({
 const { ensureLoggedIn } = require('connect-ensure-login')
 
 const httpUtil = require('@util/httpUtil')
-const cryptoUtil = require('@util/cryptoUtil')
 
 /**
  * 项目管理员登陆
@@ -30,20 +29,6 @@ router.post('/logout',
     try {
       await req.logout()
       return res.json(httpUtil.success())
-    } catch (err) {
-      next(err)
-    }
-  })
-
-/**
- * 生成password的hash方法，正式环境下移除
- * @deprecated
- */
-router.get('/password-hash',
-  async (req, res, next) => {
-    try {
-      const hash = await cryptoUtil.getPasswordHash('123456')
-      return res.json(httpUtil.renderResult(0, {hash: hash}))
     } catch (err) {
       next(err)
     }

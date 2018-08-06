@@ -7,11 +7,11 @@ const startListen = async channel => {
   channel = channel || constant.MESSAGE_QUEUE_CHANNEL
 
   subscriber.on('subscribe', (channel, count) => {
-    global.info('listen on channel: ' + channel + ', count: ' + count)
+    global.logger.info('listen on channel: ' + channel + ', count: ' + count)
   })
 
   subscriber.on('message', (channel, message) => {
-    global.info('received message: ' + message + ', channel: ' + channel)
+    global.logger.info('received message: ' + message + ', channel: ' + channel)
   })
 
   subscriber.subscribe(channel)

@@ -13,7 +13,6 @@ const renderList = userInfoList => {
 
 const renderObject = userInfo => {
   return {
-    id: userInfo.id,
     projectCode: userInfo.projectCode,
     userCode: userInfo.userCode,
     name: userInfo.name,

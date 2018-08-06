@@ -24,7 +24,7 @@ const getUserInfoByUserCode = async (projectCode, userCode) => {
 /**
  * 根据projectCode和phoneNumber获取用户
  * @param projectCode
- * @param userCode
+ * @param phoneNumber
  * @returns {Promise<*|{id, projectCode, userCode, name, phoneNumber, avatar, isSeedUser, status}>}
  */
 const getUserInfoByPhoneNumber = async (projectCode, phoneNumber) => {

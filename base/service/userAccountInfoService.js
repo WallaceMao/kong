@@ -36,13 +36,13 @@ const updateUserAccountInfo = async (projectCode, userCode, props) => {
 }
 
 const createUserAccountInfo = async (projectCode, userCode) => {
-  const rewardConfig = projectService.getRewardConfig(projectCode)
+  const projectInfo = await projectService.getProjectInfo(projectCode)
   return userAccountInfoDao.create({
     projectCode: projectCode,
     userCode: userCode,
     balanceValue: 0,
-    balanceValueUnit: rewardConfig.registerRewardUnit,
-    invitePackageSum: rewardConfig.inviteRewardLimit,
+    balanceValueUnit: projectInfo.defaultUnit,
+    invitePackageSum: -1,
     invitePackageClaimed: 0,
     accountStatus: userAccountInfoConst.status.OPEN
   })

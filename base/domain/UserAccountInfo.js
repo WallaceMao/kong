@@ -15,8 +15,8 @@ const UserAccountInfo = database.define('UserAccountInfo', {
   userCode: { type: Sequelize.STRING(64), field: 'user_code', allowNull: false },
   balanceValue: { type: Sequelize.DECIMAL(10, 2), field: 'balance_value', allowNull: false, defaultValue: 0 },
   balanceValueUnit: { type: Sequelize.STRING(24), field: 'balance_value_unit', allowNull: false },
-  invitePackageSum: { type: Sequelize.BIGINT(10), field: 'invite_package_sum', allowNull: false, defaultValue: 0 },
-  invitePackageClaimed: { type: Sequelize.BIGINT(10), field: 'invite_package_claimed', allowNull: false, defaultValue: 0 },
+  inviteRewardLimit: { type: Sequelize.BIGINT(10), field: 'invite_reward_limit', allowNull: false, defaultValue: -1 },
+  inviteRewardClaimed: { type: Sequelize.BIGINT(10), field: 'invite_reward_claimed', allowNull: false, defaultValue: 0 },
   accountStatus: { type: Sequelize.STRING(32), field: 'account_status', allowNull: false }
 }, {
   // 表注释信息

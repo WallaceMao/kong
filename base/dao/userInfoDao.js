@@ -82,7 +82,7 @@ const findAllByIsSeedUser = async (projectCode, isSeedUser) => {
  * @returns {Promise<*>}
  */
 const findByPhoneNumber = async (projectCode, phoneNumber) => {
-  return UserInfo.findAll({
+  return UserInfo.findOne({
     where: {
       projectCode: projectCode,
       phoneNumber: phoneNumber

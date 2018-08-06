@@ -18,7 +18,11 @@ const renderList = userRelationList => {
  * @returns {{id, projectCode, userCode, name, phoneNumber: *|UserInfo.phoneNumber|{type, field, allowNull}, avatar: *|UserInfo.avatar|{type, field, allowNull}, isSeedUser: *|UserInfo.isSeedUser|{type, field, allowNull, defaultValue}|boolean, status}}
  */
 const renderObject = userRelation => {
-  return userInfoVO.renderObject(userRelation.downUser)
+  const user = userRelation.downUser
+  return {
+    name: user.name,
+    avatar: user.avatar,
+  }
 }
 
 module.exports.render = render

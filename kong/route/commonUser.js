@@ -4,6 +4,7 @@ const passport = require('passport')
 
 const validateCodeService = require('@serv/validateCodeService')
 const userInfoService = require('@serv/userInfoService')
+const bizUserService = require('@serv/bizUserService')
 const userAccountInfoService = require('@serv/userAccountInfoService')
 const userInfoVO = require('@vo/userInfoVO')
 const userAccountInfoVO = require('@vo/userAccountInfoVO')
@@ -40,8 +41,7 @@ router.post('/login',
       const projectCode = req.params.projectCode
       const phoneNumber = req.body.phoneNumber
       const validateCode = req.body.validateCode
-      const inviteCode = req.body.inviteCode
-      if(!projectCode || !phoneNumber || !validateCode || !inviteCode){
+      if(!projectCode || !phoneNumber || !validateCode){
         return res.json(httpUtil.renderResult(systemCode.BIZ_PARAMETER_ERROR))
       }
       // 验证验证码
@@ -51,11 +51,11 @@ router.post('/login',
       // }
 
       // 验证码通过，注册或者新建用户
-      const loginUser = await userInfoService.registerOrLogin(projectCode, phoneNumber, inviteCode)
+      const loginUser = await bizUserService.registerOrLogin(projectCode, phoneNumber, inviteCode)
 
       // 设置cookie，标记登录或者新建成功
       const token = await jwtUtil.sign(jwtCookieUserVO.render(loginUser))
-      res.cookie(jwtUtil.cookieName, token, { expires: new Date(Date.now() + jwtUtil.cookieExpiresSeconds) })
+      res.cookie(jwtUtil.cookieName, token, { expires: new Date(Date.now() + jwtUtil.cookieExpiresSeconds * 1000) })
       res.json(httpUtil.renderResult(systemCode.OK, userInfoVO.render(loginUser)))
 
     } catch (err) {

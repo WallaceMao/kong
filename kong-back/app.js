@@ -7,6 +7,8 @@ const passportMidware = require('./midware/passportMidware')
 const routerMidware = require('./midware/routerMidware')
 const errorHandler = require('./midware/errorHandler')
 
+const rewardEngine = require('@base/reward-engine')
+
 const app = express()
 
 //  生产环境下是否需要记录？
@@ -26,5 +28,8 @@ routerMidware.init(app)
 
 //  初始化错误处理
 errorHandler.init(app)
+
+//  load reward engine
+rewardEngine.checkProjectRewardConfig()
 
 module.exports = app;

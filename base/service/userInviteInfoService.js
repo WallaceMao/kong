@@ -5,7 +5,7 @@ const errorUtil = require('../util/errorUtil')
 const systemCode = require('../constant/systemCode')
 
 const createUserInviteInfo = async (projectCode, userCode) => {
-  const inviteCode = randomUtil.generateInviteCode()
+  const inviteCode = await randomUtil.generateInviteCode()
   return userInviteInfoDao.create({
     projectCode: projectCode,
     userCode: userCode,

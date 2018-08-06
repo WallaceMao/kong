@@ -46,12 +46,11 @@ const createUser = async (projectCode, name, phoneNumber) => {
  * @returns {Promise<void>}
  */
 const registerOrLogin = async (projectCode, phoneNumber, inviteCode) => {
-  // 验证inviteCode，如果验证成功，将会获取到userInviteInfo
-  const userInviteInfo = await userInviteInfoService.validateInviteInfo(projectCode, inviteCode)
-
   // 根据userInfo是否存在，判断走登录，还是注册流程
   let userInfo = await userInfoService.getUserInfoByPhoneNumber(projectCode, phoneNumber)
   if(!userInfo){
+    // 验证inviteCode，如果验证成功，将会获取到userInviteInfo
+    const userInviteInfo = await userInviteInfoService.validateInviteInfo(projectCode, inviteCode)
     userInfo = await createUser(projectCode, phoneNumber, phoneNumber)
     await userRelationService.createUserRelation(projectCode, userInviteInfo.userCode, userInfo.userCode)
     await rewardEngine.executeReward(projectCode, userInfo.userCode, 'register')

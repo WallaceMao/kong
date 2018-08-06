@@ -3,6 +3,11 @@
 # 初始化
 
 ```
-insert into bc_project(created_at, project_code, project_name, project_note, telegram_join_link, default_reward_value, default_reward_value_unit) values(now(), 'abcdefg', '示例项目', null, 'https://aaa.bbb.com', '20', 'bt');
-insert into bc_project_admin(created_at, project_code, username, password) values(now(), 'abcdefg', 'admin', 'ba3253876aed6bc22d4a6ff53d8406c6ad864195ed144ab5c87621b6c233b548baeae6956df346ec8c17f5ea10f35ee3cbc514797ed7ddd3145464e2a0bab413')
+insert into bc_project(created_at, project_code, project_name, project_note, telegram_join_link, reward_rule, default_unit, status) values(now(), 'abcdefg', '示例项目', null, 'https://aaa.bbb.com', 'defaultRewardRule', 'XTX', 'open');
+insert into bc_project_admin(created_at, project_code, username, password) values(now(), 'abcdefg', 'admin', '15efa3d8d2845c411f29e40ff2e8d07c8acc7af674eaa213760c2832e2b10f9a4e64817fe505da44872956de25f7ea9fabe7c78375756d5bfdec1f4bd0c35c19');
+insert into bc_project_reward_config(created_at, project_code, config_key, config_value) values(now(), 'abcdefg', 'registerRewardValue', '100');
+insert into bc_project_reward_config(created_at, project_code, config_key, config_value) values(now(), 'abcdefg', 'registerRewardUnit', 'XTX');
+insert into bc_project_reward_config(created_at, project_code, config_key, config_value) values(now(), 'abcdefg', 'inviteRewardValue', '20');
+insert into bc_project_reward_config(created_at, project_code, config_key, config_value) values(now(), 'abcdefg', 'inviteRewardUnit', 'XTX');
+insert into bc_project_reward_config(created_at, project_code, config_key, config_value) values(now(), 'abcdefg', 'inviteRewardLimit', '5');
 ```

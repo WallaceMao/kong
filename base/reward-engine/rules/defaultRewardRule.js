@@ -3,23 +3,69 @@ const userAccountInfoService = require('@serv/userAccountInfoService')
 const userInfoService = require('@serv/userInfoService')
 const bizUserRewardService = require('@serv/bizUserRewardService')
 const userAccountConst = require('@const/userAccount')
+const rewardConfigUtil = require('../rewardConfigUtil')
 
+/**
+ * 默认规则：固定注册奖励、固定邀请奖励、限制邀请奖励数量
+ * @type {{registerRewardValue: string, registerRewardUnit: string, inviteRewardValue: string, inviteRewardUnit: string, inviteRewardLimit: string}}
+ */
 const configType = {
-  registerRewardValue: 'number', // 注册奖励值
-  registerRewardUnit: 'string', // 注册奖励计量单位
-  inviteRewardValue: 'number', // 邀请奖励的金额
-  inviteRewardUnit: 'string', // 邀请奖励的计量单位
-  inviteRewardLimit: 'number' // 邀请的限制
+  // 注册奖励值
+  registerRewardValue: {
+    type: 'number',
+    required: true
+  },
+  // 注册奖励计量单位
+  registerRewardUnit: {
+    type: 'string',
+    required: false
+  },
+  // 邀请奖励的金额
+  inviteRewardValue: {
+    type: 'number',
+    required: true
+  },
+  // 邀请奖励的计量单位
+  inviteRewardUnit: {
+    type: 'string',
+    required: false
+  },
+  // 邀请的限制
+  inviteRewardLimit: {
+    type: 'number',
+    required: true
+  }
 }
-
-const check = (projectCode) => {
-  const config = projectService.getRewardConfig(projectCode)
-  for(let key in config){
-    if(config.hasOwnProperty(key)){
-      if(configType[key] !== typeof config[key]){
-        throw new Error(`defaultRewardRule config type check error: ${key}, expect type: ${configType[key]}, actual type: ${config[key]}`)
+/**
+ * 提供check方法，以供应用在启动的时候做检查
+ * 由于奖励计算所如此重要，因此建议提供比较严格的check方法，以便在项目启动时，可以检查出参数配置的问题
+ * @param projectCode
+ * @returns {Promise<void>}
+ */
+const check = async projectCode => {
+  const config = await rewardConfigUtil.getRewardConfig(projectCode)
+  for(let key in configType){
+    if(configType.hasOwnProperty(key)){
+      if(configType[key].required && !config.hasOwnProperty(key)){
+        throw new Error(`config item is required but not exists: ${key}`)
+      }
+      if(configType[key].type === 'number' && Number.isNaN(parseFloat(config[key]))){
+        throw new Error(`config item ${key} required type number, but got ${typeof config[key]}`)
       }
     }
+  }
+}
+
+const getConfig = async (projectCode) => {
+  const config = await rewardConfigUtil.getRewardConfig(projectCode)
+  const projectInfo = await projectService.getProjectInfo(projectCode)
+
+  return {
+    registerRewardValue: parseFloat(config.registerRewardValue).toFixed(2),
+    registerRewardUnit: config.registerRewardUnit || projectInfo.defaultUnit,
+    inviteRewardValue: parseFloat(config.inviteRewardValue).toFixed(2),
+    inviteRewardUnit: config.inviteRewardUnit || projectInfo.defaultUnit,
+    inviteRewardLimit: config.inviteRewardLimit
   }
 }
 
@@ -30,10 +76,11 @@ const check = (projectCode) => {
  * @param triggeredUserCode
  * @param params
  */
-const register = async (config, projectCode, triggeredUserCode, params) => {
+const register = async (projectCode, triggeredUserCode, params) => {
+  const config = await getConfig(projectCode)
   const rewardValue = config.registerRewardValue
   const rewardValueUnit = config.registerRewardUnit
-  await bizUserRewardService.rewardUser(
+  return bizUserRewardService.rewardUser(
     projectCode,
     userAccountConst.reward.REGISTER,
     triggeredUserCode,
@@ -48,7 +95,8 @@ const register = async (config, projectCode, triggeredUserCode, params) => {
  * @param triggeredUserCode
  * @param params
  */
-const invite = async (config, projectCode, triggeredUserCode, params) => {
+const invite = async (projectCode, triggeredUserCode, params) => {
+  const config = await getConfig(projectCode)
   // 查找上级用户的userCode
   const userRelation = await userInfoService.getUpUserRelation(projectCode, triggeredUserCode)
   const upUserInfo = userRelation.upUser
@@ -59,18 +107,21 @@ const invite = async (config, projectCode, triggeredUserCode, params) => {
   // 如果该用户达到了奖励上限，那么也没有奖励
   const inviteRewardLimit = config.inviteRewardLimit
   const upUserAccountInfo = await userAccountInfoService.getUserAccountInfo(projectCode, upUserInfo.userCode)
-  if(upUserAccountInfo.invitePackageClaimed >= upUserAccountInfo.invitePackageSum){
+  const limit = upUserAccountInfo.inviteRewardLimit !== -1
+    ? upUserAccountInfo.inviteRewardLimit
+    : inviteRewardLimit
+  if(upUserAccountInfo.invitePackageClaimed >= limit){
     return
   }
   // 奖励
   const inviteRewardValue = config.inviteRewardValue
-  const inviteRewardUnit = config.inviteRewardValue
-  await bizUserRewardService.rewardUser(
+  const inviteRewardValueUnit = config.inviteRewardUnit
+  return bizUserRewardService.rewardUser(
     projectCode,
     userAccountConst.reward.INVITE,
     upUserInfo.userCode,
     inviteRewardValue,
-    inviteRewardUnit)
+    inviteRewardValueUnit)
 }
 
 module.exports = {

@@ -13,7 +13,6 @@ const renderList = userAccountInfoList => {
 
 const renderObject = userAccountInfo => {
   return {
-    id: userAccountInfo.id,
     projectCode: userAccountInfo.projectCode,
     userCode: userAccountInfo.userCode,
     balanceValue: userAccountInfo.balanceValue,
