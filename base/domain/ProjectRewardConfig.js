@@ -5,27 +5,24 @@ const Sequelize = require('sequelize')
  * 项目
  * @type {void|Model|*|{charset, dialectOptions}|{}}
  */
-const Project = database.define('Project', {
+const ProjectRewardConfig = database.define('ProjectRewardConfig', {
   id: { type: Sequelize.BIGINT(20), field: 'id', allowNull: false, autoIncrement: true, primaryKey: true },
   version: { type: Sequelize.BIGINT(20), field: 'version', allowNull: false, defaultValue: 0 },
   createdAt: { type: Sequelize.DATE, field: 'created_at', allowNull: true },
   updatedAt: { type: Sequelize.DATE, field: 'updated_at', allowNull: true },
   deletedAt: { type: Sequelize.DATE, field: 'deleted_at', allowNull: true },
   projectCode: { type: Sequelize.STRING(64), field: 'project_code', allowNull: false, unique: true },
-  projectName: { type: Sequelize.STRING(255), field: 'project_name', allowNull: false },
-  projectNote: { type: Sequelize.STRING(512), field: 'project_note', allowNull: true },
-  telegramJoinLink: { type: Sequelize.STRING(255), field: 'telegram_join_link', allowNull: true },
-  rewardRule: { type: Sequelize.STRING(128), field: 'reward_rule', allowNull: true },
-  status: { type: Sequelize.STRING(32), field: 'status', allowNull: false }
+  configKey: { type: Sequelize.STRING(128), field: 'config_key', allowNull: false },
+  configValue: { type: Sequelize.STRING(128), field: 'config_value', allowNull: true }
 }, {
   // 表注释信息
-  comment: '项目表',
+  comment: '项目奖励配置参数表',
   // 锁定表名，禁止查询时使用复数形式
   freezeTableName: true,
   // 在自动生成的数据库表结构的时候将驼峰命名法改成下划线命名
   underscored: true,
   // 表名
-  tableName: 'bc_project',
+  tableName: 'bc_project_reward_config',
   // 乐观锁字段名
   version: 'version',
   // 是否自动使用createAt/updateAt/deleteAt时间戳
@@ -40,4 +37,4 @@ const Project = database.define('Project', {
   deletedAt: 'deleted_at'
 });
 
-module.exports = Project
+module.exports = ProjectRewardConfig

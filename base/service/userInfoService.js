@@ -2,6 +2,7 @@ const userInfoDao = require('../dao/userInfoDao')
 const userRelationDao = require('../dao/userRelationDao')
 const userInfoConst = require('../constant/userInfo')
 const randomUtil = require('../util/randomUtil')
+const commonUtil = require('../util/commonUtil')
 
 /**
  * 获取project中的seedUser的列表
@@ -59,13 +60,7 @@ const createUserInfo = async (projectCode, name, phoneNumber, isSeedUser) => {
  */
 const updateUserInfo = async (projectCode, userCode, props) => {
   props = props || {}
-  const dbUpdate = {}
-  if(props.name){
-    dbUpdate.name = props.name
-  }
-  if(props.avatar){
-    dbUpdate.avatar = props.avatar
-  }
+  const dbUpdate = commonUtil.filterObjectProperties(props, ['name', 'avatar'])
 
   if(Object.keys(dbUpdate).length === 0){
     return null
@@ -91,10 +86,21 @@ const getDownUserRelationList = async (projectCode, userCode) => {
   return userRelationDao.findAllByUpUserCode(projectCode, userCode)
 }
 
+/**
+ * 获取上级用户的关系
+ * @param projectCode
+ * @param downUserCode
+ * @returns {Promise<*|Promise<*>>}
+ */
+const getUpUserRelation = async (projectCode, downUserCode) => {
+  return userRelationDao.findByDownUserCode(projectCode, downUserCode)
+}
+
 module.exports.getProjectSeedUserInfoList = getProjectSeedUserInfoList
 module.exports.getUserInfoByUserCode = getUserInfoByUserCode
 module.exports.getUserInfoByPhoneNumber = getUserInfoByPhoneNumber
 module.exports.getDownUserRelationList = getDownUserRelationList
+module.exports.getUpUserRelation = getUpUserRelation
 module.exports.createUserInfo = createUserInfo
 module.exports.updateUserInfo = updateUserInfo
 module.exports.removeUserInfo = removeUserInfo

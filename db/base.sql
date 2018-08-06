@@ -8,8 +8,8 @@ CREATE TABLE `bc_project` (
   `project_name` varchar(255) NOT NULL COMMENT '项目名称',
   `project_note` varchar(512) NULL COMMENT '项目描述',
   `telegram_join_link` varchar(255) NULL COMMENT '电报群的邀请链接',
-  `default_reward_value` decimal(10, 2) NOT NULL COMMENT '默认的邀请单个用户获得的奖励',
-  `default_reward_value_unit` varchar(24) NOT NULL COMMENT '项目默认使用的计量单位',
+  `reward_rule` varchar(128) NULL COMMENT '奖励规则名称',
+  `status` varchar(32) NOT NULL COMMENT '状态',
   PRIMARY KEY (`id`),
   UNIQUE INDEX `bc_project_code`(`project_code`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT='项目信息表';
@@ -26,6 +26,19 @@ CREATE TABLE `bc_project_admin`  (
   PRIMARY KEY (`id`),
   UNIQUE INDEX `bc_project_admin_username`(`username`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT='项目管理员表';
+
+CREATE TABLE `bc_project_reward_config`  (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `version` bigint(20) NOT NULL DEFAULT 0 COMMENT '乐观锁',
+  `created_at` datetime NOT NULL COMMENT '创建时间',
+  `updated_at` datetime NULL COMMENT '更新时间',
+  `deleted_at` datetime NULL COMMENT '删除时间',
+  `project_code` varchar(64) NOT NULL COMMENT '项目代码',
+  `config_key` varchar(128) NOT NULL COMMENT '配置的key值',
+  `config_value` varchar(128) NOT NULL COMMENT '配置的value值，String类型',
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `bc_project_reward_config_project_code`(`project_code`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 1 DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT='项目奖励配置参数表';
 
 CREATE TABLE `bc_user_info`  (
   `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',

@@ -1,6 +1,19 @@
 const UserRelation = require('../domain/UserRelation')
 const UserInfo = require('../domain/UserInfo')
 
+const findByDownUserCode = async (projectCode, downUserCode) => {
+  return UserRelation.findOne({
+    where: {
+      projectCode: projectCode,
+      downUserCode: downUserCode
+    },
+    include: [{
+      required: true,
+      model: UserInfo,
+      as: 'upUser'
+    }]
+  })
+}
 const findAllByUpUserCode = async (projectCode, upUserCode) => {
   return UserRelation.findAll({
     where: {
@@ -20,4 +33,5 @@ const create = async props => {
 }
 
 module.exports.findAllByUpUserCode = findAllByUpUserCode
+module.exports.findByDownUserCode = findByDownUserCode
 module.exports.create = create

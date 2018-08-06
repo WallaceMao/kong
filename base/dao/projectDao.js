@@ -55,8 +55,22 @@ const findByProjectCode = async projectCode => {
   })
 }
 
+/**
+ * 查找满足指定状态的项目
+ * @param status
+ * @returns {Promise<*>}
+ */
+const findAllByStatus = async status => {
+  return Project.findAll({
+    where: {
+      status: status
+    }
+  })
+}
+
 module.exports.findById = findById
 module.exports.create = create
 module.exports.updateByProjectCode = updateByProjectCode
 module.exports.deleteByProjectCode = deleteByProjectCode
 module.exports.findByProjectCode = findByProjectCode
+module.exports.findAllByStatus = findAllByStatus

@@ -5,5 +5,9 @@ module.exports = {
    */
   status: {
     'OPEN': 'open'
+  },
+  reward: {
+    'REGISTER': 'register',
+    'INVITE': 'invite'
   }
 }
