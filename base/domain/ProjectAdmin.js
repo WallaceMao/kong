@@ -12,7 +12,7 @@ const ProjectAdmin = database.define('ProjectAdmin', {
   updatedAt: { type: Sequelize.DATE, field: 'updated_at', allowNull: true },
   deletedAt: { type: Sequelize.DATE, field: 'deleted_at', allowNull: true },
   projectCode: { type: Sequelize.STRING(64), field: 'project_code', allowNull: false },
-  username: { type: Sequelize.STRING(64), field: 'username', allowNull: false, unique: true },
+  username: { type: Sequelize.STRING(64), field: 'username', allowNull: false, unique: 'bc_project_admin_username' },
   password: { type: Sequelize.STRING(128), field: 'password', allowNull: false }
 }, {
   // 表注释信息

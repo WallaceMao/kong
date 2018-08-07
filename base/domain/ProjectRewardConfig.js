@@ -11,8 +11,8 @@ const ProjectRewardConfig = database.define('ProjectRewardConfig', {
   createdAt: { type: Sequelize.DATE, field: 'created_at', allowNull: true },
   updatedAt: { type: Sequelize.DATE, field: 'updated_at', allowNull: true },
   deletedAt: { type: Sequelize.DATE, field: 'deleted_at', allowNull: true },
-  projectCode: { type: Sequelize.STRING(64), field: 'project_code', allowNull: false, unique: true },
-  configKey: { type: Sequelize.STRING(128), field: 'config_key', allowNull: false },
+  projectCode: { type: Sequelize.STRING(64), field: 'project_code', allowNull: false, unique: 'bc_project_reward_config_config_key' },
+  configKey: { type: Sequelize.STRING(128), field: 'config_key', allowNull: false, unique: 'bc_project_reward_config_config_key' },
   configValue: { type: Sequelize.STRING(128), field: 'config_value', allowNull: true }
 }, {
   // 表注释信息

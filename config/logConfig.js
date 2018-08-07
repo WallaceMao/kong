@@ -5,6 +5,8 @@ const config = require('config')
 
 const serverPrefix = 'server-'
 const listenerPrefix = 'listener-'
+const telegramPrefix = 'telegram-'
+
 
 const generateProps = (fileNamePrefix) => {
   const transportsArray = []
@@ -41,3 +43,4 @@ const generateProps = (fileNamePrefix) => {
 
 module.exports.serverLogger = createLogger(generateProps(serverPrefix))
 module.exports.listenerLogger = createLogger(generateProps(listenerPrefix))
+module.exports.telegramLogger = createLogger(generateProps(telegramPrefix))

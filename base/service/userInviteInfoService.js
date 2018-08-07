@@ -14,8 +14,8 @@ const createUserInviteInfo = async (projectCode, userCode) => {
   })
 }
 
-const validateInviteInfo = async (projectCode, inviteCode) => {
-  const userInviteInfo = await userInviteInfoDao.findByInviteCode(projectCode, inviteCode)
+const validateInviteInfo = async inviteCode => {
+  const userInviteInfo = await userInviteInfoDao.findByInviteCode(inviteCode)
   if(!userInviteInfo){
     throw errorUtil.makeError(systemCode.BIZ_INVITE_CODE_INVALID, `invalid invite code: ${inviteCode}`)
   }

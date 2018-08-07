@@ -37,7 +37,14 @@
     }
   },
   "sms": {
-    "userId": "",
-    "secret": ""
+    "userId": "LTAICWcfxdoovy61",
+    "secret": "VyReoYLBTcu93ZAS8eXbfKhcaGgXVl"
+  },
+  "oss": {
+    "userId": "LTAIRmc2yQFFMeDx",
+    "secret": "FCwMOzmyBqgwERsL9nVv4FQ7n1LVzV"
+  },
+  "telegram": {
+    "token": "696033507:AAGvRBRxy7xAKoE5KWTfTQ6MVg5p_xt8NBc"
   }
 }

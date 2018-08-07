@@ -16,7 +16,7 @@ const UserRelation = database.define('UserRelation', {
   deletedAt: { type: Sequelize.DATE, field: 'deleted_at', allowNull: true },
   projectCode: { type: Sequelize.STRING(64), field: 'project_code', allowNull: false },
   upUserCode: { type: Sequelize.STRING(64), field: 'up_user_code', allowNull: false },
-  downUserCode: { type: Sequelize.STRING(64), field: 'down_user_code', allowNull: false, unique: true },
+  downUserCode: { type: Sequelize.STRING(64), field: 'down_user_code', allowNull: false, unique: 'bc_user_relation_combine_code' },
 }, {
   // 表注释信息
   comment: '项目用户关系信息表',

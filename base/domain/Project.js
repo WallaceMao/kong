@@ -11,7 +11,7 @@ const Project = database.define('Project', {
   createdAt: { type: Sequelize.DATE, field: 'created_at', allowNull: true },
   updatedAt: { type: Sequelize.DATE, field: 'updated_at', allowNull: true },
   deletedAt: { type: Sequelize.DATE, field: 'deleted_at', allowNull: true },
-  projectCode: { type: Sequelize.STRING(64), field: 'project_code', allowNull: false, unique: true },
+  projectCode: { type: Sequelize.STRING(64), field: 'project_code', allowNull: false, unique: 'bc_project_code' },
   projectName: { type: Sequelize.STRING(255), field: 'project_name', allowNull: false },
   projectNote: { type: Sequelize.STRING(512), field: 'project_note', allowNull: true },
   telegramJoinLink: { type: Sequelize.STRING(255), field: 'telegram_join_link', allowNull: true },

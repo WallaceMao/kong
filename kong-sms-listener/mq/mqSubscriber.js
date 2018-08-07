@@ -1,5 +1,5 @@
-const redisUtil = require('../util/redisUtil')
-const constant = require('../constant/constant')
+const redisUtil = require('@util/redisUtil')
+const constant = require('@const/constant')
 
 const subscriber = redisUtil.getClient('mqSubscriber')
 

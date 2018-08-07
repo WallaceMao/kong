@@ -61,10 +61,9 @@ const findByUserCode = async (projectCode, userCode) => {
   })
 }
 
-const findByInviteCode = async (projectCode, inviteCode) => {
+const findByInviteCode = async (inviteCode) => {
   return UserInviteInfo.findOne({
     where: {
-      projectCode: projectCode,
       inviteCode: inviteCode
     }
   })

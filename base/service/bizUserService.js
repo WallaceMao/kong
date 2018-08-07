@@ -2,7 +2,6 @@ const userInfoService = require('./userInfoService')
 const userInviteInfoService = require('./userInviteInfoService')
 const userAccountInfoService = require('./userAccountInfoService')
 const userRelationService = require('./userRelationService')
-const rewardEngine = require('../reward-engine')
 
 /**
  * 创建seedUserInfo
@@ -50,10 +49,9 @@ const registerOrLogin = async (projectCode, phoneNumber, inviteCode) => {
   let userInfo = await userInfoService.getUserInfoByPhoneNumber(projectCode, phoneNumber)
   if(!userInfo){
     // 验证inviteCode，如果验证成功，将会获取到userInviteInfo
-    const userInviteInfo = await userInviteInfoService.validateInviteInfo(projectCode, inviteCode)
+    const userInviteInfo = await userInviteInfoService.validateInviteInfo(inviteCode)
     userInfo = await createUser(projectCode, phoneNumber, phoneNumber)
     await userRelationService.createUserRelation(projectCode, userInviteInfo.userCode, userInfo.userCode)
-    await rewardEngine.executeReward(projectCode, userInfo.userCode, 'register')
   }
   return userInfo
 }

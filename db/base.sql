@@ -69,12 +69,25 @@ CREATE TABLE `bc_user_invite_info`  (
   `deleted_at` datetime NULL COMMENT '删除时间',
   `project_code` varchar(64) NOT NULL COMMENT '项目代码',
   `user_code` varchar(64) NOT NULL COMMENT '用户代码',
-  `invite_code` varchar(64) NOT NULL COMMENT '邀请使用的验证码',
+  `invite_code` varchar(64) NOT NULL COMMENT '邀请使用的验证码，inviteCode在所有项目中也是唯一的',
   `invite_status` varchar(32) NOT NULL COMMENT '邀请状态',
   PRIMARY KEY (`id`),
   UNIQUE INDEX `bc_user_invite_info_user_code`(`project_code`, `user_code`) USING BTREE,
-  UNIQUE INDEX `bc_user_invite_info_invite_code`(`project_code`, `invite_code`) USING BTREE
+  UNIQUE INDEX `bc_user_invite_info_invite_code`(`invite_code`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT='项目用户邀请信息表';
+
+CREATE TABLE `bc_user_invite_code_send_record`  (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `version` bigint(20) NOT NULL DEFAULT 0 COMMENT '乐观锁',
+  `created_at` datetime NOT NULL COMMENT '创建时间',
+  `updated_at` datetime NULL COMMENT '更新时间',
+  `deleted_at` datetime NULL COMMENT '删除时间',
+  `invite_code` varchar(64) NOT NULL COMMENT '邀请使用的验证码',
+  `invite_code_send_msg` varchar(768) NOT NULL COMMENT '发送邀请码时的信息',
+  `invite_code_send_source` varchar(32) NOT NULL COMMENT '发送邀请信息的来源，例如telegram',
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `bc_user_invite_send_record_invite_code`(`invite_code`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 1 DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT='项目用户邀请码发送的记录表';
 
 CREATE TABLE `bc_user_relation`  (
   `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
@@ -104,7 +117,7 @@ CREATE TABLE `bc_user_account_info`  (
   `invite_reward_claimed` bigint(10) NOT NULL DEFAULT 0 COMMENT '已被领取的邀请红包的数量',
   `account_status` varchar(32) NOT NULL COMMENT '状态',
   PRIMARY KEY (`id`),
-  UNIQUE INDEX `bc_user_account_user_code`(`user_code`) USING BTREE
+  UNIQUE INDEX `bc_user_account_info_user_code`(`project_code`, `user_code`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT='项目用户账单信息表';
 
 CREATE TABLE `bc_user_reward_record`  (
