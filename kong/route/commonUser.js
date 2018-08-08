@@ -7,9 +7,10 @@ const userInfoService = require('@serv/userInfoService')
 const bizUserService = require('@serv/bizUserService')
 const userAccountInfoService = require('@serv/userAccountInfoService')
 const userInfoVO = require('@vo/userInfoVO')
+const loginUserVO = require('@vo/loginUserVO')
 const userAccountInfoVO = require('@vo/userAccountInfoVO')
 const downUserInfoVO = require('@vo/downUserInfoVO')
-const jwtCookieUserVO = require('@vo/jwtCookieUserVO')
+const jwtUserVO = require('@vo/jwtUserVO')
 const httpUtil = require('@util/httpUtil')
 const systemCode = require('@const/systemCode')
 const jwtUtil = require('@util/jwtUtil')
@@ -54,10 +55,9 @@ router.post('/login',
       // 验证码通过，注册或者新建用户
       const loginUser = await bizUserService.registerOrLogin(projectCode, phoneNumber, inviteCode)
 
-      // 设置cookie，标记登录或者新建成功
-      const token = await jwtUtil.sign(jwtCookieUserVO.render(loginUser))
-      res.cookie(jwtUtil.cookieName, token, { expires: new Date(Date.now() + jwtUtil.cookieExpiresSeconds * 1000) })
-      res.json(httpUtil.renderResult(systemCode.OK, userInfoVO.render(loginUser)))
+      // 生成token并返回
+      loginUser.token = await jwtUtil.sign(jwtUserVO.render(loginUser))
+      res.json(httpUtil.renderResult(systemCode.OK, loginUserVO.render(loginUser)))
 
     } catch (err) {
       next(err)
@@ -71,7 +71,8 @@ router.post('/logout',
   passport.authenticate('jwt', { session: false }),
   async (req, res, next) => {
     try {
-      res.clearCookie(jwtUtil.cookieName)
+      //TODO 后台是否需要处理？
+      // res.clearCookie(jwtUtil.cookieName)
       res.json(httpUtil.success())
     } catch (err) {
       next(err)

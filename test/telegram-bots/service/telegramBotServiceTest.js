@@ -36,7 +36,7 @@ const message = {
     "all_members_are_administrators":true
   },
   "date":1533639111,
-  "text":"mYNWi3VN"
+  "text":"invmYNWi3VN"
 }
 
 describe('telegram-bot server test', () => {
@@ -60,7 +60,7 @@ describe('telegram-bot server test', () => {
       await telegramBotService.rewardUser('mYNWi3VN')
     })
   })
-  describe.skip('updateUserInfo function test', () => {
+  describe('updateUserInfo function test', () => {
     it('should success', async () => {
       await telegramBotService.updateUserInfo('mYNWi3VN', bot, message)
     })

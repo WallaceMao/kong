@@ -53,6 +53,9 @@ const registerOrLogin = async (projectCode, phoneNumber, inviteCode) => {
     userInfo = await createUser(projectCode, phoneNumber, phoneNumber)
     await userRelationService.createUserRelation(projectCode, userInviteInfo.userCode, userInfo.userCode)
   }
+  // 直接将inviteCode添加到返回值上
+  const userInviteInfo = await userInviteInfoService.getUserInviteInfoByUserCode(userInfo.projectCode, userInfo.userCode)
+  userInfo.inviteCode = userInviteInfo.inviteCode
   return userInfo
 }
 

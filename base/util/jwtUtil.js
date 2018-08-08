@@ -21,8 +21,6 @@ const verify = async token => {
 }
 
 module.exports = {
-  cookieName: constant.AUTH_JWT_COOKIE_NAME,
-  cookieExpiresSeconds: constant.AUTH_JWT_COOKIE_EXPIRE_SECONDS,
   secret: secret,
   issuer: issuer,
   audience: audience,

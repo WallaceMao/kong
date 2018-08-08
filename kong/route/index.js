@@ -37,22 +37,4 @@ router.get('/test', passport.authenticate('jwt', { session: false }), async (req
   }
 })
 
-router.get('/test/setCookie', async (req, res, next) => {
-  try {
-    const token = await jwtUtil.sign({id: 1, name: 'Wallace'})
-    res.cookie(jwtUtil.cookieName, token)
-    res.json(responseUtil.success())
-  } catch (err) {
-    next(err)
-  }
-})
-
-router.get('/test/getCookie', (req, res, next) => {
-  try {
-    res.json(responseUtil.success())
-  } catch (err) {
-    next(err)
-  }
-})
-
 module.exports = router

@@ -25,5 +25,10 @@ const validateInviteInfo = async inviteCode => {
   return userInviteInfo
 }
 
+const getUserInviteInfoByUserCode = async (projectCode, userCode) => {
+  return userInviteInfoDao.findByUserCode(projectCode, userCode)
+}
+
 module.exports.createUserInviteInfo = createUserInviteInfo
 module.exports.validateInviteInfo = validateInviteInfo
+module.exports.getUserInviteInfoByUserCode = getUserInviteInfoByUserCode

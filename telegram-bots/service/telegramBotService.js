@@ -1,4 +1,3 @@
-const config = require('config')
 const request = require('request')
 const Promise = require('bluebird')
 
@@ -9,14 +8,25 @@ const platformConst = require('@const/platform')
 const rewardEngine = require('@base/reward-engine')
 const ossUtil = require('@util/ossUtil')
 
-const TELEGRAM_AVATAR_PREFIX = 'https://api.telegram.org/file/bot'
-
-const checkRecordExist = async inviteCode => {
+const saveInviteCode = async (inviteCode, message) => {
+  //  验证码为空
+  if(!inviteCode){
+    return 'NO INVITE CODE FOUND!'
+  }
+  //  验证码是否已存在
   const record = await recordService.getRecordByInviteCode(inviteCode)
-  return !!record
-}
-const saveRecord = async (inviteCode, message) => {
-  return recordService.createRecord(inviteCode, JSON.stringify(message), platformConst.inviteCodeSendSource.TELEGRAM)
+  if(record){
+    return `invite code [${inviteCode}] is already used!`
+  }
+  //  添加消息记录
+  await recordService.createRecord(inviteCode, JSON.stringify(message), platformConst.inviteCodeSendSource.TELEGRAM)
+  //  异步执行奖励用户的流程
+  setTimeout(() => {
+    Promise.all([
+      rewardUser(inviteCode)
+    ])
+  }, 0)
+  return `invite code [${inviteCode}] received!`
 }
 
 const rewardUser = async (inviteCode) => {
@@ -31,37 +41,25 @@ const rewardUser = async (inviteCode) => {
   }
 }
 
-const updateUserInfo = async (inviteCode, telegram, message, agent) => {
+const updateUserInfo = async (inviteCode, userInfo, proxyAgent) => {
   try {
-    // 获取telegram中的用户头像
-    console.log('====message: ' + JSON.stringify(message))
-    const msgUser = message.from
-    console.log('====msgUser: ' + JSON.stringify(msgUser))
-    const photoObject = await telegram.getUserProfilePhotos(msgUser.id, 0, 1)
-    console.log('====photoObject: ' + JSON.stringify(photoObject))
-    if(!photoObject['total_count'] || photoObject['total_count'] < 1){
-      return
-    }
-    const file = await telegram.getFile(photoObject.photos[0][0].file_id)
-    const imageUrl = `${TELEGRAM_AVATAR_PREFIX}${config.telegram.token}${file.file_path}`
-    const namePartArray = file.file_path.split('.')
+    const originalAvatar = userInfo.avatar
+    console.log('====imageUrl: ' + originalAvatar)
+    const namePartArray = originalAvatar.split('.')
     const extendName = namePartArray[namePartArray.length - 1]
-    console.log('====imageUrl: ' + imageUrl)
 
     // 将telegram中的头像上传到阿里云OSS
     const userInviteInfo = await userInviteInfoService.validateInviteInfo(inviteCode)
-    console.log('====file: ' + JSON.stringify(file))
     const avatarUrl = `profile/${userInviteInfo.projectCode}/${userInviteInfo.userCode}/avatar.${extendName}`
     console.log('====avatarUrl: ' + JSON.stringify(avatarUrl))
-    // return
     await ossUtil.streamUpload(avatarUrl, request({
-      url: imageUrl,
-      agent: agent
+      url: originalAvatar,
+      agent: proxyAgent
     }))
 
     // 更新userInfo中的name和头像
     return userInfoService.updateUserInfo({
-      name: `${msgUser.first_name} ${msgUser.last_name}`,
+      name: `${userInfo.firstName} ${userInfo.lastName}`,
       avatar: `${ossUtil.OSS_ROOT}/${avatarUrl}`
     })
   } catch (err) {
@@ -69,7 +67,6 @@ const updateUserInfo = async (inviteCode, telegram, message, agent) => {
   }
 }
 
-module.exports.checkRecordExist = checkRecordExist
-module.exports.saveRecord = saveRecord
+module.exports.saveInviteCode = saveInviteCode
 module.exports.rewardUser = rewardUser
 module.exports.updateUserInfo = updateUserInfo

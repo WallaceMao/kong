@@ -4,16 +4,8 @@ const jwtUtil = require('@util/jwtUtil')
 const JwtStrategy = require('passport-jwt').Strategy,
   ExtractJwt = require('passport-jwt').ExtractJwt;
 
-const cookieExtractor = req => {
-  let token = null;
-  if (req && req.cookies) {
-    token = req.cookies[jwtUtil.cookieName]
-  }
-  return token
-}
-
 const opts = {
-  jwtFromRequest: ExtractJwt.fromExtractors([cookieExtractor]),
+  jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
   secretOrKey: jwtUtil.secret,
   issuer: jwtUtil.issuer,
   audience: jwtUtil.audience
