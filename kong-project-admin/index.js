@@ -1,6 +1,6 @@
 require('module-alias/register')
 
-global.logger = require('@config/logConfig').serverLogger
+global.logger = require('@config/logConfig').projectAdminServerLogger
 
 const config = require('config')
 const http = require('http')

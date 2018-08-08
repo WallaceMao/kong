@@ -1,7 +1,7 @@
-require('module-alias')()
+require('module-alias/register')
 global.logger = require('@config/logConfig').telegramLogger
 
-const bot = require('./telegram-bot')
+const bot = require('./telegramBot')
 
 bot.startListen()
 

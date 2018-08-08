@@ -104,9 +104,8 @@ router.get('/userInfo',
         return res.json(httpUtil.renderResult(systemCode.BIZ_PARAMETER_ERROR))
       }
 
-      const user = await userInfoService.getUserInfoByUserCode(projectCode, userCode)
-      const userVO = userInfoVO.render(user)
-      return res.json(httpUtil.renderResult(systemCode.OK, userVO))
+      const combinedUser = await bizUserService.getCombinedUserInfo(projectCode, userCode)
+      return res.json(httpUtil.renderResult(systemCode.OK, userInfoVO.render(combinedUser)))
     } catch (err) {
       next(err)
     }

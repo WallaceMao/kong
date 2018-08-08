@@ -15,6 +15,7 @@ const renderObject = userAccountInfo => {
   return {
     projectCode: userAccountInfo.projectCode,
     userCode: userAccountInfo.userCode,
+    walletAddress: userAccountInfo.walletAddress,
     balanceValue: userAccountInfo.balanceValue,
     balanceValueUnit: userAccountInfo.balanceValueUnit,
     invitePackageSum: userAccountInfo.invitePackageSum,

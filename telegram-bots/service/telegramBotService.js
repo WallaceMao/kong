@@ -57,8 +57,11 @@ const updateUserInfo = async (inviteCode, userInfo, proxyAgent) => {
       agent: proxyAgent
     }))
 
+    console.log('====begin to update local userInfo')
     // 更新userInfo中的name和头像
-    return userInfoService.updateUserInfo({
+    return userInfoService.updateUserInfo(
+      userInviteInfo.projectCode,
+      userInviteInfo.userCode, {
       name: `${userInfo.firstName} ${userInfo.lastName}`,
       avatar: `${ossUtil.OSS_ROOT}/${avatarUrl}`
     })

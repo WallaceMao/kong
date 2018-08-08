@@ -2,6 +2,7 @@ const userInfoService = require('./userInfoService')
 const userInviteInfoService = require('./userInviteInfoService')
 const userAccountInfoService = require('./userAccountInfoService')
 const userRelationService = require('./userRelationService')
+const bizUtil = require('../util/bizUtil')
 
 /**
  * 创建seedUserInfo
@@ -36,6 +37,20 @@ const createUser = async (projectCode, name, phoneNumber) => {
   return userInfo
 }
 /**
+ * 将邀请相关的信息添加到originUser上。
+ * originUser可以为任意对象，但是其属性中必须要有projectCode和userCode
+ * @param originUser
+ * @returns {Promise<void>}
+ */
+const addInviteInfo = async originUser => {
+  if(!originUser){
+    return originUser
+  }
+  const userInviteInfo = await userInviteInfoService.getUserInviteInfoByUserCode(originUser.projectCode, originUser.userCode)
+  originUser.inviteCode = userInviteInfo.inviteCode
+  return originUser
+}
+/**
  * 如果验证码对了，那么就查找系统中是否有这个项目下是否有这个手机号注册的用户。
  * 如果有，那么就登录
  * 如果没有，那么就新建
@@ -50,15 +65,19 @@ const registerOrLogin = async (projectCode, phoneNumber, inviteCode) => {
   if(!userInfo){
     // 验证inviteCode，如果验证成功，将会获取到userInviteInfo
     const userInviteInfo = await userInviteInfoService.validateInviteInfo(inviteCode)
-    userInfo = await createUser(projectCode, phoneNumber, phoneNumber)
+    userInfo = await createUser(projectCode, bizUtil.generateName({ phoneNumber }), phoneNumber)
     await userRelationService.createUserRelation(projectCode, userInviteInfo.userCode, userInfo.userCode)
   }
   // 直接将inviteCode添加到返回值上
-  const userInviteInfo = await userInviteInfoService.getUserInviteInfoByUserCode(userInfo.projectCode, userInfo.userCode)
-  userInfo.inviteCode = userInviteInfo.inviteCode
-  return userInfo
+  return await addInviteInfo(userInfo)
 }
 
-module.exports.registerOrLogin = registerOrLogin
+const getCombinedUserInfo = async (projectCode, userCode) => {
+  const user = await userInfoService.getUserInfoByUserCode(projectCode, userCode)
+  return await addInviteInfo(user)
+}
+
 module.exports.createSeedUser = createSeedUser
 module.exports.createUser = createUser
+module.exports.registerOrLogin = registerOrLogin
+module.exports.getCombinedUserInfo = getCombinedUserInfo

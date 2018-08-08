@@ -12,7 +12,7 @@ const renderList = userInfoList => {
 }
 
 const renderObject = userInfo => {
-  return {
+  const result = {
     projectCode: userInfo.projectCode,
     userCode: userInfo.userCode,
     name: userInfo.name,
@@ -21,6 +21,10 @@ const renderObject = userInfo => {
     isSeedUser: userInfo.isSeedUser,
     status: userInfo.status
   }
+  if(userInfo.inviteCode){
+    result.inviteCode = userInfo.inviteCode
+  }
+  return result
 }
 
 module.exports.render = render

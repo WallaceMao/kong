@@ -137,3 +137,6 @@ CREATE TABLE `bc_user_reward_record`  (
   INDEX `bc_user_reward_record_related_user_code`(`related_user_code`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT='项目用户账单详细信息表';
 
+# 新增钱包地址
+ALTER TABLE `bc_user_account_info`
+ADD COLUMN `wallet_address` varchar(255) NULL COMMENT '比特币钱包地址' AFTER `user_code`;
