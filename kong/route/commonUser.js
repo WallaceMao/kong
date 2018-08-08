@@ -41,6 +41,7 @@ router.post('/login',
       const projectCode = req.params.projectCode
       const phoneNumber = req.body.phoneNumber
       const validateCode = req.body.validateCode
+      const inviteCode = req.body.inviteCode
       if(!projectCode || !phoneNumber || !validateCode){
         return res.json(httpUtil.renderResult(systemCode.BIZ_PARAMETER_ERROR))
       }

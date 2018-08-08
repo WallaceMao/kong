@@ -6,10 +6,15 @@ const redisUtil = require('@util/redisUtil')
 const responseUtil = require('@util/httpUtil')
 const systemCode = require('@const/systemCode')
 const jwtUtil = require('@util/jwtUtil')
+const httpUtil = require('@util/httpUtil')
 
 /* GET home page. */
-router.get('/', (req, res) => {
-  res.render('index', { title: 'Express' })
+// router.get('/', (req, res) => {
+//   res.render('index', { title: 'Express' })
+// })
+
+router.get('/status', (req, res) => {
+  res.json(httpUtil.success())
 })
 
 router.get('/redis', async (req, res) => {

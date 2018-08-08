@@ -40,7 +40,7 @@ const getUserInfoByPhoneNumber = async (projectCode, phoneNumber) => {
  * @returns {Promise<*|Promise<props>>}
  */
 const createUserInfo = async (projectCode, name, phoneNumber, isSeedUser) => {
-  const userCode = await randomUtil.generateIdentifier()
+  const userCode = await randomUtil.generateIdentifier(isSeedUser)
   // 创建用户基本信息
   return userInfoDao.create({
     projectCode: projectCode,

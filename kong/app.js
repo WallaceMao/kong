@@ -1,6 +1,7 @@
 const express = require('express');
 const morgan = require('morgan');
 
+const corsMidware = require('./midware/corsMidware')
 const viewMidware = require('./midware/viewMidware')
 const requestParserMidware = require('./midware/requestParserMidware')
 const passportMidware = require('./midware/passportMidware')
@@ -12,6 +13,9 @@ const app = express()
 
 //  生产环境下是否需要记录？
 app.use(morgan('dev'))
+
+//  处理跨域
+corsMidware.init(app)
 
 //  初始化view层的处理
 viewMidware.init(app)

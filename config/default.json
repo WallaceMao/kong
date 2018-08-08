@@ -46,5 +46,8 @@
   },
   "telegram": {
     "token": "696033507:AAGvRBRxy7xAKoE5KWTfTQ6MVg5p_xt8NBc"
+  },
+  "cors": {
+    "allowOrigin": "*"
   }
 }

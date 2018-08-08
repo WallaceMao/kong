@@ -31,20 +31,33 @@ const rewardUser = async (inviteCode) => {
   }
 }
 
-const updateUserInfo = async (inviteCode, telegram, message) => {
+const updateUserInfo = async (inviteCode, telegram, message, agent) => {
   try {
     // 获取telegram中的用户头像
+    console.log('====message: ' + JSON.stringify(message))
     const msgUser = message.from
-    const photosArray = await telegram.getUserProfilePhotos(msgUser.id, 0, 1)
-    const file = await telegram.getFile(photosArray.photos[0][0].file_id)
+    console.log('====msgUser: ' + JSON.stringify(msgUser))
+    const photoObject = await telegram.getUserProfilePhotos(msgUser.id, 0, 1)
+    console.log('====photoObject: ' + JSON.stringify(photoObject))
+    if(!photoObject['total_count'] || photoObject['total_count'] < 1){
+      return
+    }
+    const file = await telegram.getFile(photoObject.photos[0][0].file_id)
     const imageUrl = `${TELEGRAM_AVATAR_PREFIX}${config.telegram.token}${file.file_path}`
-    const extendName = file.file_path.split('.')[-1]
+    const namePartArray = file.file_path.split('.')
+    const extendName = namePartArray[namePartArray.length - 1]
+    console.log('====imageUrl: ' + imageUrl)
 
     // 将telegram中的头像上传到阿里云OSS
     const userInviteInfo = await userInviteInfoService.validateInviteInfo(inviteCode)
     console.log('====file: ' + JSON.stringify(file))
     const avatarUrl = `profile/${userInviteInfo.projectCode}/${userInviteInfo.userCode}/avatar.${extendName}`
-    await ossUtil.streamUpload(avatarUrl, request(imageUrl))
+    console.log('====avatarUrl: ' + JSON.stringify(avatarUrl))
+    // return
+    await ossUtil.streamUpload(avatarUrl, request({
+      url: imageUrl,
+      agent: agent
+    }))
 
     // 更新userInfo中的name和头像
     return userInfoService.updateUserInfo({

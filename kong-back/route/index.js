@@ -12,6 +12,10 @@ router.get('/', ensureLoggedIn('/401'), async (req, res) => {
   return res.json(httpUtil.success())
 })
 
+router.get('/status', (req, res) => {
+  res.json(httpUtil.success())
+})
+
 router.post('/login', passport.authenticate('local'), async (req, res) => {
   return res.json(httpUtil.success())
 })
