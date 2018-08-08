@@ -7,7 +7,6 @@ const requestParserMidware = require('./midware/requestParserMidware')
 const passportMidware = require('./midware/passportMidware')
 const routerMidware = require('./midware/routerMidware')
 const errorHandler = require('./midware/errorHandler')
-const rewardEngine = require('@base/reward-engine')
 
 const app = express()
 
@@ -32,7 +31,7 @@ routerMidware.init(app)
 //  初始化错误处理
 errorHandler.init(app)
 
-//  load reward engine
-rewardEngine.checkProjectRewardConfig()
+//  启动时检查
+require('./boot-check').check()
 
 module.exports = app;

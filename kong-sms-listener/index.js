@@ -1,7 +1,7 @@
 require('module-alias/register')
-
 global.logger = require('@config/logConfig').listenerLogger
 
-const listener = require('./mq/mqSubscriber')
+require('./boot-check').check()
 
+const listener = require('./mq/mqSubscriber')
 listener.startListen()

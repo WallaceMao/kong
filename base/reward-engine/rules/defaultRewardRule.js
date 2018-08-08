@@ -2,6 +2,7 @@ const projectService = require('@serv/projectService')
 const userAccountInfoService = require('@serv/userAccountInfoService')
 const userInfoService = require('@serv/userInfoService')
 const bizUserRewardService = require('@serv/bizUserRewardService')
+const userRewardRecordService = require('@serv/userRewardRecordService')
 const userAccountConst = require('@const/userAccount')
 const rewardConfigUtil = require('../rewardConfigUtil')
 
@@ -71,6 +72,7 @@ const getConfig = async (projectCode) => {
 
 /**
  * 注册奖励的策略，给新注册的triggeredUserCode用户增加registerRewardValue指定的金额
+ * 注册奖励只能奖励一次
  * @param config
  * @param projectCode
  * @param triggeredUserCode
@@ -78,6 +80,11 @@ const getConfig = async (projectCode) => {
  */
 const register = async (projectCode, triggeredUserCode, params) => {
   const config = await getConfig(projectCode)
+  // 注册奖励只能奖励一次，如果已经奖励过，那么就不再奖励
+  const recordList = userRewardRecordService.getRewardUserRewardRecordList(projectCode, triggeredUserCode, userAccountConst.reward.REGISTER)
+  if(recordList && recordList.length > 0){
+    return
+  }
   const rewardValue = config.registerRewardValue
   const rewardValueUnit = config.registerRewardUnit
   return bizUserRewardService.rewardUser(
@@ -97,6 +104,11 @@ const register = async (projectCode, triggeredUserCode, params) => {
  */
 const invite = async (projectCode, triggeredUserCode, params) => {
   const config = await getConfig(projectCode)
+  // 如果一个用户，已经奖励过他的上级，那么就不会再次奖励
+  const recordList = userRewardRecordService.getRelatedUserRewardRecordList(projectCode, triggeredUserCode, userAccountConst.reward.INVITE)
+  if(recordList && recordList.length > 0){
+    return
+  }
   // 查找上级用户的userCode
   const userRelation = await userInfoService.getUpUserRelation(projectCode, triggeredUserCode)
   const upUserInfo = userRelation.upUser
@@ -121,7 +133,8 @@ const invite = async (projectCode, triggeredUserCode, params) => {
     userAccountConst.reward.INVITE,
     upUserInfo.userCode,
     inviteRewardValue,
-    inviteRewardValueUnit)
+    inviteRewardValueUnit,
+    triggeredUserCode)
 }
 
 module.exports = {
