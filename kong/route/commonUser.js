@@ -18,17 +18,19 @@ const httpUtil = require('@util/httpUtil')
 const systemCode = require('@const/systemCode')
 const jwtUtil = require('@util/jwtUtil')
 
+const { checkProjectValid, checkProjectCode, checkParameter, checkPhoneNumber } = require('../validator')
+
 /**
  * 发送验证码
  */
 router.post('/validateCode',
   async (req, res, next) => {
     try {
-      const projectCode = req.params.projectCode
-      const phoneNumber = req.body.phoneNumber
-      if(!projectCode || !phoneNumber){
-        return res.json(httpUtil.renderResult(systemCode.BIZ_PARAMETER_ERROR))
-      }
+      checkProjectValid(req)
+      const params = checkParameter(req, ['phoneNumber'])
+      const phoneNumber = params.phoneNumber
+      checkPhoneNumber(phoneNumber)
+
       await validateCodeService.handleValidateCode(phoneNumber)
       res.json(httpUtil.success())
     } catch (err) {
@@ -41,16 +43,14 @@ router.post('/validateCode',
 router.post('/login',
   async (req, res, next) => {
     try {
-      // TODO 检查projectCode参数是否合法
-
       // 参数检查
-      const projectCode = req.params.projectCode
-      const phoneNumber = req.body.phoneNumber
-      const validateCode = req.body.validateCode
-      const inviteCode = req.body.inviteCode
-      if(!projectCode || !phoneNumber || !validateCode){
-        return res.json(httpUtil.renderResult(systemCode.BIZ_PARAMETER_ERROR))
-      }
+      const projectCode = checkProjectValid(req)
+      const params = checkParameter(req, ['phoneNumber', 'validateCode', 'inviteCode'])
+      const phoneNumber = params.phoneNumber
+      const validateCode = params.validateCode
+      const inviteCode = params.inviteCode
+      checkPhoneNumber(phoneNumber)
+
       // 验证验证码
       // const pass = await validateCodeService.checkValidateCode(phoneNumber, validateCode)
       // if(!pass){
@@ -102,12 +102,9 @@ router.get('/userInfo',
   passport.authenticate('jwt', { session: false }),
   async (req, res, next) => {
     try {
+      const projectCode = checkProjectCode(req)
       const loginUser = req.user
-      const projectCode = req.params.projectCode
       const userCode = loginUser.userCode
-      if(!projectCode || !userCode){
-        return res.json(httpUtil.renderResult(systemCode.BIZ_PARAMETER_ERROR))
-      }
 
       const combinedUser = await bizUserService.getCombinedUserInfo(projectCode, userCode)
       return res.json(httpUtil.renderResult(systemCode.OK, userInfoVO.render(combinedUser)))
@@ -122,12 +119,9 @@ router.get('/accountInfo',
   passport.authenticate('jwt', { session: false }),
   async (req, res, next) => {
     try {
+      const projectCode = checkProjectCode(req)
       const loginUser = req.user
-      const projectCode = req.params.projectCode
       const userCode = loginUser.userCode
-      if(!projectCode || !userCode){
-        return res.json(httpUtil.renderResult(systemCode.BIZ_PARAMETER_ERROR))
-      }
 
       const user = await userAccountInfoService.getUserAccountInfo(projectCode, userCode)
       const userVO = userAccountInfoVO.render(user)
@@ -143,12 +137,10 @@ router.put('/accountInfo',
   passport.authenticate('jwt', { session: false }),
   async (req, res, next) => {
     try {
+      const projectCode = checkProjectCode(req)
       const loginUser = req.user
-      const projectCode = loginUser.projectCode
       const userCode = loginUser.userCode
-      if(projectCode !== req.params.projectCode){
-        return res.json(httpUtil.renderResult(systemCode.SYS_FORBIDDEN))
-      }
+
       //  目前支持修改的属性包括：walletAddress
       const walletAddress = req.body.walletAddress
       if(!walletAddress){
@@ -171,12 +163,9 @@ router.get('/downUsers',
   passport.authenticate('jwt', { session: false }),
   async (req, res, next) => {
     try {
+      const projectCode = checkProjectCode(req)
       const loginUser = req.user
-      const projectCode = req.params.projectCode
       const userCode = loginUser.userCode
-      if(!projectCode || !userCode){
-        return res.json(httpUtil.renderResult(systemCode.BIZ_PARAMETER_ERROR))
-      }
 
       const userList = await userInfoService.getDownUserRelationList(projectCode, userCode)
       const relationList = downUserInfoVO.render(userList)
@@ -193,13 +182,10 @@ router.get('/rewardRecords',
   passport.authenticate('jwt', { session: false }),
   async (req, res, next) => {
     try {
+      const projectCode = checkProjectCode(req)
       const loginUser = req.user
-      const projectCode = loginUser.projectCode
       const userCode = loginUser.userCode
       const rewardType = req.query.type || userAccountConst.reward.INVITE
-      if(projectCode !== req.params.projectCode){
-        return res.json(httpUtil.renderResult(systemCode.BIZ_PARAMETER_ERROR))
-      }
 
       const rewardRecordList = await userRewardRecordService.getRewardUserRewardRecordWithRelatedUserList(projectCode, userCode, rewardType)
       const recordUserList = rewardRelatedUserInfoVO.render(rewardRecordList)

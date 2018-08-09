@@ -6,14 +6,13 @@ const systemCode = require('@const/systemCode')
 const projectVO = require('@vo/projectVO')
 const projectService = require('@serv/projectService')
 
+const { checkProjectValid } = require('../validator')
+
 router.get('/',
   async (req, res, next) => {
   try {
-    validator.check([rule1, rule2])
-    const projectCode = req.params.projectCode
-    if(!projectCode){
-      return res.json(httpUtil.renderResult(systemCode.BIZ_PARAMETER_ERROR))
-    }
+    const projectCode = checkProjectValid(req)
+
     const project = await projectService.getProjectInfo(projectCode)
     return res.json(httpUtil.renderResult(systemCode.OK, projectVO.render(project)))
   } catch (err) {

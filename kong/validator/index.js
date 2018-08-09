@@ -2,6 +2,7 @@ const { makeError } = require('@util/errorUtil')
 const systemCode = require('@const/systemCode')
 
 const projectService = require('@serv/projectService')
+const bizUtil = require('@util/bizUtil')
 
 const checkParameter = (req, parameterList) => {
   const result = {}
@@ -49,6 +50,13 @@ const checkProjectValid = req => {
   return projectCode
 }
 
+const checkPhoneNumber = phoneNumber => {
+  if(!bizUtil.checkPhoneNumber(phoneNumber)){
+    throw makeError(systemCode.BIZ_PARAMETER_ERROR)
+  }
+}
+
 module.exports.checkParameter = checkParameter
 module.exports.checkProjectCode = checkProjectCode
 module.exports.checkProjectValid = checkProjectValid
+module.exports.checkPhoneNumber = checkPhoneNumber

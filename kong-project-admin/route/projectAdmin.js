@@ -9,7 +9,7 @@ const systemCode = require('@const/systemCode')
 const errorUtil = require('@util/errorUtil')
 const jwtUtil = require('@util/jwtUtil')
 
-const { checkParameter } = require('../validator')
+const { checkProjectValid, checkParameter } = require('../validator')
 
 /**
  * 项目管理员登陆
@@ -17,12 +17,10 @@ const { checkParameter } = require('../validator')
 router.post('/login',
   async (req, res, next) => {
     try {
-      const projectCode = req.params.projectCode
-      const username = req.body.username
-      const password = req.body.password
-      if(!projectCode || !username || !password){
-        return res.json(httpUtil.renderResult(systemCode.BIZ_PARAMETER_ERROR))
-      }
+      checkProjectValid(req)
+      const params = checkParameter(req, 'username', 'password')
+      const username = params.username
+      const password = params.password
 
       const admin = await userService.checkPassword(username, password)
       if(!admin){
