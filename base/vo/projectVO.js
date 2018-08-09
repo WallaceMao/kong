@@ -3,6 +3,7 @@ const render = project => {
     projectCode: project.projectCode,
     projectName: project.projectName,
     projectNote: project.projectNote,
+    projectLogoUrl: project.projectLogoUrl,
     telegramJoinLink: project.telegramJoinLink
   }
 }
