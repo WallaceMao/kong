@@ -18,7 +18,7 @@ router.post('/login',
   async (req, res, next) => {
     try {
       checkProjectValid(req)
-      const params = checkParameter(req, 'username', 'password')
+      const params = checkParameter(req, ['username', 'password'])
       const username = params.username
       const password = params.password
 

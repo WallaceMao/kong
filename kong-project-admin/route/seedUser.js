@@ -37,7 +37,7 @@ router.get('/:userCode',
   async (req, res, next) => {
     try {
       const projectCode = checkProjectCode(req)
-      const params = checkParameter(req, 'userCode')
+      const params = checkParameter(req, ['userCode'])
       const userCode = params.userCode
 
       const user = await userInfoService.getUserInfoByUserCode(projectCode, userCode)
@@ -56,7 +56,7 @@ router.post('/',
   async (req, res, next) => {
     try {
       const projectCode = checkProjectCode(req)
-      const params = checkParameter(req, 'name', 'phoneNumber')
+      const params = checkParameter(req, ['name', 'phoneNumber'])
       const name = params.name
       const phoneNumber= params.phoneNumber
 
@@ -75,7 +75,7 @@ router.put('/:userCode',
   async (req, res, next) => {
     try {
       const projectCode = checkProjectCode(req)
-      const params = checkParameter(req, 'userCode')
+      const params = checkParameter(req, ['userCode'])
       const userCode = params.userCode
 
       await userInfoService.updateUserInfo(projectCode, userCode, req.body)
@@ -93,7 +93,7 @@ router.delete('/:userCode',
   async (req, res, next) => {
     try {
       const projectCode = checkProjectCode(req)
-      const params = checkParameter(req, 'userCode')
+      const params = checkParameter(req, ['userCode'])
       const userCode = params.userCode
 
       await userInfoService.removeUserInfo(projectCode, userCode)
