@@ -1,8 +1,8 @@
 const express = require('express')
+const passport = require('passport')
 const router = express.Router({
   mergeParams: true  // 指定mergeParams参数，将父路由中的req.params参数合并到本路由中
 })
-const { ensureLoggedIn } = require('connect-ensure-login')
 
 const httpUtil = require('@util/httpUtil')
 const systemCode = require('@const/systemCode')
@@ -14,7 +14,7 @@ const userInfoVO = require('@vo/userInfoVO')
  * 获取指定项目的系统用户的成员列表
  */
 router.get('/',
-  ensureLoggedIn('/401'),
+  passport.authenticate('jwt', { session: false }),
   async (req, res, next) => {
     try {
       const projectCode = req.params.projectCode
@@ -33,7 +33,7 @@ router.get('/',
  * 获取指定项目的指定id的系统用户的成员列表
  */
 router.get('/:userCode',
-  ensureLoggedIn('/401'),
+  passport.authenticate('jwt', { session: false }),
   async (req, res, next) => {
     try {
       const projectCode = req.params.projectCode
@@ -53,7 +53,7 @@ router.get('/:userCode',
  * 获取指定项目的系统用户
  */
 router.post('/',
-  ensureLoggedIn('/401'),
+  passport.authenticate('jwt', { session: false }),
   async (req, res, next) => {
     try {
       const projectCode = req.params.projectCode
@@ -74,7 +74,7 @@ router.post('/',
  * 更改获取指定项目的系统用户的成员
  */
 router.put('/:userCode',
-  ensureLoggedIn('/401'),
+  passport.authenticate('jwt', { session: false }),
   async (req, res, next) => {
     try {
       const projectCode = req.params.projectCode
@@ -94,7 +94,7 @@ router.put('/:userCode',
  * 删除获取指定项目的系统用户的成员
  */
 router.delete('/:userCode',
-  ensureLoggedIn('/401'),
+  passport.authenticate('jwt', { session: false }),
   async (req, res, next) => {
     try {
       const projectCode = req.params.projectCode

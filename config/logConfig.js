@@ -1,6 +1,6 @@
 const path = require('path')
 const { createLogger, format, transports } = require('winston')
-const { combine, splat, timestamp, simple, prettyPrint } = format
+const { combine, splat, timestamp, simple } = format
 const config = require('config')
 
 const serverPrefix = 'server-'
@@ -34,8 +34,7 @@ const generateProps = (fileNamePrefix) => {
     format: combine(
       splat(),
       timestamp(),
-      simple(),
-      prettyPrint()
+      simple()
     ),
     transports: transportsArray
     // exceptionHandlers: exceptionHandlersArray

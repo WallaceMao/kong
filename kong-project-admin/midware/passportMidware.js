@@ -1,28 +1,21 @@
 const passport = require('passport')
-const LocalStrategy = require('passport-local').Strategy
-const createError = require('http-errors')
+const jwtUtil = require('@util/jwtUtil')
 
-const userService = require('@serv/projectAdminService')
+const JwtStrategy = require('passport-jwt').Strategy,
+  ExtractJwt = require('passport-jwt').ExtractJwt;
+
+const opts = {
+  jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+  secretOrKey: jwtUtil.secret,
+  issuer: jwtUtil.issuer,
+  audience: jwtUtil.audience
+}
 
 const init = app => {
   app.use(passport.initialize())
-  app.use(passport.session())
-
-  passport.serializeUser(function(user, done) {
-    done(null, JSON.stringify(user));
-  });
-
-  passport.deserializeUser(function(str, done) {
-    done(null, JSON.parse(str))
-  });
-
-  passport.use(new LocalStrategy(async (username, password, done) => {
-    const user = await userService.checkPassword(username, password)
-    if(user){
-      return done(null ,user)
-    }else{
-      return done(createError(401))
-    }
+  passport.use(new JwtStrategy(opts, (userInfo, done) => {
+    //  验证jwt是否有权限
+    return done(null ,userInfo)
   }))
 }
 
