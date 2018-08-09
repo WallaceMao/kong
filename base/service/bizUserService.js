@@ -1,8 +1,11 @@
+const projectService = require('./projectService')
 const userInfoService = require('./userInfoService')
 const userInviteInfoService = require('./userInviteInfoService')
 const userAccountInfoService = require('./userAccountInfoService')
 const userRelationService = require('./userRelationService')
 const bizUtil = require('../util/bizUtil')
+const errorUtil = require('../util/errorUtil')
+const systemCode = require('../constant/systemCode')
 
 /**
  * 创建seedUserInfo
@@ -65,6 +68,11 @@ const registerOrLogin = async (projectCode, phoneNumber, inviteCode) => {
   if(!userInfo){
     // 验证inviteCode，如果验证成功，将会获取到userInviteInfo
     const userInviteInfo = await userInviteInfoService.validateInviteInfo(inviteCode)
+    // TODO 验证projectCode是否合法
+    const project = await projectService.getProjectInfo(projectCode)
+    if(!project){
+      throw errorUtil.makeError(systemCode.SYS_ERROR)
+    }
     userInfo = await createUser(projectCode, bizUtil.generateName({ phoneNumber }), phoneNumber)
     await userRelationService.createUserRelation(projectCode, userInviteInfo.userCode, userInfo.userCode)
   }

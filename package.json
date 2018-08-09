@@ -8,8 +8,8 @@
   "scripts": {
     "lint": "eslint .",
     "test": "mocha test/telegram-bots/service/telegramBotServiceTest.js",
-    "kong-dev": "nodemon ./kong/index",
-    "kong-back-dev": "node ./kong-back/index",
+    "kong-dev": "node ./kong/index",
+    "kong-project-admin-dev": "node ./kong-project-admin/index",
     "kong-sms-listener-dev": "nodemon ./kong-sms-listener/index",
     "telegram-bots-dev": "node ./telegram-bots"
   },

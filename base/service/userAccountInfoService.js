@@ -27,7 +27,7 @@ const getUserAccountInfo = async (projectCode, userCode) => {
  */
 const updateUserAccountInfo = async (projectCode, userCode, props) => {
   props = props || {}
-  const dbUpdate = commonUtil.filterObjectProperties(props, ['balanceValue', 'balanceValueUnit', 'invitePackageSum', 'invitePackageClaimed', 'accountStatus'])
+  const dbUpdate = commonUtil.filterObjectProperties(props, ['balanceValue', 'balanceValueUnit', 'invitePackageSum', 'invitePackageClaimed', 'accountStatus', 'walletAddress'])
 
   if(Object.keys(dbUpdate).length === 0){
     return null

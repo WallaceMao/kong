@@ -38,6 +38,8 @@ router.post('/validateCode',
 router.post('/login',
   async (req, res, next) => {
     try {
+      // TODO 检查projectCode参数是否合法
+
       // 参数检查
       const projectCode = req.params.projectCode
       const phoneNumber = req.body.phoneNumber
@@ -127,6 +129,34 @@ router.get('/accountInfo',
       const user = await userAccountInfoService.getUserAccountInfo(projectCode, userCode)
       const userVO = userAccountInfoVO.render(user)
       return res.json(httpUtil.renderResult(systemCode.OK, userVO))
+    } catch (err) {
+      next(err)
+    }
+  })
+/**
+ * 修改账户信息
+ */
+router.put('/accountInfo',
+  passport.authenticate('jwt', { session: false }),
+  async (req, res, next) => {
+    try {
+      const loginUser = req.user
+      const projectCode = loginUser.projectCode
+      const userCode = loginUser.userCode
+      if(projectCode !== req.params.projectCode){
+        return res.json(httpUtil.renderResult(systemCode.SYS_FORBIDDEN))
+      }
+      //  目前支持修改的属性包括：walletAddress
+      const walletAddress = req.body.walletAddress
+      if(!walletAddress){
+        return res.json(httpUtil.renderResult(systemCode.BIZ_PARAMETER_ERROR))
+      }
+
+      //  更新
+      const user = await userAccountInfoService.updateUserAccountInfo(projectCode, userCode, {
+        walletAddress: walletAddress
+      })
+      return res.json(httpUtil.renderResult(systemCode.OK, userAccountInfoVO.render(user)))
     } catch (err) {
       next(err)
     }

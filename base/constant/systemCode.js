@@ -7,14 +7,16 @@ module.exports = {
   BIZ_INVITE_CODE_INVALID: '20002',
   BIZ_INVITE_CODE_CLOSED: '20003',
   BIZ_UNIT_NOT_COMPATIBLE: '20004',
+  BIZ_PROJECT_CODE_INVALID: '20005',
   messageMap: {
-    '0': 'success ',
-    '-1': 'system error ',
-    '10401': 'forbidden ',
-    '10404': 'not found ',
-    '20001': 'invalid parameter ',
-    '20002': 'invite code is invalid ',
-    '20003': 'invite code is closed ',
-    '20004': 'value unit not compatible '
+    '0': 'success',
+    '-1': 'system error',
+    '10401': 'forbidden',
+    '10404': 'not found',
+    '20001': 'invalid parameter',
+    '20002': 'invite code is invalid',
+    '20003': 'invite code is closed',
+    '20004': 'value unit not compatible',
+    '20005': 'project code is invalid'
   }
 }
