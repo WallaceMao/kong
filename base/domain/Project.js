@@ -18,7 +18,8 @@ const Project = database.define('Project', {
   telegramJoinLink: { type: Sequelize.STRING(255), field: 'telegram_join_link', allowNull: true },
   rewardRule: { type: Sequelize.STRING(128), field: 'reward_rule', allowNull: true },
   defaultUnit: { type: Sequelize.STRING(24), field: 'default_unit', allowNull: false },
-  status: { type: Sequelize.STRING(32), field: 'status', allowNull: false }
+  status: { type: Sequelize.STRING(32), field: 'status', allowNull: false },
+  platformLink: { type: Sequelize.STRING(255), field: 'platform_link', allowNull: true }
 }, {
   // 表注释信息
   comment: '项目表',

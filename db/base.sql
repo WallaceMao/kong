@@ -148,3 +148,6 @@ ADD COLUMN `project_logo_url` varchar(255) NULL COMMENT '项目logo的地址' AF
 # 修改项目的project_
 ALTER TABLE `kong`.`bc_project`
 MODIFY COLUMN `project_note` varchar(4096) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '项目描述';
+
+ALTER TABLE `kong`.`bc_project`
+ADD COLUMN `platform_link` varchar(255) NULL COMMENT '平台客服的电报群';
