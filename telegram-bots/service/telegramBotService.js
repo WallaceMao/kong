@@ -50,7 +50,7 @@ const updateUserInfo = async (inviteCode, userInfo, proxyAgent) => {
 
     // 将telegram中的头像上传到阿里云OSS
     const userInviteInfo = await userInviteInfoService.validateInviteInfo(inviteCode)
-    const avatarUrl = `profile/${userInviteInfo.projectCode}/${userInviteInfo.userCode}/avatar.${extendName}`
+    const avatarUrl = `project/${userInviteInfo.projectCode}/user/${userInviteInfo.userCode}/avatar.${extendName}`
     console.log('====avatarUrl: ' + JSON.stringify(avatarUrl))
     await ossUtil.streamUpload(avatarUrl, request({
       url: originalAvatar,

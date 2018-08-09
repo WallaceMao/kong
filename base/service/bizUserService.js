@@ -53,6 +53,7 @@ const addInviteInfo = async originUser => {
   originUser.inviteCode = userInviteInfo.inviteCode
   return originUser
 }
+
 /**
  * 如果验证码对了，那么就查找系统中是否有这个项目下是否有这个手机号注册的用户。
  * 如果有，那么就登录
@@ -85,7 +86,14 @@ const getCombinedUserInfo = async (projectCode, userCode) => {
   return await addInviteInfo(user)
 }
 
+const getUserInfoByInviteCode = async (inviteCode) => {
+  // 验证inviteCode，如果验证成功，将会获取到userInviteInfo
+  const userInviteInfo = await userInviteInfoService.validateInviteInfo(inviteCode)
+  return userInfoService.getUserInfoByUserCode(userInviteInfo.projectCode, userInviteInfo.userCode)
+}
+
 module.exports.createSeedUser = createSeedUser
 module.exports.createUser = createUser
 module.exports.registerOrLogin = registerOrLogin
 module.exports.getCombinedUserInfo = getCombinedUserInfo
+module.exports.getUserInfoByInviteCode = getUserInfoByInviteCode

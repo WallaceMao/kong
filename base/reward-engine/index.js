@@ -39,10 +39,28 @@ const checkProjectRewardConfig = async () => {
 }
 
 /**
+ * 获取projectCode这个project中，奖励规则的配置信息。
+ * 必须要提供的配置信息包括：
+ * （1）
+ * @param projectCode
+ * @returns {Promise<void>}
+ */
+const getRewardConfig = async (projectCode) => {
+  // 根据projectCode从数据库读取project的rewardRuleConfig
+  const project = await projectService.getProjectInfo(projectCode)
+
+  // 加载RewardRule
+  if(project.rewardRule){
+    const rule = ruleMap[project.rewardRule]
+    return rule['getConfig'](projectCode)
+  }
+}
+
+/**
  * 执行奖励
  */
 const executeReward = async (projectCode, triggeredUserCode, type, params) => {
-  // 根据projectCode从数据库读取project的rewardRuleId和rewardRuleConfig
+  // 根据projectCode从数据库读取project的rewardRuleId
   const project = await projectService.getProjectInfo(projectCode)
 
   // 加载RewardRule
@@ -55,4 +73,5 @@ const executeReward = async (projectCode, triggeredUserCode, type, params) => {
 }
 
 module.exports.checkProjectRewardConfig = checkProjectRewardConfig
+module.exports.getRewardConfig = getRewardConfig
 module.exports.executeReward = executeReward

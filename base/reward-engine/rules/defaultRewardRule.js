@@ -57,16 +57,22 @@ const check = async projectCode => {
   }
 }
 
+/**
+ * 提供奖励的规则信息
+ * @param projectCode
+ * @returns {Promise<{registerRewardValue: string, registerRewardUnit: Project.defaultUnit|{type, field, allowNull}, inviteRewardValue: string, inviteRewardUnit: Project.defaultUnit|{type, field, allowNull}, inviteRewardLimit: string|*|UserAccountInfo.inviteRewardLimit|{type, field, allowNull, defaultValue}}>}
+ */
 const getConfig = async (projectCode) => {
   const config = await rewardConfigUtil.getRewardConfig(projectCode)
   const projectInfo = await projectService.getProjectInfo(projectCode)
 
   return {
-    registerRewardValue: parseFloat(config.registerRewardValue).toFixed(2),
+    registerRewardValue: parseFloat(parseFloat(config.registerRewardValue).toFixed(2)),
     registerRewardUnit: config.registerRewardUnit || projectInfo.defaultUnit,
-    inviteRewardValue: parseFloat(config.inviteRewardValue).toFixed(2),
+    registerRewardLimit: 1,  // 注册奖励只能奖励一次
+    inviteRewardValue: parseFloat(parseFloat(config.inviteRewardValue).toFixed(2)),
     inviteRewardUnit: config.inviteRewardUnit || projectInfo.defaultUnit,
-    inviteRewardLimit: config.inviteRewardLimit
+    inviteRewardLimit: parseInt(config.inviteRewardLimit)
   }
 }
 
@@ -139,6 +145,7 @@ const invite = async (projectCode, triggeredUserCode, params) => {
 
 module.exports = {
   check: check,
+  getConfig: getConfig,
   register: register,
   invite: invite
 }
