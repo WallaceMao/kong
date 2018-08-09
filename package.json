@@ -8,8 +8,8 @@
   "scripts": {
     "lint": "eslint .",
     "test": "mocha test/telegram-bots/service/telegramBotServiceTest.js",
-    "kong-dev": "node ./kong/index",
-    "kong-project-admin-dev": "node ./kong-project-admin/index",
+    "kong-dev": "nodemon ./kong/index",
+    "kong-project-admin-dev": "nodemon ./kong-project-admin/index",
     "kong-sms-listener-dev": "nodemon ./kong-sms-listener/index",
     "telegram-bots-dev": "node ./telegram-bots"
   },
@@ -28,6 +28,7 @@
     "http-errors": "~1.6.2",
     "jsonwebtoken": "^8.3.0",
     "module-alias": "^2.1.0",
+    "moment": "^2.22.2",
     "morgan": "~1.9.0",
     "mysql2": "^1.5.3",
     "npm": "^6.2.0",

@@ -1,4 +1,6 @@
-const sequelize = require('sequelize')
+const Sequelize = require('sequelize')
+const Op = Sequelize.Op
+const moment = require('moment')
 const UserInfo = require('../domain/UserInfo')
 
 /**
@@ -90,6 +92,27 @@ const findByPhoneNumber = async (projectCode, phoneNumber) => {
   })
 }
 
+const countAllByIsSeedUser = async (projectCode, isSeedUser) => {
+  return UserInfo.count({
+    where: {
+      projectCode: projectCode,
+      isSeedUser: !!isSeedUser
+    }
+  })
+}
+
+const countTodayByIsSeedUser = async (projectCode, isSeedUser) => {
+  return UserInfo.count({
+    where: {
+      projectCode: projectCode,
+      isSeedUser: !!isSeedUser,
+      createdAt: {
+        [Op.gte]: moment().startOf('day')
+      }
+    }
+  })
+}
+
 module.exports.findById = findById
 module.exports.create = create
 module.exports.updateByUserCode = updateByUserCode
@@ -97,3 +120,5 @@ module.exports.deleteByUserCode = deleteByUserCode
 module.exports.findByUserCode = findByUserCode
 module.exports.findAllByIsSeedUser = findAllByIsSeedUser
 module.exports.findByPhoneNumber = findByPhoneNumber
+module.exports.countAllByIsSeedUser = countAllByIsSeedUser
+module.exports.countTodayByIsSeedUser = countTodayByIsSeedUser

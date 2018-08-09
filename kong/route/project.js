@@ -9,6 +9,7 @@ const projectService = require('@serv/projectService')
 router.get('/',
   async (req, res, next) => {
   try {
+    validator.check([rule1, rule2])
     const projectCode = req.params.projectCode
     if(!projectCode){
       return res.json(httpUtil.renderResult(systemCode.BIZ_PARAMETER_ERROR))

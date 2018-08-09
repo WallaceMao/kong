@@ -96,6 +96,13 @@ const getUpUserRelation = async (projectCode, downUserCode) => {
   return userRelationDao.findByDownUserCode(projectCode, downUserCode)
 }
 
+const getCommonUserInfoTotal = async projectCode => {
+  return userInfoDao.countAllByIsSeedUser(projectCode)
+}
+const getCommonUserInfoToday = async projectCode => {
+  return userInfoDao.countTodayByIsSeedUser(projectCode)
+}
+
 module.exports.getProjectSeedUserInfoList = getProjectSeedUserInfoList
 module.exports.getUserInfoByUserCode = getUserInfoByUserCode
 module.exports.getUserInfoByPhoneNumber = getUserInfoByPhoneNumber
@@ -104,3 +111,5 @@ module.exports.getUpUserRelation = getUpUserRelation
 module.exports.createUserInfo = createUserInfo
 module.exports.updateUserInfo = updateUserInfo
 module.exports.removeUserInfo = removeUserInfo
+module.exports.getCommonUserInfoTotal = getCommonUserInfoTotal
+module.exports.getCommonUserInfoToday = getCommonUserInfoToday

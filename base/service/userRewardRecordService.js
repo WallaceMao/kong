@@ -37,7 +37,48 @@ const getRelatedUserRewardRecordList = async (projectCode, relatedUserCode, rewa
 const getRewardUserRewardRecordWithRelatedUserList = async (projectCode, relatedUserCode, rewardType) => {
   return userRewardRecordDao.findAllWithRelatedUserByRewardUser(projectCode, relatedUserCode, rewardType)
 }
+
+/**
+ * 获得注册奖励的总人数
+ * @param projectCode
+ * @returns {Promise<*|Promise<*>>}
+ */
+const getRegisterRewardTotal = async projectCode => {
+  return userRewardRecordDao.countAllByRewardType(projectCode, 'register')
+}
+
+/**
+ * 今天获得注册奖励的人数
+ * @param projectCode
+ * @returns {Promise<*|Promise<*>>}
+ */
+const getRegisterRewardToday = async projectCode => {
+  return userRewardRecordDao.countTodayByRewardType(projectCode, 'register')
+}
+
+/**
+ * 获取所有奖励的总金额
+ * @param projectCode
+ * @returns {Promise<*|Promise<*>>}
+ */
+const getRewardValueSumTotal = async projectCode => {
+  return userRewardRecordDao.findTotalSumRewardValue(projectCode)
+}
+
+/**
+ * 获取今天奖励的总金额
+ * @param projectCode
+ * @returns {Promise<*|Promise<*>>}
+ */
+const getRewardValueSumToday = async projectCode => {
+  return userRewardRecordDao.findTodaySumRewardValue(projectCode)
+}
+
 module.exports.createUserRewardRecord = createUserRewardRecord
 module.exports.getRewardUserRewardRecordList = getRewardUserRewardRecordList
 module.exports.getRewardUserRewardRecordWithRelatedUserList = getRewardUserRewardRecordWithRelatedUserList
 module.exports.getRelatedUserRewardRecordList = getRelatedUserRewardRecordList
+module.exports.getRegisterRewardTotal = getRegisterRewardTotal
+module.exports.getRegisterRewardToday = getRegisterRewardToday
+module.exports.getRewardValueSumTotal = getRewardValueSumTotal
+module.exports.getRewardValueSumToday = getRewardValueSumToday
