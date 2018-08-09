@@ -34,6 +34,10 @@ const getRelatedUserRewardRecordList = async (projectCode, relatedUserCode, rewa
   return userRewardRecordDao.findAllByRelatedUser(projectCode, relatedUserCode, rewardType)
 }
 
+const getRewardUserRewardRecordWithRelatedUserList = async (projectCode, relatedUserCode, rewardType) => {
+  return userRewardRecordDao.findAllWithRelatedUserByRewardUser(projectCode, relatedUserCode, rewardType)
+}
 module.exports.createUserRewardRecord = createUserRewardRecord
 module.exports.getRewardUserRewardRecordList = getRewardUserRewardRecordList
+module.exports.getRewardUserRewardRecordWithRelatedUserList = getRewardUserRewardRecordWithRelatedUserList
 module.exports.getRelatedUserRewardRecordList = getRelatedUserRewardRecordList

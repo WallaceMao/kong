@@ -1,5 +1,6 @@
 const database = require('./database')
 const Sequelize = require('sequelize')
+const UserInfo = require('./UserInfo')
 
 /**
  * 项目用户的邀请奖励信息
@@ -39,5 +40,8 @@ const UserRewardRecord = database.define('UserRewardRecord', {
   // 删除时间
   deletedAt: 'deleted_at'
 });
+
+UserRewardRecord.belongsTo(UserInfo, {foreignKey: 'rewardUserCode', targetKey: 'userCode', as: 'rewardUser'})
+UserRewardRecord.belongsTo(UserInfo, {foreignKey: 'relatedUserCode', targetKey: 'userCode', as: 'relatedUser'})
 
 module.exports = UserRewardRecord

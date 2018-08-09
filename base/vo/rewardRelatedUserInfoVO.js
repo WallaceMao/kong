@@ -5,21 +5,24 @@ const render = obj => {
   return Array.isArray(obj) ? renderList(obj) : renderObject(obj)
 }
 
-const renderList = userRelationList => {
-  return userRelationList.map(ele => {
+const renderList = list => {
+  return list.map(ele => {
     return renderObject(ele)
   })
 }
 /**
  * 做扁平化处理
- * @param userRelation
+ * @param obj
  * @returns {{id, projectCode, userCode, name, phoneNumber: *|UserInfo.phoneNumber|{type, field, allowNull}, avatar: *|UserInfo.avatar|{type, field, allowNull}, isSeedUser: *|UserInfo.isSeedUser|{type, field, allowNull, defaultValue}|boolean, status}}
  */
-const renderObject = userRelation => {
-  const user = userRelation.downUser
+const renderObject = obj => {
+  const user = obj.relatedUser
   return {
-    name: user.name,
-    avatar: user.avatar,
+    rewardValue: obj.rewardValue,
+    rewardValueUnit: obj.rewardValueUnit,
+    rewardType: obj.rewardType,
+    relatedUserName: user.name,
+    relatedUserAvatar: user.avatar
   }
 }
 

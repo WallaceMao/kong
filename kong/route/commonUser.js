@@ -4,12 +4,15 @@ const passport = require('passport')
 
 const validateCodeService = require('@serv/validateCodeService')
 const userInfoService = require('@serv/userInfoService')
+const userRewardRecordService = require('@serv/userRewardRecordService')
 const bizUserService = require('@serv/bizUserService')
 const userAccountInfoService = require('@serv/userAccountInfoService')
+const userAccountConst = require('@const/userAccount')
 const userInfoVO = require('@vo/userInfoVO')
 const loginUserVO = require('@vo/loginUserVO')
 const userAccountInfoVO = require('@vo/userAccountInfoVO')
 const downUserInfoVO = require('@vo/downUserInfoVO')
+const rewardRelatedUserInfoVO = require('@vo/rewardRelatedUserInfoVO')
 const jwtUserVO = require('@vo/jwtUserVO')
 const httpUtil = require('@util/httpUtil')
 const systemCode = require('@const/systemCode')
@@ -178,6 +181,29 @@ router.get('/downUsers',
       const userList = await userInfoService.getDownUserRelationList(projectCode, userCode)
       const relationList = downUserInfoVO.render(userList)
       return res.json(httpUtil.renderResult(systemCode.OK, relationList))
+    } catch (err) {
+      next(err)
+    }
+  })
+
+/**
+ * 获取奖励记录
+ */
+router.get('/rewardRecords',
+  passport.authenticate('jwt', { session: false }),
+  async (req, res, next) => {
+    try {
+      const loginUser = req.user
+      const projectCode = loginUser.projectCode
+      const userCode = loginUser.userCode
+      const rewardType = req.query.type || userAccountConst.reward.INVITE
+      if(projectCode !== req.params.projectCode){
+        return res.json(httpUtil.renderResult(systemCode.BIZ_PARAMETER_ERROR))
+      }
+
+      const rewardRecordList = await userRewardRecordService.getRewardUserRewardRecordWithRelatedUserList(projectCode, userCode, rewardType)
+      const recordUserList = rewardRelatedUserInfoVO.render(rewardRecordList)
+      return res.json(httpUtil.renderResult(systemCode.OK, recordUserList))
     } catch (err) {
       next(err)
     }
