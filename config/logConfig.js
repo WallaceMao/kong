@@ -17,7 +17,8 @@ const generateProps = (fileNamePrefix) => {
   if(outputPath){
     transportsArray.push(
       new transports.File({
-        filename: path.join(outputPath, fileNamePrefix + 'common.log')
+        filename: path.join(outputPath, fileNamePrefix + 'common.log'),
+        handleExceptions: true
       })
     )
     // exceptionHandlersArray.push(
@@ -26,7 +27,9 @@ const generateProps = (fileNamePrefix) => {
     //   })
     // )
   }else{
-    transportsArray.push(new transports.Console())
+    transportsArray.push(new transports.Console({
+      handleExceptions: true
+    }))
     // exceptionHandlersArray.push(new transports.Console())
   }
   return {

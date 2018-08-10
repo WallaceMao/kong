@@ -151,3 +151,70 @@ MODIFY COLUMN `project_note` varchar(4096) CHARACTER SET utf8mb4 COLLATE utf8mb4
 
 ALTER TABLE `kong`.`bc_project`
 ADD COLUMN `platform_link` varchar(255) NULL COMMENT '平台客服的电报群';
+
+
+
+CREATE TABLE `bc_weixin_app` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `version` bigint(20) NOT NULL DEFAULT 0 COMMENT '乐观锁',
+  `created_at` datetime NOT NULL COMMENT '创建时间',
+  `updated_at` datetime NULL COMMENT '更新时间',
+  `deleted_at` datetime NULL COMMENT '删除时间',
+  `app_id` varchar(64) NOT NULL COMMENT '微信的公众号的appid',
+  `app_secret` varchar(128) NOT NULL COMMENT '微信公众号的secret',
+  `app_name` varchar(64) NOT NULL COMMENT '微信公众号的名称',
+  `token` varchar(64) NULL COMMENT '微信公众号的加密token',
+  `aes_key` varchar(64) NULL COMMENT '微信公众号的aesKey',
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `bc_weixin_app_app_id`(`app_id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 1 DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT='微信公众号表';
+
+CREATE TABLE `bc_weixin_user` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `version` bigint(20) NOT NULL DEFAULT 0 COMMENT '乐观锁',
+  `created_at` datetime NOT NULL COMMENT '创建时间',
+  `updated_at` datetime NULL COMMENT '更新时间',
+  `deleted_at` datetime NULL COMMENT '删除时间',
+  `app_id` varchar(64) NOT NULL COMMENT '微信的公众号的appid',
+  `open_id` varchar(128) NOT NULL COMMENT '微信用户的标识',
+  `nickname` varchar(64) NULL COMMENT '微信用户的昵称',
+  `sex` varchar(64) NULL COMMENT '微信用户的性别',
+  `province` varchar(64) NULL COMMENT '微信用户的省份',
+  `city` varchar(64) NULL COMMENT '微信用户的城市',
+  `country` varchar(64) NULL COMMENT '微信用户的国家',
+  `head_img_url` varchar(255) NULL COMMENT '微信用户的头像地址',
+  `privilege` varchar(255) NULL COMMENT '微信用户的优先权',
+  `union_id` varchar(128) NULL COMMENT '微信用户的统一标识的id',
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `bc_weixin_user_open_id`(`open_id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 1 DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT='微信用户表';
+
+CREATE TABLE `bc_project_weixin_app_link` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `version` bigint(20) NOT NULL DEFAULT 0 COMMENT '乐观锁',
+  `created_at` datetime NOT NULL COMMENT '创建时间',
+  `updated_at` datetime NULL COMMENT '更新时间',
+  `deleted_at` datetime NULL COMMENT '删除时间',
+  `project_code` varchar(64) NOT NULL COMMENT '项目代码',
+  `app_id` varchar(64) NOT NULL COMMENT '微信的公众号的appid',
+  `is_active` bit(1) NOT NULL DEFAULT 0 COMMENT '项目关联的公众号是否有效',
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `bc_project_weixin_app_link_project_app`(`project_code`, `app_id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 1 DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT='项目与微信公众号表';
+
+CREATE TABLE `bc_user_weixin_link` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `version` bigint(20) NOT NULL DEFAULT 0 COMMENT '乐观锁',
+  `created_at` datetime NOT NULL COMMENT '创建时间',
+  `updated_at` datetime NULL COMMENT '更新时间',
+  `deleted_at` datetime NULL COMMENT '删除时间',
+  `project_code` varchar(64) NOT NULL COMMENT '项目代码',
+  `user_code` varchar(64) NOT NULL COMMENT '用户代码',
+  `app_id` varchar(64) NOT NULL COMMENT '微信的公众号的appid',
+  `open_id` varchar(128) NOT NULL COMMENT '微信用户的标识',
+  `union_id` varchar(64) NULL COMMENT '微信用户的统一标识的id',
+  PRIMARY KEY (`id`),
+  INDEX `bc_user_weixin_link_user_code`(`project_code`, `user_code`) USING BTREE,
+  INDEX `bc_user_weixin_link_wx_open_id`(`open_id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 1 DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT='平台用户与微信用户的关联表';
+

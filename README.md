@@ -11,3 +11,9 @@ insert into bc_project_reward_config(created_at, project_code, config_key, confi
 insert into bc_project_reward_config(created_at, project_code, config_key, config_value) values(now(), 'abcdefg', 'inviteRewardUnit', 'XTX');
 insert into bc_project_reward_config(created_at, project_code, config_key, config_value) values(now(), 'abcdefg', 'inviteRewardLimit', '5');
 ```
+
+微信支持
+```
+insert into bc_weixin_app(created_at, app_id, app_secret, app_name, token, aes_key) values(now(), 'APP_ID', 'APP_SECRET', 'APP_NAME', null, null);
+insert into bc_project_weixin_app_link(created_at, project_code, app_id, is_active) values(now(), 'abcdefg', 'APP_ID', 1);
+```

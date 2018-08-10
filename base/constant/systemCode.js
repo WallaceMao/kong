@@ -9,6 +9,7 @@ module.exports = {
   BIZ_UNIT_NOT_COMPATIBLE: '20004',
   BIZ_PROJECT_CODE_INVALID: '20005',
   BIZ_PASSWORD_INVALID: '20006',
+  BIZ_THIRD_PARTY_INVALID: '20007',
   messageMap: {
     '0': 'success',
     '-1': 'system error',
@@ -19,6 +20,7 @@ module.exports = {
     '20003': 'invite code is closed',
     '20004': 'value unit not compatible',
     '20005': 'project code is invalid',
-    '20006': 'password is invalid'
+    '20006': 'password is invalid',
+    '20007': 'third party app is invalid'
   }
 }

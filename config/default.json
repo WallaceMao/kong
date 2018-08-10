@@ -49,5 +49,8 @@
   },
   "cors": {
     "allowOrigin": "*"
+  },
+  "weixin": {
+    "webAuthRedirectUrl": "http://kong.test.etoutiao.cn/v1/weixinCallback/redirect"
   }
 }
