@@ -1,3 +1,4 @@
+const Project = require('@base/domain/Project')
 const ProjectWeixinAppLink = require('../domain/ProjectWeixinAppLink')
 const WeixinApp = require('../domain/WeixinApp')
 
@@ -15,6 +16,10 @@ const findProjectWeixinAppByIsActive = async (projectCode, isActive) => {
       required: true,
       model: WeixinApp,
       as: 'weixinApp'
+    },{
+      required: true,
+      model: Project,
+      as: 'project'
     }]
   })
 }

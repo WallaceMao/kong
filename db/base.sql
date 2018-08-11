@@ -142,17 +142,18 @@ ALTER TABLE `bc_user_account_info`
 ADD COLUMN `wallet_address` varchar(255) NULL COMMENT '比特币钱包地址' AFTER `user_code`;
 
 # 新增项目的logo地址字段
-ALTER TABLE `kong`.`bc_project`
+ALTER TABLE `bc_project`
 ADD COLUMN `project_logo_url` varchar(255) NULL COMMENT '项目logo的地址' AFTER `project_name`;
 
 # 修改项目的project_
-ALTER TABLE `kong`.`bc_project`
+ALTER TABLE `bc_project`
 MODIFY COLUMN `project_note` varchar(4096) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '项目描述';
 
-ALTER TABLE `kong`.`bc_project`
+ALTER TABLE `bc_project`
 ADD COLUMN `platform_link` varchar(255) NULL COMMENT '平台客服的电报群';
 
-
+ALTER TABLE `bc_project`
+ADD COLUMN  `frontend_root_url` varchar(255) NOT NULL COMMENT '前端页面的首页地址，用于做微信等第三方的跳转';
 
 CREATE TABLE `bc_weixin_app` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
