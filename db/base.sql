@@ -155,6 +155,9 @@ ADD COLUMN `platform_link` varchar(255) NULL COMMENT '平台客服的电报群';
 ALTER TABLE `bc_project`
 ADD COLUMN  `frontend_root_url` varchar(255) NOT NULL COMMENT '前端页面的首页地址，用于做微信等第三方的跳转';
 
+ALTER TABLE `bc_user_info`
+ADD COLUMN `info_from` varchar(32) NULL COMMENT '个人信息的来源，默认为null。更新成微信的信息，那么该字段更新为weixin';
+
 CREATE TABLE `bc_weixin_app` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
   `version` bigint(20) NOT NULL DEFAULT 0 COMMENT '乐观锁',

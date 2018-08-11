@@ -4,8 +4,8 @@ const router = express.Router({mergeParams: true})
 const httpUtil = require('@util/httpUtil')
 const systemCode = require('@const/systemCode')
 
-const bizWeixinService = require('../service/bizWeixinService')
-const { checkProjectValid } = require('../../validator')
+const bizWeixinService = require('../service/weixinService')
+const { checkProjectValid } = require('@kong/validator')
 
 router.get('/authUrl',
   async (req, res, next) => {

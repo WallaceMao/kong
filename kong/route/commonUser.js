@@ -18,6 +18,7 @@ const httpUtil = require('@util/httpUtil')
 const systemCode = require('@const/systemCode')
 const jwtUtil = require('@util/jwtUtil')
 
+const webLoginService = require('../service/webLoginService')
 const { checkProjectValid, checkProjectCode, checkParameter, checkPhoneNumber } = require('../validator')
 
 /**
@@ -57,8 +58,13 @@ router.post('/login',
       //   return res.json(httpUtil.renderResult(systemCode.SYS_FORBIDDEN))
       // }
 
+      const otherParams = {}
+      if(req.query.thirdParty && req.query.openId){
+        otherParams.openId = req.query.openId
+        otherParams.thirdParty = req.query.thirdParty
+      }
       // 验证码通过，注册或者新建用户
-      const loginUser = await bizUserService.registerOrLogin(projectCode, phoneNumber, inviteCode)
+      const loginUser = await webLoginService.registerOrLogin(projectCode, phoneNumber, inviteCode, otherParams)
 
       // 生成token并返回
       loginUser.token = await jwtUtil.sign(jwtUserVO.render(loginUser))

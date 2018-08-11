@@ -1,5 +1,6 @@
 const database = require('./database')
 const Sequelize = require('sequelize')
+const UserInviteInfo = require('./UserInviteInfo')
 
 /**
  * 项目用户的基本信息
@@ -17,7 +18,8 @@ const UserInfo = database.define('UserInfo', {
   phoneNumber: { type: Sequelize.STRING(32), field: 'phone_number', allowNull: false },
   avatar: { type: Sequelize.STRING(255), field: 'avatar', allowNull: true },
   isSeedUser: { type: Sequelize.BOOLEAN, field: 'is_seed_user', allowNull: false, defaultValue: 0 },
-  status: { type: Sequelize.STRING(32), field: 'status', allowNull: false }
+  status: { type: Sequelize.STRING(32), field: 'status', allowNull: false },
+  infoFrom: { type: Sequelize.STRING(32), field: 'info_from', allowNull: true }
 }, {
   // 表注释信息
   comment: '项目用户信息表',
@@ -50,5 +52,7 @@ const UserInfo = database.define('UserInfo', {
     fields: ['projectCode', 'phoneNumber']
   }]
 });
+
+UserInfo.hasOne(UserInviteInfo, { as: 'userInviteInfo', foreignKey: 'userCode', sourceKey: 'userCode'})
 
 module.exports = UserInfo

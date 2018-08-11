@@ -41,6 +41,11 @@ const rewardUser = async (inviteCode) => {
   }
 }
 
+const needUpdateUserInfo = async (inviteCode) => {
+  const userInfo = await userInfoService.getUserInfoByInviteCode(inviteCode)
+  return !userInfo.infoFrom
+}
+
 const updateUserInfo = async (inviteCode, userInfo, proxyAgent) => {
   try {
     const originalAvatar = userInfo.avatar
@@ -72,4 +77,5 @@ const updateUserInfo = async (inviteCode, userInfo, proxyAgent) => {
 
 module.exports.saveInviteCode = saveInviteCode
 module.exports.rewardUser = rewardUser
+module.exports.needUpdateUserInfo = needUpdateUserInfo
 module.exports.updateUserInfo = updateUserInfo

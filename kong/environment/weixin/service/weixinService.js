@@ -1,12 +1,13 @@
 const systemCode = require('@const/systemCode')
 const { makeError } = require('@util/errorUtil')
-const projectService = require('@serv/projectService')
 const weixinAppService = require('./weixinAppService')
 const weixinUserService = require('./weixinUserService')
+const userWeixinLinkService = require('./userWeixinLinkService')
 const requestUtil = require('../util/requestUtil')
 const util = require('../util/urlUtil')
 const jwtUtil = require('@util/jwtUtil')
 const jwtUserVO = require('@vo/jwtUserVO')
+const constant = require('../const')
 
 const getAuthUrl= async projectCode => {
   const link = await weixinAppService.getActiveProjectWeixinApp(projectCode)
@@ -45,14 +46,37 @@ const saveWeixinUser = async (projectCode, code) => {
 
   const params = {}
   if(jwt){
+    params.thirdParty = constant.NAME
     params.token = jwt
   }else{
+    params.thirdParty = constant.NAME
     params.openId = openId
   }
 
   return util.getProjectFrontendUrl(project.frontendRootUrl, params)
 }
 
+const getWeixinUserLink = async (projectCode, userCode) => {
+  const link = await weixinAppService.getActiveProjectWeixinApp(projectCode)
+  if(!link || !link.weixinApp){
+    throw makeError(systemCode.BIZ_THIRD_PARTY_INVALID)
+  }
+  const appId = link.weixinApp.appId
+
+  return userWeixinLinkService.getUserWeixinLink(projectCode, userCode, appId)
+}
+
+const createWeixinUserLink = async (projectCode, userCode, openId) => {
+  const link = await weixinAppService.getActiveProjectWeixinApp(projectCode)
+  if(!link || !link.weixinApp){
+    throw makeError(systemCode.BIZ_THIRD_PARTY_INVALID)
+  }
+  const appId = link.weixinApp.appId
+
+  return userWeixinLinkService.createUserWeixinLink(projectCode, userCode, appId, openId)
+}
+
 module.exports.getAuthUrl = getAuthUrl
 module.exports.saveWeixinUser = saveWeixinUser
-module.exports.getWeixinFrontendIndexUrl = getWeixinFrontendIndexUrl
+module.exports.getWeixinUserLink = getWeixinUserLink
+module.exports.createWeixinUserLink = createWeixinUserLink

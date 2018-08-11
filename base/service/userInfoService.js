@@ -22,6 +22,14 @@ const getUserInfoByUserCode = async (projectCode, userCode) => {
   return userInfoDao.findByUserCode(projectCode, userCode)
 }
 /**
+ * 根据invteCode获取用户信息
+ * @param inviteCode
+ * @returns {Promise<void>}
+ */
+const getUserInfoByInviteCode = async (inviteCode) => {
+  return userInfoDao.findByInviteCode(inviteCode)
+}
+/**
  * 根据projectCode和phoneNumber获取用户
  * @param projectCode
  * @param phoneNumber
@@ -37,19 +45,27 @@ const getUserInfoByPhoneNumber = async (projectCode, phoneNumber) => {
  * @param name
  * @param phoneNumber
  * @param isSeedUser
+ * @param others
  * @returns {Promise<*|Promise<props>>}
  */
-const createUserInfo = async (projectCode, name, phoneNumber, isSeedUser) => {
-  const userCode = await randomUtil.generateIdentifier(isSeedUser)
-  // 创建用户基本信息
-  return userInfoDao.create({
+const createUserInfo = async (projectCode, name, phoneNumber, others) => {
+  const userCode = await randomUtil.generateIdentifier(others.isSeedUser)
+  const params = {
     projectCode: projectCode,
     userCode: userCode,
     name: name,
     phoneNumber: phoneNumber,
-    isSeedUser: !!isSeedUser,
+    isSeedUser: !!others.isSeedUser,
     status: userInfoConst.status.OPEN
-  })
+  }
+  if(others.avatar){
+    params.avatar = others.avatar
+  }
+  if(others.infoFrom){
+    params.infoFrom = others.infoFrom
+  }
+  // 创建用户基本信息
+  return userInfoDao.create(params)
 }
 /**
  * 更新userInfo，目前只更新name和avatar
@@ -60,7 +76,7 @@ const createUserInfo = async (projectCode, name, phoneNumber, isSeedUser) => {
  */
 const updateUserInfo = async (projectCode, userCode, props) => {
   props = props || {}
-  const dbUpdate = commonUtil.filterObjectProperties(props, ['name', 'avatar'])
+  const dbUpdate = commonUtil.filterObjectProperties(props, ['name', 'avatar', 'infoFrom'])
 
   if(Object.keys(dbUpdate).length === 0){
     return null
@@ -105,6 +121,7 @@ const getCommonUserInfoToday = async projectCode => {
 
 module.exports.getProjectSeedUserInfoList = getProjectSeedUserInfoList
 module.exports.getUserInfoByUserCode = getUserInfoByUserCode
+module.exports.getUserInfoByInviteCode = getUserInfoByInviteCode
 module.exports.getUserInfoByPhoneNumber = getUserInfoByPhoneNumber
 module.exports.getDownUserRelationList = getDownUserRelationList
 module.exports.getUpUserRelation = getUpUserRelation

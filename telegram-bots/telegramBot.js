@@ -35,8 +35,10 @@ const startListen = () => {
 
       //  异步读取读取用户信息，然后交由service来更新数据库
       setTimeout( async () => {
-        const userInfo = await fetchUserInfo(allMessage)
-        telegramBotService.updateUserInfo(inviteCode, userInfo, socksAgent)
+        if(await telegramBotService.needUpdateUserInfo(inviteCode)){
+          const userInfo = await fetchUserInfo(allMessage)
+          telegramBotService.updateUserInfo(inviteCode, userInfo, socksAgent)
+        }
       }, 0)
     } catch (err) {
       global.logger.error(err)

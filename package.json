@@ -59,6 +59,7 @@
     "@serv": "./base/service",
     "@vo": "./base/vo",
     "@const": "./base/constant",
-    "@mq": "./base/mq"
+    "@mq": "./base/mq",
+    "@kong": "./kong"
   }
 }
