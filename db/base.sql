@@ -145,7 +145,7 @@ ADD COLUMN `wallet_address` varchar(255) NULL COMMENT '比特币钱包地址' AF
 ALTER TABLE `bc_project`
 ADD COLUMN `project_logo_url` varchar(255) NULL COMMENT '项目logo的地址' AFTER `project_name`;
 
-# 修改项目的project_
+# 修改项目的project_note
 ALTER TABLE `bc_project`
 MODIFY COLUMN `project_note` varchar(4096) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '项目描述';
 
@@ -157,6 +157,9 @@ ADD COLUMN  `frontend_root_url` varchar(255) NOT NULL COMMENT '前端页面的�
 
 ALTER TABLE `bc_user_info`
 ADD COLUMN `info_from` varchar(32) NULL COMMENT '个人信息的来源，默认为null。更新成微信的信息，那么该字段更新为weixin';
+
+ALTER TABLE `bc_user_info`
+ADD COLUMN `register_ip` varchar(32) NULL COMMENT '注册的ip，用于做客户端安全跟踪';
 
 CREATE TABLE `bc_weixin_app` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',

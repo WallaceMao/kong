@@ -58,7 +58,9 @@ router.post('/login',
       //   return res.json(httpUtil.renderResult(systemCode.SYS_FORBIDDEN))
       // }
 
-      const otherParams = {}
+      const otherParams = {
+        ip: req.ip
+      }
       if(req.body.thirdParty && req.body.openId){
         otherParams.openId = req.body.openId
         otherParams.thirdParty = req.body.thirdParty

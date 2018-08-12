@@ -19,7 +19,8 @@ const UserInfo = database.define('UserInfo', {
   avatar: { type: Sequelize.STRING(255), field: 'avatar', allowNull: true },
   isSeedUser: { type: Sequelize.BOOLEAN, field: 'is_seed_user', allowNull: false, defaultValue: 0 },
   status: { type: Sequelize.STRING(32), field: 'status', allowNull: false },
-  infoFrom: { type: Sequelize.STRING(32), field: 'info_from', allowNull: true }
+  infoFrom: { type: Sequelize.STRING(32), field: 'info_from', allowNull: true },
+  registerIp: { type: Sequelize.STRING(32), field: 'register_ip', allowNull: true }
 }, {
   // 表注释信息
   comment: '项目用户信息表',

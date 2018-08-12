@@ -64,6 +64,9 @@ const createUserInfo = async (projectCode, name, phoneNumber, others) => {
   if(others.infoFrom){
     params.infoFrom = others.infoFrom
   }
+  if(others.ip){
+    params.registerIp = others.ip
+  }
   // 创建用户基本信息
   return userInfoDao.create(params)
 }

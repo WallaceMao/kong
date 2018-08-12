@@ -29,13 +29,13 @@ const registerOrLogin = async (projectCode, phoneNumber, inviteCode, others) => 
     return loginWithThirdParty(userInfo, others)
   }else if(userInfo && !hasThirdParty){
     // 普通登录
-    return loginCommon(userInfo)
+    return loginCommon(userInfo, others)
   }else if(!userInfo && hasThirdParty){
     // 带第三方信息的注册
     return registerWithThirdParty(projectCode, phoneNumber, inviteCode, others)
   }else if(!userInfo && !hasThirdParty){
     // 普通注册
-    return registerCommon(projectCode, phoneNumber, inviteCode)
+    return registerCommon(projectCode, phoneNumber, inviteCode, others)
   }else{
     makeError()
   }
@@ -54,12 +54,17 @@ const registerCheck = async (projectCode, inviteCode) => {
  * @param projectCode
  * @param phoneNumber
  * @param inviteCode
+ * @param others
  * @returns {Promise<*>}
  */
-const registerCommon = async (projectCode, phoneNumber, inviteCode) => {
+const registerCommon = async (projectCode, phoneNumber, inviteCode, others) => {
   const userInviteInfo = await registerCheck(projectCode, inviteCode)
 
-  const userInfo = await bizUserService.createUser(projectCode, bizUtil.generateName({ phoneNumber }), phoneNumber)
+  const userInfo = await bizUserService.createUser(
+    projectCode,
+    bizUtil.generateName({ phoneNumber }),
+    phoneNumber,
+    others)
   await userRelationService.createUserRelation(projectCode, userInviteInfo.userCode, userInfo.userCode)
   // 直接将inviteCode添加到返回值上
   return await bizUserService.addInviteInfo(userInfo, userInviteInfo)
@@ -128,12 +133,12 @@ const loginWithThirdParty = async (userInfo, others) => {
       avatar: thirdPartyUserInfo.avatar,
       infoFrom: others.thirdParty
     })
-  }
 
-  // 检查是否绑定过第三方
-  const thirdPartyLink = await service.getUserLink(projectCode, userCode)
-  if(!thirdPartyLink){
-    await service.createUserLink(projectCode, userCode, others.openId)
+    // 检查是否绑定过第三方
+    const thirdPartyLink = await service.getUserLink(projectCode, userCode)
+    if(!thirdPartyLink){
+      await service.createUserLink(projectCode, userCode, others.openId)
+    }
   }
 
   // 直接将inviteCode添加到返回值上
