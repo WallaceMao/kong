@@ -3,20 +3,28 @@ const weixinService = require('./service/weixinService')
 
 const getUserInfo = async (openId) => {
   const weixinUser = await weixinUserService.getWeixinUserByOpenId(openId)
-  return {
-    name: weixinUser.nickname,
-    avatar: weixinUser.headImgUrl
+  let result = null
+  if(weixinUser){
+    result = {
+      name: weixinUser.nickname,
+      avatar: weixinUser.headImgUrl
+    }
   }
+  return result
 }
 
 const getUserLink = async (projectCode, userCode) => {
   const link = await weixinService.getWeixinUserLink(projectCode, userCode)
-  return {
-    projectCode: link.projectCode,
-    userCode: link.userCode,
-    appId: link.appId,
-    openId: link.openId
+  let result = null
+  if(link){
+    result = {
+      projectCode: link.projectCode,
+      userCode: link.userCode,
+      appId: link.appId,
+      openId: link.openId
+    }
   }
+  return result
 }
 
 const createUserLink = async(projectCode, userCode, openId) => {

@@ -59,9 +59,9 @@ router.post('/login',
       // }
 
       const otherParams = {}
-      if(req.query.thirdParty && req.query.openId){
-        otherParams.openId = req.query.openId
-        otherParams.thirdParty = req.query.thirdParty
+      if(req.body.thirdParty && req.body.openId){
+        otherParams.openId = req.body.openId
+        otherParams.thirdParty = req.body.thirdParty
       }
       // 验证码通过，注册或者新建用户
       const loginUser = await webLoginService.registerOrLogin(projectCode, phoneNumber, inviteCode, otherParams)

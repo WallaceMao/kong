@@ -18,7 +18,7 @@ const loadAllEnvironments = app => {
   })
 }
 
-const init = app => {
+const init = async app => {
   loadAllEnvironments(app)
 }
 

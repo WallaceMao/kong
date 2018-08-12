@@ -46,7 +46,9 @@ const getUserInfoUrl = (accessToken, openId) => {
 }
 
 const getProjectFrontendUrl = (root, params) => {
-  const obj = {}
+  const obj = {
+    thirdParty: params.thirdParty
+  }
   if(params.openId){
     obj.openId = params.openId
   }else if (params.token){

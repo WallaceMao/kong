@@ -57,7 +57,7 @@ const registerCheck = async (projectCode, inviteCode) => {
  * @returns {Promise<*>}
  */
 const registerCommon = async (projectCode, phoneNumber, inviteCode) => {
-  const userInviteInfo = registerCheck(projectCode, inviteCode)
+  const userInviteInfo = await registerCheck(projectCode, inviteCode)
 
   const userInfo = await bizUserService.createUser(projectCode, bizUtil.generateName({ phoneNumber }), phoneNumber)
   await userRelationService.createUserRelation(projectCode, userInviteInfo.userCode, userInfo.userCode)
@@ -73,9 +73,9 @@ const registerCommon = async (projectCode, phoneNumber, inviteCode) => {
  * @returns {Promise<void>}
  */
 const registerWithThirdParty = async (projectCode, phoneNumber, inviteCode, others) => {
-  const userInviteInfo = registerCheck(projectCode, inviteCode)
-  const service = envManager.getService(others.thirdParty)
-  const thirdPartyUserInfo = service.getUserInfo(others.openId)
+  const userInviteInfo = await registerCheck(projectCode, inviteCode)
+  const service = await envManager.getService(others.thirdParty)
+  const thirdPartyUserInfo = await service.getUserInfo(others.openId)
   if(!thirdPartyUserInfo || !thirdPartyUserInfo.name){
     // 如果查询不到第三方信息，那么直接走普通注册
     return registerCommon(projectCode, phoneNumber, inviteCode)
@@ -112,12 +112,12 @@ const loginCommon = async (userInfo) => {
 const loginWithThirdParty = async (userInfo, others) => {
   const projectCode = userInfo.projectCode
   const userCode = userInfo.userCode
-  const service = envManager.getService(others.thirdParty)
+  const service = await envManager.getService(others.thirdParty)
 
   // 检查是否是默认信息
   const hasDefaultUserInfo = !userInfo.infoFrom
   if(hasDefaultUserInfo){
-    const thirdPartyUserInfo = service.getUserInfo(others.openId)
+    const thirdPartyUserInfo = await service.getUserInfo(others.openId)
     if(!thirdPartyUserInfo || !thirdPartyUserInfo.name){
       // 如果查询不到第三方信息，那么直接走普通登录
       return loginCommon(userInfo)
@@ -131,7 +131,7 @@ const loginWithThirdParty = async (userInfo, others) => {
   }
 
   // 检查是否绑定过第三方
-  const thirdPartyLink = service.getUserLink(projectCode, userCode)
+  const thirdPartyLink = await service.getUserLink(projectCode, userCode)
   if(!thirdPartyLink){
     await service.createUserLink(projectCode, userCode, others.openId)
   }

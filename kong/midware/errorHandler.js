@@ -28,7 +28,7 @@ const init = app => {
     const { status, errcode } = renderError(err)
 
     if(status === 500){
-      global.logger.error('system error url: %s, body: %s, err: %s', req.url, JSON.stringify(req.body), err)
+      global.logger.error('system error url: %s, body: %s \nerr: %s', req.url, JSON.stringify(req.body), err.stack)
     }
     res.status(status);
     res.json(httpUtil.renderResult(errcode));

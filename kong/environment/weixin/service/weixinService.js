@@ -37,7 +37,7 @@ const saveWeixinUser = async (projectCode, code) => {
   }else{
     //  如果weixinUser存在
     //  检查weixinUser是否有绑定
-    const weixinLink = await weixinUserService.getUserWeixinLink(openId)
+    const weixinLink = await userWeixinLinkService.getUserWeixinLink(openId)
     if(weixinLink && weixinLink.projectUser){
       // 如果weixinUser有绑定user，那么签名jwt
       jwt = await jwtUtil.sign(jwtUserVO.render(weixinLink.projectUser))
