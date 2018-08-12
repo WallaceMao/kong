@@ -225,3 +225,20 @@ CREATE TABLE `bc_user_weixin_link` (
   INDEX `bc_user_weixin_link_wx_open_id`(`open_id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT='平台用户与微信用户的关联表';
 
+CREATE TABLE `bc_user_login_history` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `version` bigint(20) NOT NULL DEFAULT 0 COMMENT '乐观锁',
+  `created_at` datetime NOT NULL COMMENT '创建时间',
+  `updated_at` datetime NULL COMMENT '更新时间',
+  `deleted_at` datetime NULL COMMENT '删除时间',
+  `project_code` varchar(64) NOT NULL COMMENT '项目代码',
+  `user_code` varchar(64) NOT NULL COMMENT '用户代码',
+  `login_type` varchar(32) NOT NULL COMMENT '标识是登录还是注册，register or login',
+  `login_ip` varchar(32) NOT NULL COMMENT '微信的公众号的appid',
+  `user_agent` varchar(255) NOT NULL COMMENT '用户登录客户端的user-agent',
+  `third_party` varchar(32) NULL COMMENT '登录的环境，由登录时的thirdParty',
+  PRIMARY KEY (`id`),
+  INDEX `bc_user_login_log_user_code`(`project_code`, `user_code`) USING BTREE,
+  INDEX `bc_user_login_log_login_ip`(`login_ip`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 1 DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT='用户登录记录表';
+

@@ -66,6 +66,8 @@ const registerCommon = async (projectCode, phoneNumber, inviteCode, others) => {
     phoneNumber,
     others)
   await userRelationService.createUserRelation(projectCode, userInviteInfo.userCode, userInfo.userCode)
+  // 添加loginType，标识是register还是login
+  userInfo.loginType = 'register'
   // 直接将inviteCode添加到返回值上
   return await bizUserService.addInviteInfo(userInfo, userInviteInfo)
 }
@@ -95,7 +97,8 @@ const registerWithThirdParty = async (projectCode, phoneNumber, inviteCode, othe
 
   // 绑定第三方
   await service.createUserLink(projectCode, userInfo.userCode, others.openId)
-
+  // 添加loginType，标识是register还是login
+  userInfo.loginType = 'register'
   // 直接将inviteCode添加到返回值上
   return await bizUserService.addInviteInfo(userInfo, userInviteInfo)
 }
@@ -105,6 +108,8 @@ const registerWithThirdParty = async (projectCode, phoneNumber, inviteCode, othe
  * @returns {Promise<void>}
  */
 const loginCommon = async (userInfo) => {
+  // 添加loginType，标识是register还是login
+  userInfo.loginType = 'login'
   // 直接将inviteCode添加到返回值上
   return bizUserService.addInviteInfo(userInfo)
 }
@@ -140,7 +145,8 @@ const loginWithThirdParty = async (userInfo, others) => {
       await service.createUserLink(projectCode, userCode, others.openId)
     }
   }
-
+  // 添加loginType，标识是register还是login
+  userInfo.loginType = 'login'
   // 直接将inviteCode添加到返回值上
   return bizUserService.addInviteInfo(userInfo)
 }

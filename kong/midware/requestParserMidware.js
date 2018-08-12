@@ -1,5 +1,6 @@
 const express = require('express')
 const cookieParser = require('cookie-parser');
+const useragent = require('express-useragent')
 
 const init = app => {
   // json格式解析
@@ -8,6 +9,8 @@ const init = app => {
   app.use(express.urlencoded({ extended: false }))
   // cookie解析
   app.use(cookieParser())
+  // useragent
+  app.use(useragent.express())
 }
 
 module.exports.init = init

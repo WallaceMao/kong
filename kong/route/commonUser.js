@@ -19,6 +19,7 @@ const systemCode = require('@const/systemCode')
 const jwtUtil = require('@util/jwtUtil')
 
 const webLoginService = require('../service/webLoginService')
+const webLoginHistoryService = require('../service/webLoginHistoryService')
 const { checkProjectValid, checkProjectCode, checkParameter, checkPhoneNumber } = require('../validator')
 
 /**
@@ -68,6 +69,8 @@ router.post('/login',
       // 验证码通过，注册或者新建用户
       const loginUser = await webLoginService.registerOrLogin(projectCode, phoneNumber, inviteCode, otherParams)
 
+      // 添加loginType标记，标识是register还是login
+      webLoginHistoryService.saveLoginHistory(req, loginUser, req.body.thirdParty)
       // 生成token并返回
       loginUser.token = await jwtUtil.sign(jwtUserVO.render(loginUser))
       res.json(httpUtil.renderResult(systemCode.OK, loginUserVO.render(loginUser)))

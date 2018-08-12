@@ -11,7 +11,7 @@ const init = app => {
   app.use('/v1/project/:projectCode/info', project)
   app.use('/v1/project/:projectCode/inviteInfo', invite)
 
-  //加载前端环境相关的router
+  // 加载前端环境相关的router
   routerEnvironmentMidware.init(app)
 }
 
