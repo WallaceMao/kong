@@ -1,7 +1,11 @@
 const userWeixinLinkDao = require('../dao/userWeixinLinkDao')
 
-const getUserWeixinLink = async (projectCode, userCode, appId) => {
-  return userWeixinLinkDao.findByUserCodeAndAppId(projectCode, userCode, appId)
+const listUserWeixinLinksByUserCode = async (projectCode, userCode, appId) => {
+  return userWeixinLinkDao.findAllByUserCodeAndAppId(projectCode, userCode, appId)
+}
+
+const listUserWeixinLinksByOpenId = async (openId) => {
+  return userWeixinLinkDao.findAllByOpenId(openId)
 }
 
 const createUserWeixinLink = async (projectCode, userCode, appId, openId) => {
@@ -13,5 +17,6 @@ const createUserWeixinLink = async (projectCode, userCode, appId, openId) => {
   })
 }
 
-module.exports.getUserWeixinLink = getUserWeixinLink
+module.exports.listUserWeixinLinksByUserCode = listUserWeixinLinksByUserCode
+module.exports.listUserWeixinLinksByOpenId = listUserWeixinLinksByOpenId
 module.exports.createUserWeixinLink = createUserWeixinLink

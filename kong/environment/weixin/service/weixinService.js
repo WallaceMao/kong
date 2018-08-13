@@ -9,15 +9,19 @@ const jwtUtil = require('@util/jwtUtil')
 const jwtUserVO = require('@vo/jwtUserVO')
 const constant = require('../const')
 
-const getAuthUrl= async projectCode => {
+const getAuthUrl= async (projectCode, inviteCode) => {
   const link = await weixinAppService.getActiveProjectWeixinApp(projectCode)
   if(!link || !link.weixinApp){
     throw makeError(systemCode.BIZ_THIRD_PARTY_INVALID)
   }
-  return util.getAuthPageUrl(projectCode, link.weixinApp)
+  return util.getAuthPageUrl(projectCode, inviteCode, link.weixinApp)
 }
 
-const saveWeixinUser = async (projectCode, code) => {
+const saveWeixinUser = async (state, code) => {
+  //  这里不要使用文本描述
+  const stateArray = state.split('--')
+  const projectCode = stateArray[0]
+  const inviteCode = stateArray[1]
   const link = await weixinAppService.getActiveProjectWeixinApp(projectCode)
   if(!link || !link.weixinApp || !link.project){
     throw makeError(systemCode.BIZ_THIRD_PARTY_INVALID)
@@ -30,6 +34,7 @@ const saveWeixinUser = async (projectCode, code) => {
   let weixinUser = await weixinUserService.getWeixinUserByOpenId(openId)
 
   let jwt
+  console.log(`====${JSON.stringify(weixinUser)}`)
   if(!weixinUser){
     // 如果weixinUser不存在，那么就直接创建weixinUser
     const userFromWeixin = await requestUtil.getUserInfoByAccessToken(result.accessToken, openId)
@@ -37,10 +42,19 @@ const saveWeixinUser = async (projectCode, code) => {
   }else{
     //  如果weixinUser存在
     //  检查weixinUser是否有绑定
-    const weixinLink = await userWeixinLinkService.getUserWeixinLink(openId)
-    if(weixinLink && weixinLink.projectUser){
-      // 如果weixinUser有绑定user，那么签名jwt
-      jwt = await jwtUtil.sign(jwtUserVO.render(weixinLink.projectUser))
+    const weixinLinks = await userWeixinLinkService.listUserWeixinLinksByOpenId(openId)
+    console.log(`====----${JSON.stringify(weixinLinks)}`)
+    /**
+     * 注意，这里的weinxinLinks可能存在多条记录，即一个openId，可能关联多个账号。
+     * 当且且当openId关联一个账号的时候，才会执行自动登录。
+     * 其他情况，均跳转到登录页面，由用户去选择登录
+     */
+    if(weixinLinks && weixinLinks.length === 1){
+      const link = weixinLinks[0]
+      if(link.projectUser){
+        // 签名jwt
+        jwt = await jwtUtil.sign(jwtUserVO.render(link.projectUser))
+      }
     }
   }
 
@@ -53,17 +67,18 @@ const saveWeixinUser = async (projectCode, code) => {
     params.openId = openId
   }
 
-  return util.getProjectFrontendUrl(project.frontendRootUrl, params)
+  //  这里的格式要改成可配置的
+  return util.getProjectFrontendUrl(project.frontendRootUrl + `/project/${projectCode}/invite/${inviteCode}/login`, params)
 }
 
-const getWeixinUserLink = async (projectCode, userCode) => {
+const listWeixinUserLinks = async (projectCode, userCode) => {
   const link = await weixinAppService.getActiveProjectWeixinApp(projectCode)
   if(!link || !link.weixinApp){
     throw makeError(systemCode.BIZ_THIRD_PARTY_INVALID)
   }
   const appId = link.weixinApp.appId
 
-  return userWeixinLinkService.getUserWeixinLink(projectCode, userCode, appId)
+  return userWeixinLinkService.listUserWeixinLinksByUserCode(projectCode, userCode, appId)
 }
 
 const createWeixinUserLink = async (projectCode, userCode, openId) => {
@@ -78,5 +93,5 @@ const createWeixinUserLink = async (projectCode, userCode, openId) => {
 
 module.exports.getAuthUrl = getAuthUrl
 module.exports.saveWeixinUser = saveWeixinUser
-module.exports.getWeixinUserLink = getWeixinUserLink
+module.exports.listWeixinUserLinks = listWeixinUserLinks
 module.exports.createWeixinUserLink = createWeixinUserLink

@@ -140,8 +140,8 @@ const loginWithThirdParty = async (userInfo, others) => {
     })
 
     // 检查是否绑定过第三方
-    const thirdPartyLink = await service.getUserLink(projectCode, userCode)
-    if(!thirdPartyLink){
+    const thirdPartyLinkArray = await service.getUserLinkList(projectCode, userCode)
+    if(!thirdPartyLinkArray || thirdPartyLinkArray.length === 0){
       await service.createUserLink(projectCode, userCode, others.openId)
     }
   }

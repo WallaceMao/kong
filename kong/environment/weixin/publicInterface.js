@@ -13,18 +13,8 @@ const getUserInfo = async (openId) => {
   return result
 }
 
-const getUserLink = async (projectCode, userCode) => {
-  const link = await weixinService.getWeixinUserLink(projectCode, userCode)
-  let result = null
-  if(link){
-    result = {
-      projectCode: link.projectCode,
-      userCode: link.userCode,
-      appId: link.appId,
-      openId: link.openId
-    }
-  }
-  return result
+const getUserLinkList = async (projectCode, userCode) => {
+  return weixinService.listWeixinUserLinks(projectCode, userCode)
 }
 
 const createUserLink = async(projectCode, userCode, openId) => {
@@ -38,5 +28,5 @@ const createUserLink = async(projectCode, userCode, openId) => {
 }
 
 module.exports.getUserInfo = getUserInfo
-module.exports.getUserLink = getUserLink
+module.exports.getUserLinkList = getUserLinkList
 module.exports.createUserLink = createUserLink

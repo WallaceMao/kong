@@ -8,9 +8,9 @@ router.get('/redirect',
   async (req, res, next) => {
     try {
       const params = checkParameter(req, ['code', 'state'])
-      const projectCode = params.state
+      const state = params.state
       const code = params.code
-      const nextUrl = await weixinService.saveWeixinUser(projectCode, code)
+      const nextUrl = await weixinService.saveWeixinUser(state, code)
       res.redirect(nextUrl)
     } catch (err) {
       next(err)

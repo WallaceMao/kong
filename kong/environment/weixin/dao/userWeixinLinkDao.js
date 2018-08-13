@@ -4,12 +4,20 @@ const findById = async id => {
   return UserWeixinLink.findById(id)
 }
 
-const findByUserCodeAndAppId = async (projectCode, userCode, appId) => {
-  return UserWeixinLink.findOne({
+const findAllByUserCodeAndAppId = async (projectCode, userCode, appId) => {
+  return UserWeixinLink.findAll({
     where: {
       projectCode: projectCode,
       userCode: userCode,
       appId: appId
+    }
+  })
+}
+
+const findAllByOpenId = async (openId) => {
+  return UserWeixinLink.findAll({
+    where: {
+      openId: openId
     }
   })
 }
@@ -19,5 +27,6 @@ const create = async (props) => {
 }
 
 module.exports.findById = findById
-module.exports.findByUserCodeAndAppId = findByUserCodeAndAppId
+module.exports.findAllByUserCodeAndAppId = findAllByUserCodeAndAppId
+module.exports.findAllByOpenId = findAllByOpenId
 module.exports.create = create
