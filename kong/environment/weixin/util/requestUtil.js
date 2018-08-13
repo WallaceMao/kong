@@ -7,7 +7,6 @@ const urlUtil = require('./urlUtil')
 const getAccessTokenByCode = async (weixinApp, code) => {
   const url = urlUtil.getOauthAccessTokenUrl(weixinApp, code)
   const body = await request({ uri: url, json: true })
-  console.log(`body:====${JSON.stringify(body)}`)
   if(body.errcode){
     throw makeError(systemCode.SYS_ERROR, `getAccessTokenByCode result: ${JSON.stringify(body)}`)
   }
@@ -23,7 +22,6 @@ const getUserInfoByAccessToken = async (accessToken, openId) => {
   if(body.errcode){
     throw makeError(systemCode.SYS_ERROR, `getUserInfoByAccessToken result: ${JSON.stringify(body)}`)
   }
-  console.log(`body:====${JSON.stringify(body)}`)
   return {
     openId: body.openid,
     nickname: body.nickname,

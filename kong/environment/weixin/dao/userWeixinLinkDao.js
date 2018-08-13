@@ -1,4 +1,5 @@
 const UserWeixinLink = require('../domain/UserWeixinLink')
+const UserInfo = require('@base/domain/UserInfo')
 
 const findById = async id => {
   return UserWeixinLink.findById(id)
@@ -18,7 +19,12 @@ const findAllByOpenId = async (openId) => {
   return UserWeixinLink.findAll({
     where: {
       openId: openId
-    }
+    },
+    include: [{
+      required: true,
+      as: 'projectUser',
+      model: UserInfo
+    }]
   })
 }
 

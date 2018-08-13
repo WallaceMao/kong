@@ -34,7 +34,6 @@ const saveWeixinUser = async (state, code) => {
   let weixinUser = await weixinUserService.getWeixinUserByOpenId(openId)
 
   let jwt
-  console.log(`====${JSON.stringify(weixinUser)}`)
   if(!weixinUser){
     // 如果weixinUser不存在，那么就直接创建weixinUser
     const userFromWeixin = await requestUtil.getUserInfoByAccessToken(result.accessToken, openId)
@@ -43,7 +42,6 @@ const saveWeixinUser = async (state, code) => {
     //  如果weixinUser存在
     //  检查weixinUser是否有绑定
     const weixinLinks = await userWeixinLinkService.listUserWeixinLinksByOpenId(openId)
-    console.log(`====----${JSON.stringify(weixinLinks)}`)
     /**
      * 注意，这里的weinxinLinks可能存在多条记录，即一个openId，可能关联多个账号。
      * 当且且当openId关联一个账号的时候，才会执行自动登录。
