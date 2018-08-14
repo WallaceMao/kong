@@ -2,8 +2,8 @@ const config = require('config')
 
 let OSS = require('ali-oss')
 
-const region = 'oss-cn-beijing'
-const bucket = 'kong-user'
+const region = config.oss.region
+const bucket = config.oss.bucket
 let client = new OSS({
   region: region,
   accessKeyId: config.oss.userId,

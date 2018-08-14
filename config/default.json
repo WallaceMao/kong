@@ -8,7 +8,8 @@
   },
   "redis": {
     "host": "localhost",
-    "port": "6379"
+    "port": "6379",
+    "auth": ""
   },
   "log": {
     "level": "debug",
@@ -41,6 +42,8 @@
     "secret": "VyReoYLBTcu93ZAS8eXbfKhcaGgXVl"
   },
   "oss": {
+    "region": "oss-cn-beijing",
+    "bucket": "kong-user",
     "userId": "LTAIRmc2yQFFMeDx",
     "secret": "FCwMOzmyBqgwERsL9nVv4FQ7n1LVzV"
   },
