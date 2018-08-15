@@ -21,9 +21,6 @@
       "issuer": "auth-center.etoutiao.cn",
       "audience": "kong.etoutiao.cn"
     },
-    "session": {
-      "secret": "helloWorld"
-    },
     "password": {
       "algorithm": "sha512",
       "secret": "helloWorld"
