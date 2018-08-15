@@ -5,7 +5,7 @@ const socksAgent = new SocksAgent({});
 
 const telegraf = new Telegraf(config.telegram.token, {
   username: 'kong',
-  telegram: { agent: socksAgent }
+  telegram: { agent: config.telegram.useAgent ? socksAgent : null }
 })
 
 const telegramBotService = require('./service/telegramBotService')

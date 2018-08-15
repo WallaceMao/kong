@@ -45,6 +45,7 @@
     "secret": "FCwMOzmyBqgwERsL9nVv4FQ7n1LVzV"
   },
   "telegram": {
+    "useAgent": true,
     "token": "696033507:AAGvRBRxy7xAKoE5KWTfTQ6MVg5p_xt8NBc"
   },
   "cors": {
