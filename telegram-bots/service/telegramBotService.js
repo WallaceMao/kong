@@ -43,7 +43,7 @@ const rewardUser = async (inviteCode) => {
 
 const needUpdateUserInfo = async (inviteCode) => {
   const userInfo = await userInfoService.getUserInfoByInviteCode(inviteCode)
-  return !userInfo.infoFrom
+  return userInfo && !userInfo.infoFrom
 }
 
 const updateUserInfo = async (inviteCode, userInfo, proxyAgent) => {
