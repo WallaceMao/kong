@@ -6,8 +6,8 @@ const projectService = require('@serv/projectService')
 const checkParameter = (req, parameterList) => {
   const result = {}
   parameterList.forEach(p => {
-    if(req.param[p]){
-      result[p] = req.param[p]
+    if(req.params[p]){
+      result[p] = req.params[p]
       return
     }
     if(req.query[p]){
