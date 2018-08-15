@@ -7,6 +7,7 @@ const serverPrefix = 'server-'
 const projectAdminServerPrefix = 'server-pa-'
 const listenerPrefix = 'listener-'
 const telegramPrefix = 'telegram-'
+const rateLimitPrefix = 'rate-limit-'
 
 
 const generateProps = (fileNamePrefix) => {
@@ -48,3 +49,4 @@ module.exports.serverLogger = createLogger(generateProps(serverPrefix))
 module.exports.projectAdminServerLogger = createLogger(generateProps(projectAdminServerPrefix))
 module.exports.listenerLogger = createLogger(generateProps(listenerPrefix))
 module.exports.telegramLogger = createLogger(generateProps(telegramPrefix))
+module.exports.rateLimitlogger = createLogger(generateProps(rateLimitPrefix))
