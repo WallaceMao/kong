@@ -34,5 +34,32 @@ const getUserInfoByAccessToken = async (accessToken, openId) => {
   }
 }
 
+const getJssdkAccessToken = async (weixinApp) => {
+  const url = urlUtil.getCommonAccessTokenUrl(weixinApp)
+  const body = await request({uri: url, json: true})
+  if(body.errcode){
+    throw makeError(systemCode.SYS_ERROR, `getJssdkAccessToken result: ${JSON.stringify(body)}`)
+  }
+  return {
+    accessToken: body.access_token,
+    expiresIn: body.expires_in
+  }
+}
+
+const getJssdkApiTicket = async (accessToken) => {
+  const url = urlUtil.getJssdkApiTicketUrl(accessToken)
+  console.log('====url is: ' + url)
+  const body = await request({uri: url, json: true})
+  if(body.errcode){
+    throw makeError(systemCode.SYS_ERROR, `getJssdkApiTicket result: ${JSON.stringify(body)}`)
+  }
+  return {
+    ticket: body.ticket,
+    expiresIn: body.expires_in
+  }
+}
+
 module.exports.getAccessTokenByCode = getAccessTokenByCode
 module.exports.getUserInfoByAccessToken = getUserInfoByAccessToken
+module.exports.getJssdkAccessToken = getJssdkAccessToken
+module.exports.getJssdkApiTicket = getJssdkApiTicket

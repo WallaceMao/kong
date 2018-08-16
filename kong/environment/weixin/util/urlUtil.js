@@ -58,7 +58,28 @@ const getProjectFrontendUrl = (root, params) => {
   return `${root}?${paramsString}`
 }
 
+const getCommonAccessTokenUrl = (weixinApp) => {
+  const root = constant.COMMON_ACCESS_TOKEN_ROOT
+  const params = {
+    grant_type: 'client_credential',
+    appid: weixinApp.appId,
+    secret: weixinApp.appSecret
+  }
+  return `${root}?${combineParams(params)}`
+}
+
+const getJssdkApiTicketUrl = (accessToken) => {
+  const root = constant.JSSDK_API_TICKET_ROOT
+  const params = {
+    access_token: accessToken,
+    type: 'jsapi'
+  }
+  return `${root}?${combineParams(params)}`
+}
+
 module.exports.getAuthPageUrl = getAuthPageUrl
 module.exports.getOauthAccessTokenUrl = getOauthAccessTokenUrl
 module.exports.getUserInfoUrl = getUserInfoUrl
 module.exports.getProjectFrontendUrl = getProjectFrontendUrl
+module.exports.getCommonAccessTokenUrl = getCommonAccessTokenUrl
+module.exports.getJssdkApiTicketUrl = getJssdkApiTicketUrl

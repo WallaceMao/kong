@@ -28,6 +28,16 @@ const generateValidateCode = async length => {
   });
 }
 
+const generateRandomString = async (length, charset) => {
+  charset = charset || 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'
+  length = length || 8
+  return randomString.generate({
+    length: length,
+    charset: charset
+  });
+}
+
 module.exports.generateIdentifier = generateIdentifier
 module.exports.generateValidateCode = generateValidateCode
 module.exports.generateInviteCode = generateInviteCode
+module.exports.generateRandomString = generateRandomString

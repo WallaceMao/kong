@@ -8,6 +8,7 @@ const util = require('../util/urlUtil')
 const jwtUtil = require('@util/jwtUtil')
 const jwtUserVO = require('@vo/jwtUserVO')
 const constant = require('../const')
+const jssdkUtil = require('../util/jssdkUtil')
 
 const getAuthUrl= async (projectCode, inviteCode) => {
   const link = await weixinAppService.getActiveProjectWeixinApp(projectCode)
@@ -89,7 +90,16 @@ const createWeixinUserLink = async (projectCode, userCode, openId) => {
   return userWeixinLinkService.createUserWeixinLink(projectCode, userCode, appId, openId)
 }
 
+const getJssdkConfig = async (projectCode, url) => {
+  const link = await weixinAppService.getActiveProjectWeixinApp(projectCode)
+  if(!link || !link.weixinApp){
+    throw makeError(systemCode.BIZ_THIRD_PARTY_INVALID)
+  }
+  return jssdkUtil.getSignObject(link.weixinApp, url)
+}
+
 module.exports.getAuthUrl = getAuthUrl
 module.exports.saveWeixinUser = saveWeixinUser
 module.exports.listWeixinUserLinks = listWeixinUserLinks
 module.exports.createWeixinUserLink = createWeixinUserLink
+module.exports.getJssdkConfig = getJssdkConfig
