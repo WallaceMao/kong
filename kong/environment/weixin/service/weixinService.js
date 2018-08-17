@@ -66,8 +66,8 @@ const saveWeixinUser = async (state, code) => {
     params.openId = openId
   }
 
-  //  这里的格式要改成可配置的
-  return util.getProjectFrontendUrl(project.frontendRootUrl + `/#/project/${projectCode}/invite/${inviteCode}/login`, params)
+  const frontendUrl = project.frontendRootUrl.replace('${projectCode}', projectCode).replace('${inviteCode}', inviteCode)
+  return util.getProjectFrontendUrl(frontendUrl, params)
 }
 
 const listWeixinUserLinks = async (projectCode, userCode) => {

@@ -14,6 +14,7 @@ const Project = database.define('Project', {
   projectCode: { type: Sequelize.STRING(64), field: 'project_code', allowNull: false, unique: 'bc_project_code' },
   projectName: { type: Sequelize.STRING(255), field: 'project_name', allowNull: false },
   projectLogoUrl: { type: Sequelize.STRING(255), field: 'project_logo_url', allowNull: true },
+  Text: { type: Sequelize.STRING(255), field: 'project_text_logo_url', allowNull: true },
   projectNote: { type: Sequelize.STRING(4096), field: 'project_note', allowNull: true },
   telegramJoinLink: { type: Sequelize.STRING(255), field: 'telegram_join_link', allowNull: true },
   rewardRule: { type: Sequelize.STRING(128), field: 'reward_rule', allowNull: true },
