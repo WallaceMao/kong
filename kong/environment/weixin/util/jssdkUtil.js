@@ -95,7 +95,13 @@ const getSignObject = async (weixinApp, url) => {
   const nonceString = await randomUtil.generateRandomString()
   const timestamp = `${Math.floor(new Date().getTime() / 1000)}`
   const ticket = await getJssdkTicket(weixinApp)
-  return sign(ticket, url, nonceString, timestamp)
+  const signObject = await sign(ticket, url, nonceString, timestamp)
+  return {
+    appId: weixinApp.appId,
+    timestamp: signObject.timestamp,
+    nonceStr: signObject.nonceStr,
+    signature: signObject.signature
+  }
 }
 
 module.exports.getSignObject = getSignObject
