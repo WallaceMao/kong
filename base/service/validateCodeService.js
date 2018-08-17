@@ -1,3 +1,5 @@
+const config = require('config')
+const constant = require('../constant/constant')
 const validateCodeUtil = require('../util/validateCodeUtil')
 const randomUtil = require('../util/randomUtil')
 const mqPublisher = require('../mq/mqPublisher')
@@ -13,16 +15,22 @@ const mqPublisher = require('../mq/mqPublisher')
  * @returns {Promise<void>}
  */
 const handleValidateCode = async phoneNumber => {
+  if(!config.sms.enabled){
+    return
+  }
   //  如果redis中已存在，那么使用redis中的验证码
   let code = await validateCodeUtil.getValidateCode(phoneNumber)
   if(!code){
     code = await randomUtil.generateValidateCode()
     await validateCodeUtil.saveValidateCode(phoneNumber, code)
   }
-  await mqPublisher.send('hello-' + phoneNumber + '-' + code)
+  await mqPublisher.send(`${phoneNumber}${constant.VALIDATE_CODE_SEPARATOR}${code}`)
 }
 
 const checkValidateCode = async (phoneNumber, validateCode) => {
+  if(!config.sms.enabled){
+    return true
+  }
   const dbCode = await validateCodeUtil.getValidateCode(phoneNumber)
   return (dbCode && dbCode === validateCode)
 }

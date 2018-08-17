@@ -1,6 +1,8 @@
 const redisUtil = require('@util/redisUtil')
 const constant = require('@const/constant')
 
+const smsService = require('../service/smsService')
+
 const subscriber = redisUtil.getClient('mqSubscriber')
 
 const startListen = async channel => {
@@ -12,6 +14,14 @@ const startListen = async channel => {
 
   subscriber.on('message', (channel, message) => {
     global.logger.info('received message: ' + message + ', channel: ' + channel)
+    //  异步发送
+    setTimeout(async () => {
+      try {
+        await smsService.sendValidateCode(message)
+      } catch (err){
+        global.logger.error(err)
+      }
+    }, 10)
   })
 
   subscriber.subscribe(channel)

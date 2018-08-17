@@ -1,3 +1,5 @@
+const constant = require('@const/constant')
+
 const render = obj => {
   if(!obj){
     return null
@@ -19,7 +21,7 @@ const renderObject = userRelation => {
   const user = userRelation.downUser
   return {
     name: user.name,
-    avatar: user.avatar,
+    avatar: user.avatar || constant.DEFAULT_AVATAR,
   }
 }
 

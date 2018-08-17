@@ -1,3 +1,5 @@
+const constant = require('@const/constant')
+
 const render = obj => {
   if(!obj){
     return null
@@ -17,7 +19,7 @@ const renderObject = userInfo => {
     userCode: userInfo.userCode,
     name: userInfo.name,
     phoneNumber: userInfo.phoneNumber,
-    avatar: userInfo.avatar,
+    avatar: userInfo.avatar || constant.DEFAULT_AVATAR,
     isSeedUser: userInfo.isSeedUser,
     status: userInfo.status
   }

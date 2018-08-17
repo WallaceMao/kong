@@ -35,6 +35,7 @@
     }
   },
   "sms": {
+    "enabled": false,
     "userId": "LTAICWcfxdoovy61",
     "secret": "VyReoYLBTcu93ZAS8eXbfKhcaGgXVl"
   },

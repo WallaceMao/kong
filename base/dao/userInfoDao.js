@@ -44,7 +44,7 @@ const updateByUserCode = async (projectCode, userCode, props) =>{
 const deleteByUserCode = async (projectCode, userCode, force) =>{
   let obj = await findByUserCode(projectCode, userCode)
   if(obj){
-    obj.destroy({
+    return obj.destroy({
       force: !!force
     })
   }

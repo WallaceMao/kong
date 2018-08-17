@@ -1,3 +1,5 @@
+const constant = require('@const/constant')
+
 const render = obj => {
   if(!obj){
     return null
@@ -14,7 +16,7 @@ const renderList = list => {
 const renderObject = obj => {
   return {
     name: obj.name,
-    avatar: obj.avatar,
+    avatar: obj.avatar || constant.DEFAULT_AVATAR,
     registerRewardValue: obj.registerRewardValue,
     registerRewardValueUnit: obj.registerRewardUnit,
     registerRewardLimit: obj.registerRewardLimit,

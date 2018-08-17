@@ -56,7 +56,14 @@ const checkPhoneNumber = phoneNumber => {
   }
 }
 
+const checkValidateCode = validateCode => {
+  if(!bizUtil.checkValidateCode(validateCode)){
+    throw makeError(systemCode.BIZ_VALIDATE_CODE_INVALID)
+  }
+}
+
 module.exports.checkParameter = checkParameter
 module.exports.checkProjectCode = checkProjectCode
 module.exports.checkProjectValid = checkProjectValid
 module.exports.checkPhoneNumber = checkPhoneNumber
+module.exports.checkValidateCode = checkValidateCode

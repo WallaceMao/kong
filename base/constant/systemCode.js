@@ -10,6 +10,9 @@ module.exports = {
   BIZ_PROJECT_CODE_INVALID: '20005',
   BIZ_PASSWORD_INVALID: '20006',
   BIZ_THIRD_PARTY_INVALID: '20007',
+  BIZ_SMS_SEND_ERROR: '20008',
+  BIZ_VALIDATE_CODE_INVALID: '20009',
+  BIZ_PHONE_NUMBER_IN_BLACK: '20010',
   messageMap: {
     '0': 'success',
     '-1': 'system error',
@@ -21,6 +24,9 @@ module.exports = {
     '20004': 'value unit not compatible',
     '20005': 'project code is invalid',
     '20006': 'password is invalid',
-    '20007': 'third party app is invalid'
+    '20007': 'third party app is invalid',
+    '20008': 'sms send error',
+    '20009': 'validate code error',
+    '20010': 'phoneNumber is in black list'
   }
 }

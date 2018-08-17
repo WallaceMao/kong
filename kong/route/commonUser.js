@@ -20,7 +20,7 @@ const jwtUtil = require('@util/jwtUtil')
 
 const webLoginService = require('../service/webLoginService')
 const webLoginHistoryService = require('../service/webLoginHistoryService')
-const { checkProjectValid, checkProjectCode, checkParameter, checkPhoneNumber } = require('../validator')
+const { checkProjectValid, checkProjectCode, checkParameter, checkPhoneNumber, checkValidateCode } = require('../validator')
 
 /**
  * 发送验证码
@@ -52,12 +52,13 @@ router.post('/login',
       const validateCode = params.validateCode
       const inviteCode = params.inviteCode
       checkPhoneNumber(phoneNumber)
+      checkValidateCode(validateCode)
 
       // 验证验证码
-      // const pass = await validateCodeService.checkValidateCode(phoneNumber, validateCode)
-      // if(!pass){
-      //   return res.json(httpUtil.renderResult(systemCode.SYS_FORBIDDEN))
-      // }
+      const pass = await validateCodeService.checkValidateCode(phoneNumber, validateCode)
+      if(!pass){
+        return res.json(httpUtil.renderResult(systemCode.SYS_FORBIDDEN))
+      }
 
       const otherParams = {
         ip: req.ip
