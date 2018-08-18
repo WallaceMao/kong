@@ -9,7 +9,7 @@ const telegraf = new Telegraf(config.telegram.token, {
   telegram: { agent: socksAgent }
 })
 
-const inviteCodeReg = new RegExp(`^inv[0-9a-zA-Z]{${constant.INVITE_CODE_LENGTH}$`)
+const inviteCodeReg = new RegExp(`/^inv[0-9a-zA-Z]{${constant.INVITE_CODE_LENGTH}$/g`)
 
 const telegramBotService = require('./service/telegramBotService')
 
