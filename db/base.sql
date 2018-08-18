@@ -255,6 +255,6 @@ CREATE TABLE `bc_phone_number_jail` (
   `deleted_at` datetime NULL COMMENT '删除时间',
   `phone_number` varchar(32) NULL COMMENT '手机号',
   PRIMARY KEY (`id`),
-  UNIQUE INDEX `bc_phone_number_jail_phone_number`(`phone_number`) USING BTREE,
+  UNIQUE INDEX `bc_phone_number_jail_phone_number`(`phone_number`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT='手机号黑名单';
 

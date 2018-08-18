@@ -19,7 +19,7 @@ const startListen = async channel => {
       try {
         await smsService.sendValidateCode(message)
       } catch (err){
-        global.logger.error(err)
+        global.logger.error(err.stack)
       }
     }, 10)
   })

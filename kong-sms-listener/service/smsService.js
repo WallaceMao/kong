@@ -18,7 +18,8 @@ const sendValidateCode = async (message) => {
   }
 
   //  检查是否在手机号黑名单中
-  if(bizBlackListService.isIn(phoneNumber)){
+  const jail = await bizBlackListService.isIn(phoneNumber)
+  if(jail){
     throw makeError(systemCode.BIZ_PHONE_NUMBER_IN_BLACK, `phoneNumber: ${phoneNumber}`)
   }
 
