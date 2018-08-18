@@ -14,6 +14,8 @@ describe('userInfoServiceTest', () => {
       expect(userInfo.name).to.equal('aaaaa')
     })
     it('should success', async () => {
+      const a = null
+      console.log(`----${a || ''}`)
       const userInviteInfo = await userInviteInfoService.getUserInviteInfoByInviteCode('invGPZXdtYQ')
       console.log('----userInfo----' + JSON.stringify(userInviteInfo))
       expect(userInviteInfo.userInfo).not.to.be.null

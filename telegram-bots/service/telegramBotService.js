@@ -48,28 +48,43 @@ const needUpdateUserInfo = async (inviteCode) => {
 
 const updateUserInfo = async (inviteCode, userInfo, proxyAgent) => {
   try {
-    const originalAvatar = userInfo.avatar
-    console.log('====imageUrl: ' + originalAvatar)
-    const namePartArray = originalAvatar.split('.')
-    const extendName = namePartArray[namePartArray.length - 1]
-
-    // 将telegram中的头像上传到阿里云OSS
+    console.log('====user from telegram: ' + JSON.stringify(userInfo))
     const userInviteInfo = await userInviteInfoService.validateInviteInfo(inviteCode)
-    const avatarUrl = `project/${userInviteInfo.projectCode}/user/${userInviteInfo.userCode}/avatar.${extendName}`
-    console.log('====avatarUrl: ' + JSON.stringify(avatarUrl))
-    await ossUtil.streamUpload(avatarUrl, request({
-      url: originalAvatar,
-      agent: proxyAgent
-    }))
+
+    const propsToUpdate = {}
+
+    if(userInfo.firstName || userInfo.lastName){
+      const arr = []
+      if(userInfo.firstName){
+        arr.push(userInfo.firstName)
+      }
+      if(userInfo.lastName){
+        arr.push(userInfo.lastName)
+      }
+      propsToUpdate.name = arr.join(' ')
+    }
+
+    const originalAvatar = userInfo.avatar
+    if(originalAvatar){
+      //  如果头像存在，那么就上传到阿里云
+      const namePartArray = originalAvatar.split('.')
+      const extendName = namePartArray[namePartArray.length - 1]
+
+      // 将telegram中的头像上传到阿里云OSS
+      const avatarUrl = `project/${userInviteInfo.projectCode}/user/${userInviteInfo.userCode}/avatar.${extendName}`
+      console.log('====avatarUrl: ' + JSON.stringify(avatarUrl))
+      await ossUtil.streamUpload(avatarUrl, request({
+        url: originalAvatar,
+        agent: proxyAgent
+      }))
+      propsToUpdate.avatar = `${ossUtil.OSS_ROOT}/${avatarUrl}`
+    }
 
     console.log('====begin to update local userInfo')
     // 更新userInfo中的name和头像
     return userInfoService.updateUserInfo(
       userInviteInfo.projectCode,
-      userInviteInfo.userCode, {
-      name: `${userInfo.firstName} ${userInfo.lastName}`,
-      avatar: `${ossUtil.OSS_ROOT}/${avatarUrl}`
-    })
+      userInviteInfo.userCode, propsToUpdate)
   } catch (err) {
     global.logger.error(err)
   }

@@ -1,11 +1,11 @@
 const config = require('config')
 const Telegraf = require('telegraf')
 const SocksAgent = require('socks5-https-client/lib/Agent')
-const socksAgent = new SocksAgent({});
+const socksAgent = config.telegram.useAgent ? new SocksAgent({}) : null;
 
 const telegraf = new Telegraf(config.telegram.token, {
   username: 'kong',
-  telegram: { agent: config.telegram.useAgent ? socksAgent : null }
+  telegram: { agent: socksAgent }
 })
 
 const telegramBotService = require('./service/telegramBotService')
@@ -65,12 +65,11 @@ const fetchUserInfo = async message => {
   const msgUser = message.from
   const photoObject = await telegram.getUserProfilePhotos(msgUser.id, 0, 1)
   console.log('====photoObject: ' + JSON.stringify(photoObject))
-  if(!photoObject['total_count'] || photoObject['total_count'] < 1){
-    return
+  let imageUrl = null
+  if(photoObject['total_count'] && photoObject['total_count'] > 0){
+    const file = await telegram.getFile(photoObject.photos[0][0].file_id)
+    imageUrl = `${TELEGRAM_AVATAR_PREFIX}${config.telegram.token}${file.file_path}`
   }
-  const file = await telegram.getFile(photoObject.photos[0][0].file_id)
-  const imageUrl = `${TELEGRAM_AVATAR_PREFIX}${config.telegram.token}${file.file_path}`
-
   return {
     firstName: msgUser.first_name,
     lastName: msgUser.last_name,
