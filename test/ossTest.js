@@ -16,15 +16,18 @@ const socksAgent = new SocksAgent({
 
 describe('ossTest', function() {
   describe('ossTest#indexOf()', function() {
-    it('should upload to aliyun OSS successfully', function() {
+    it('should upload to aliyun OSS successfully', async function() {
       //  https://api.telegram.org/file/bot696033507:AAGvRBRxy7xAKoE5KWTfTQ6MVg5p_xt8NBc/photos/file_0.jpg
       // const imageUrl = 'https://api.telegram.org/file/bot696033507:AAGvRBRxy7xAKoE5KWTfTQ6MVg5p_xt8NBcphotos/file_1.jpg'
       const imageUrl = 'https://www.rishiqing.com/web/upload/201805/1525767502.png'
       // request(imageUrl).pipe(fs.createWriteStream('doodle.png'))
       // request(imageUrl)
-      ossUtil.streamUpload('profile/abcdefg/4a346f72/avatar.png', request({
+      const result = await ossUtil.streamUpload('profile/abcdefg/4a346f72/avatar.png', request({
         url: imageUrl,
         agent: socksAgent
+      }).on('response', (resp) => {
+        console.log('headers: ' + JSON.stringify(resp.headers))
+        resp.headers['content-type'] = 'image/jpeg'
       }))
     });
   });

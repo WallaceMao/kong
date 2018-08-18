@@ -71,6 +71,18 @@ const needUpdateUserInfo = async (inviteCode) => {
   return userInviteInfo && !userInviteInfo.userInfo.infoFrom
 }
 
+const getMimeFromExtengName = (extendName) => {
+  const lowerCase = extendName ? extendName.toLowerCase() : extendName
+  switch (lowerCase){
+    case 'jpg':
+    case 'jpeg':
+      return 'image/jpeg'
+    case 'png':
+    default:
+      return 'image/png'
+  }
+}
+
 const updateUserInfo = async (inviteCode, userInfo, proxyAgent) => {
   try {
     console.log('====user from telegram: ' + JSON.stringify(userInfo))
@@ -103,6 +115,8 @@ const updateUserInfo = async (inviteCode, userInfo, proxyAgent) => {
       await ossUtil.streamUpload(avatarUrl, request({
         url: originalAvatar,
         agent: proxyAgent
+      }).on('response', (resp) => {
+        resp.headers['content-type'] = getMimeFromExtengName(extendName)
       }))
       propsToUpdate.avatar = `${ossUtil.OSS_ROOT}/${avatarUrl}`
     }
