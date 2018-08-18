@@ -1,3 +1,4 @@
+const UserInfo = require('../domain/UserInfo')
 const UserInviteInfo = require('../domain/UserInviteInfo')
 
 /**
@@ -61,11 +62,21 @@ const findByUserCode = async (projectCode, userCode) => {
   })
 }
 
+/**
+ * 根据inviteCode做链接查询
+ * @param inviteCode
+ * @returns {Promise<void>}
+ */
 const findByInviteCode = async (inviteCode) => {
   return UserInviteInfo.findOne({
     where: {
       inviteCode: inviteCode
-    }
+    },
+    include: [{
+      required: true,
+      model: UserInfo,
+      as: 'userInfo'
+    }]
   })
 }
 

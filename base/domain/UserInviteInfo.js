@@ -1,5 +1,6 @@
 const database = require('./database')
 const Sequelize = require('sequelize')
+const UserInfo = require('./UserInfo')
 
 /**
  * 项目用户的邀请信息
@@ -38,5 +39,7 @@ const UserInviteInfo = database.define('UserInviteInfo', {
   // 删除时间
   deletedAt: 'deleted_at'
 });
+
+UserInviteInfo.belongsTo(UserInfo, { as: 'userInfo', foreignKey: 'userCode', targetKey: 'userCode'})
 
 module.exports = UserInviteInfo

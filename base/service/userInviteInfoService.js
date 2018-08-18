@@ -29,6 +29,17 @@ const getUserInviteInfoByUserCode = async (projectCode, userCode) => {
   return userInviteInfoDao.findByUserCode(projectCode, userCode)
 }
 
+/**
+ * 根据invteCode获取用户信息
+ * @param inviteCode
+ * @returns {Promise<void>}
+ */
+const getUserInviteInfoByInviteCode = async (inviteCode) => {
+  return userInviteInfoDao.findByInviteCode(inviteCode)
+
+}
+
 module.exports.createUserInviteInfo = createUserInviteInfo
 module.exports.validateInviteInfo = validateInviteInfo
 module.exports.getUserInviteInfoByUserCode = getUserInviteInfoByUserCode
+module.exports.getUserInviteInfoByInviteCode = getUserInviteInfoByInviteCode

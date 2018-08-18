@@ -2,16 +2,21 @@ require('module-alias')()
 
 const expect = require('chai').expect
 
-const userInfoService = require('@serv/userInfoService')
+const userInviteInfoService = require('@serv/userInviteInfoService')
 
 describe('userInfoServiceTest', () => {
   describe('updateUserInfo', () => {
-    it('should success', async () => {
+    it.skip('should success', async () => {
       const userInfo = await userInfoService.updateUserInfo({
         name: 'aaaaa',
         avatar: 'https://www.rishiqing.com'
       })
       expect(userInfo.name).to.equal('aaaaa')
+    })
+    it('should success', async () => {
+      const userInviteInfo = await userInviteInfoService.getUserInviteInfoByInviteCode('invGPZXdtYQ')
+      console.log('----userInfo----' + JSON.stringify(userInviteInfo))
+      expect(userInviteInfo.userInfo).not.to.be.null
     })
   })
 })

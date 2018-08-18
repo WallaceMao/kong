@@ -22,14 +22,6 @@ const getUserInfoByUserCode = async (projectCode, userCode) => {
   return userInfoDao.findByUserCode(projectCode, userCode)
 }
 /**
- * 根据invteCode获取用户信息
- * @param inviteCode
- * @returns {Promise<void>}
- */
-const getUserInfoByInviteCode = async (inviteCode) => {
-  return userInfoDao.findByInviteCode(inviteCode)
-}
-/**
  * 根据projectCode和phoneNumber获取用户
  * @param projectCode
  * @param phoneNumber
@@ -124,7 +116,6 @@ const getCommonUserInfoToday = async projectCode => {
 
 module.exports.getProjectSeedUserInfoList = getProjectSeedUserInfoList
 module.exports.getUserInfoByUserCode = getUserInfoByUserCode
-module.exports.getUserInfoByInviteCode = getUserInfoByInviteCode
 module.exports.getUserInfoByPhoneNumber = getUserInfoByPhoneNumber
 module.exports.getDownUserRelationList = getDownUserRelationList
 module.exports.getUpUserRelation = getUpUserRelation

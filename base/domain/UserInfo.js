@@ -1,6 +1,5 @@
 const database = require('./database')
 const Sequelize = require('sequelize')
-const UserInviteInfo = require('./UserInviteInfo')
 
 /**
  * 项目用户的基本信息
@@ -13,7 +12,7 @@ const UserInfo = database.define('UserInfo', {
   updatedAt: { type: Sequelize.DATE, field: 'updated_at', allowNull: true },
   deletedAt: { type: Sequelize.DATE, field: 'deleted_at', allowNull: true },
   projectCode: { type: Sequelize.STRING(64), field: 'project_code', allowNull: false },
-  userCode: { type: Sequelize.STRING(64), field: 'user_code', allowNull: false },
+  userCode: { type: Sequelize.STRING(64), field: 'user_code', allowNull: false, unique: 'bc_user_info_user_code' },
   name: { type: Sequelize.STRING(255), field: 'name', allowNull: false },
   phoneNumber: { type: Sequelize.STRING(32), field: 'phone_number', allowNull: false },
   avatar: { type: Sequelize.STRING(255), field: 'avatar', allowNull: true },
@@ -44,16 +43,10 @@ const UserInfo = database.define('UserInfo', {
   deletedAt: 'deleted_at',
   // 唯一约束
   indexes: [{
-    name: 'bc_user_info_project_code_user_code',
-    unique: true,
-    fields: ['projectCode', 'userCode']
-  },{
     name: 'bc_user_info_project_code_phone_number',
     unique: true,
     fields: ['projectCode', 'phoneNumber']
   }]
 });
-
-UserInfo.hasOne(UserInviteInfo, { as: 'userInviteInfo', foreignKey: 'userCode', sourceKey: 'userCode'})
 
 module.exports = UserInfo

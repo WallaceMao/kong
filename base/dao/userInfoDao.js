@@ -65,23 +65,6 @@ const findByUserCode = async (projectCode, userCode) => {
   })
 }
 /**
- * 根据inviteCode做链接查询
- * @param inviteCode
- * @returns {Promise<void>}
- */
-const findByInviteCode = async (inviteCode) => {
-  return UserInfo.findOne({
-    include: [{
-      required: true,
-      model: UserInviteInfo,
-      as: 'userInviteInfo',
-      where: {
-        inviteCode: inviteCode
-      }
-    }]
-  })
-}
-/**
  * 根据是否为seedUser查找用户
  * @param projectCode
  * @param isSeedUser
@@ -136,7 +119,6 @@ module.exports.create = create
 module.exports.updateByUserCode = updateByUserCode
 module.exports.deleteByUserCode = deleteByUserCode
 module.exports.findByUserCode = findByUserCode
-module.exports.findByInviteCode = findByInviteCode
 module.exports.findAllByIsSeedUser = findAllByIsSeedUser
 module.exports.findByPhoneNumber = findByPhoneNumber
 module.exports.countAllByIsSeedUser = countAllByIsSeedUser

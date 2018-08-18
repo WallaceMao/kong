@@ -62,7 +62,7 @@ const getCombinedUserInfo = async (projectCode, userCode) => {
 const getUserInfoByInviteCode = async (inviteCode) => {
   // 验证inviteCode，如果验证成功，将会获取到userInviteInfo
   const userInviteInfo = await userInviteInfoService.validateInviteInfo(inviteCode)
-  return userInfoService.getUserInfoByUserCode(userInviteInfo.projectCode, userInviteInfo.userCode)
+  return userInviteInfo.userInfo
 }
 
 module.exports.createSeedUser = createSeedUser
