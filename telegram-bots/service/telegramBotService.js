@@ -40,7 +40,11 @@ const saveInviteCode = async (inviteCode, message) => {
     return `WARN: invite code [${inviteCode}]: your code is already used!`
   }
   //  添加消息记录
-  await recordService.createRecord(inviteCode, JSON.stringify(message), platformConst.inviteCodeSendSource.TELEGRAM)
+  await recordService.createRecord(
+    inviteCode,
+    JSON.stringify(message),
+    platformConst.inviteCodeSendSource.TELEGRAM,
+    senderId)
   //  异步执行奖励用户的流程
   setTimeout(() => {
     Promise.all([
@@ -72,7 +76,9 @@ const updateUserInfo = async (inviteCode, userInfo, proxyAgent) => {
     console.log('====user from telegram: ' + JSON.stringify(userInfo))
     const userInviteInfo = await userInviteInfoService.validateInviteInfo(inviteCode)
 
-    const propsToUpdate = {}
+    const propsToUpdate = {
+      infoFrom: 'telegram'
+    }
 
     if(userInfo.firstName || userInfo.lastName){
       const arr = []

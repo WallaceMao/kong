@@ -8,11 +8,12 @@ const listRecordBySenderId = async senderId => {
   return userInviteCodeSendRecordDao.findAllBySenderId(senderId)
 }
 
-const createRecord = async (inviteCode, inviteCodeSendMsg, inviteCodeSendSource) => {
+const createRecord = async (inviteCode, inviteCodeSendMsg, inviteCodeSendSource, inviteCodeSenderId) => {
   return userInviteCodeSendRecordDao.create({
     inviteCode: inviteCode,
     inviteCodeSendMsg: inviteCodeSendMsg,
-    inviteCodeSendSource: inviteCodeSendSource
+    inviteCodeSendSource: inviteCodeSendSource,
+    inviteCodeSenderId: inviteCodeSenderId
   })
 }
 
