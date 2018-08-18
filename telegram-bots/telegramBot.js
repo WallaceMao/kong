@@ -70,7 +70,7 @@ const fetchUserInfo = async message => {
   let imageUrl = null
   if(photoObject['total_count'] && photoObject['total_count'] > 0){
     const file = await telegram.getFile(photoObject.photos[0][0].file_id)
-    imageUrl = `${TELEGRAM_AVATAR_PREFIX}${config.telegram.token}${file.file_path}`
+    imageUrl = `${TELEGRAM_AVATAR_PREFIX}${config.telegram.token}/${file.file_path}`
   }
   return {
     firstName: msgUser.first_name,
