@@ -8,7 +8,8 @@ let client = new OSS({
   region: region,
   accessKeyId: config.oss.userId,
   accessKeySecret: config.oss.secret,
-  bucket: bucket
+  bucket: bucket,
+  internal: true  // 走内网
 })
 
 const OSS_ROOT = `https://${bucket}.${region}.aliyuncs.com`
