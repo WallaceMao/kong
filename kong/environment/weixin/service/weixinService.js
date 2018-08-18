@@ -42,7 +42,7 @@ const saveWeixinUser = async (state, code) => {
   }else{
     //  如果weixinUser存在
     //  检查weixinUser是否有绑定
-    const weixinLinks = await userWeixinLinkService.listUserWeixinLinksByOpenId(openId)
+    const weixinLinks = await userWeixinLinkService.listUserWeixinLinksByOpenId(projectCode, openId)
     /**
      * 注意，这里的weinxinLinks可能存在多条记录，即一个openId，可能关联多个账号。
      * 当且且当openId关联一个账号的时候，才会执行自动登录。

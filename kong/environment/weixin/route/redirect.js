@@ -11,6 +11,7 @@ router.get('/redirect',
       const state = params.state
       const code = params.code
       const nextUrl = await weixinService.saveWeixinUser(state, code)
+      console.log('--------frontend redirect url: ' + nextUrl)
       res.redirect(nextUrl)
     } catch (err) {
       next(err)

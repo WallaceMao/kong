@@ -4,8 +4,8 @@ const listUserWeixinLinksByUserCode = async (projectCode, userCode, appId) => {
   return userWeixinLinkDao.findAllByUserCodeAndAppId(projectCode, userCode, appId)
 }
 
-const listUserWeixinLinksByOpenId = async (openId) => {
-  return userWeixinLinkDao.findAllByOpenId(openId)
+const listUserWeixinLinksByOpenId = async (projectCode, openId) => {
+  return userWeixinLinkDao.findAllByOpenId(projectCode, openId)
 }
 
 const createUserWeixinLink = async (projectCode, userCode, appId, openId) => {

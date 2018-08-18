@@ -15,9 +15,10 @@ const findAllByUserCodeAndAppId = async (projectCode, userCode, appId) => {
   })
 }
 
-const findAllByOpenId = async (openId) => {
+const findAllByOpenId = async (projectCode, openId) => {
   return UserWeixinLink.findAll({
     where: {
+      projectCode: projectCode,
       openId: openId
     },
     include: [{
