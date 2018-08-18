@@ -1,4 +1,5 @@
 const config = require('config')
+const constant = require('@const/constant')
 const Telegraf = require('telegraf')
 const SocksAgent = require('socks5-https-client/lib/Agent')
 const socksAgent = config.telegram.useAgent ? new SocksAgent({}) : null;
@@ -7,6 +8,8 @@ const telegraf = new Telegraf(config.telegram.token, {
   username: 'kong',
   telegram: { agent: socksAgent }
 })
+
+const inviteCodeReg = new RegExp(`^inv[0-9a-zA-Z]{${constant.INVITE_CODE_LENGTH}$`)
 
 const telegramBotService = require('./service/telegramBotService')
 
@@ -25,7 +28,7 @@ const startListen = () => {
   /**
    * 监听验证码信息
    */
-  telegraf.hears(/^inv[0-9a-z]{8}$/i, async ctx => {
+  telegraf.hears(inviteCodeReg, async ctx => {
     try {
       //  交由service处理接收到的信息
       const allMessage = ctx.message

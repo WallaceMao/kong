@@ -8,5 +8,6 @@ module.exports = {
   DEFAULT_UNIT: 'BT',
   VALIDATE_CODE_CACHE_PREFIX: 'validate_code_',
   VALIDATE_CODE_SEPARATOR: ':',
-  DEFAULT_AVATAR: 'https://candy-user.oss-cn-hongkong.aliyuncs.com/default-avatar.png'
+  DEFAULT_AVATAR: 'https://candy-user.oss-cn-hongkong.aliyuncs.com/default-avatar.png',
+  INVITE_CODE_LIMIT_PER_SENDER: 2
 }

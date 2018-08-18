@@ -7,16 +7,37 @@ const userInfoService = require('@serv/userInfoService')
 const platformConst = require('@const/platform')
 const rewardEngine = require('@base/reward-engine')
 const ossUtil = require('@util/ossUtil')
+const constant = require('@const/constant')
+
+const generateTelegramSenderId = async (jsonMessage) => {
+  let sendId = ''
+  if(jsonMessage.chat && jsonMessage.chat.id){
+    sendId += jsonMessage.chat.id
+  }
+  if(jsonMessage.from && jsonMessage.from.id){
+    sendId += jsonMessage.from.id
+  }
+  return sendId || null
+}
 
 const saveInviteCode = async (inviteCode, message) => {
   //  验证码为空
   if(!inviteCode){
-    return 'NO INVITE CODE FOUND!'
+    return 'ERROR: NO INVITE CODE FOUND!'
   }
+  //  检查发送人是否已经超过限制
+  const senderId = await generateTelegramSenderId(message)
+  if(senderId){
+    const senderRecords = await recordService.listRecordBySenderId(senderId)
+    if(senderRecords.length >= constant.INVITE_CODE_LIMIT_PER_SENDER){
+      return `ERROR: invite code [${inviteCode}]: your count reach max number limit`
+    }
+  }
+
   //  验证码是否已存在
   const record = await recordService.getRecordByInviteCode(inviteCode)
   if(record){
-    return `invite code [${inviteCode}] is already used!`
+    return `WARN: invite code [${inviteCode}]: your code is already used!`
   }
   //  添加消息记录
   await recordService.createRecord(inviteCode, JSON.stringify(message), platformConst.inviteCodeSendSource.TELEGRAM)
@@ -26,7 +47,7 @@ const saveInviteCode = async (inviteCode, message) => {
       rewardUser(inviteCode)
     ])
   }, 0)
-  return `invite code [${inviteCode}] received!`
+  return `SUCCESS: invite code [${inviteCode}]: your code is received!`
 }
 
 const rewardUser = async (inviteCode) => {

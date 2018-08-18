@@ -165,6 +165,16 @@ ADD COLUMN `info_from` varchar(32) NULL COMMENT '个人信息的来源，默认�
 ALTER TABLE `bc_user_info`
 ADD COLUMN `register_ip` varchar(32) NULL COMMENT '注册的ip，用于做客户端安全跟踪';
 
+# 只是用user_code作为外键
+ALTER TABLE `bc_user_info`
+DROP INDEX `bc_user_info_project_code_user_code`,
+ADD UNIQUE INDEX `bc_user_info_user_code`(`user_code`) USING BTREE;
+
+ALTER TABLE `bc_user_invite_code_send_record`
+ADD COLUMN `invite_code_sender_id` varchar(255) NULL COMMENT '发送人的标识';
+ALTER TABLE `bc_user_invite_code_send_record`
+ADD INDEX `bc_user_invite_send_record_sender_id`(`invite_code_sender_id`) USING BTREE;
+
 CREATE TABLE `bc_weixin_app` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
   `version` bigint(20) NOT NULL DEFAULT 0 COMMENT '乐观锁',

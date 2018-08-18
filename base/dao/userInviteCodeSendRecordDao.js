@@ -12,5 +12,14 @@ const findByInviteCode = async inviteCode => {
   })
 }
 
+const findAllBySenderId = async senderId => {
+  return UserInviteCodeSendRecord.findAll({
+    where: {
+      inviteCodeSenderId: senderId
+    }
+  })
+}
+
 module.exports.create = create
 module.exports.findByInviteCode = findByInviteCode
+module.exports.findAllBySenderId = findAllBySenderId

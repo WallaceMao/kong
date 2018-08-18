@@ -14,7 +14,8 @@ const UserInviteCodeSendRecord = database.define('UserInviteCodeSendRecord', {
   deletedAt: { type: Sequelize.DATE, field: 'deleted_at', allowNull: true },
   inviteCode: { type: Sequelize.STRING(64), field: 'invite_code', allowNull: false, unique: 'bc_user_invite_send_record_invite_code' },
   inviteCodeSendMsg: { type: Sequelize.STRING(768), field: 'invite_code_send_msg', allowNull: false },
-  inviteCodeSendSource: { type: Sequelize.STRING(32), field: 'invite_code_send_source', allowNull: false }
+  inviteCodeSendSource: { type: Sequelize.STRING(32), field: 'invite_code_send_source', allowNull: false },
+  inviteCodeSenderId: { type: Sequelize.STRING(255), field: 'invite_code_sender_id', allowNull: true }
 }, {
   // 表注释信息
   comment: '项目用户邀请码发送的记录表',
