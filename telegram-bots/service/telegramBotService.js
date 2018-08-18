@@ -10,14 +10,14 @@ const ossUtil = require('@util/ossUtil')
 const constant = require('@const/constant')
 
 const generateTelegramSenderId = async (jsonMessage) => {
-  let sendId = ''
+  let sendIdArray = []
   if(jsonMessage.chat && jsonMessage.chat.id){
-    sendId += jsonMessage.chat.id
+    sendIdArray.push(jsonMessage.chat.id)
   }
   if(jsonMessage.from && jsonMessage.from.id){
-    sendId += jsonMessage.from.id
+    sendIdArray.push(jsonMessage.from.id)
   }
-  return sendId || null
+  return sendIdArray.length === 0 ? null : sendIdArray.join('|')
 }
 
 const saveInviteCode = async (inviteCode, message) => {
