@@ -7,7 +7,7 @@ const http = require('http')
 const debug = require('debug')('kong-back:server')
 const app = require('./app')
 
-const port = config.web.kongBack.port
+const port = config.web.kong.port
 app.set('port', port)
 
 const server = http.createServer(app)
