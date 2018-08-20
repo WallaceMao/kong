@@ -30,14 +30,14 @@ const saveInviteCode = async (inviteCode, message) => {
   if(senderId){
     const senderRecords = await recordService.listRecordBySenderId(senderId)
     if(senderRecords.length >= constant.INVITE_CODE_LIMIT_PER_SENDER){
-      return `ERROR: invite code [${inviteCode}]: your count reach max number limit`
+      return `[${inviteCode}]: 您已领取红包，请勿重复领取`
     }
   }
 
   //  验证码是否已存在
   const record = await recordService.getRecordByInviteCode(inviteCode)
   if(record){
-    return `WARN: invite code [${inviteCode}]: your code is already used!`
+    return `[${inviteCode}]: 您的验证码有误，请发送正确的验证码`
   }
   //  添加消息记录
   await recordService.createRecord(
@@ -51,7 +51,7 @@ const saveInviteCode = async (inviteCode, message) => {
       rewardUser(inviteCode)
     ])
   }, 0)
-  return `SUCCESS: invite code [${inviteCode}]: your code is received!`
+  return `[${inviteCode}]: 欢迎加入星币全球官方中文群，您已成功领取100XTX，注册星币，继续瓜分百万糖果，赶快去注册XBEX.PRO`
 }
 
 const rewardUser = async (inviteCode) => {
