@@ -1,3 +1,5 @@
+const constant = require('@const/constant')
+
 const render = obj => {
   if(!obj){
     return null
@@ -22,7 +24,7 @@ const renderObject = obj => {
     rewardValueUnit: obj.rewardValueUnit,
     rewardType: obj.rewardType,
     relatedUserName: user.name,
-    relatedUserAvatar: user.avatar
+    relatedUserAvatar: user.avatar || constant.DEFAULT_AVATAR
   }
 }
 
