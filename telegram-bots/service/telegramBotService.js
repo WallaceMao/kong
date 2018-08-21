@@ -47,7 +47,21 @@ const generateReplyMessage = async (type, inviteCode, message) => {
       template = ''
       break
   }
-  return template.replace('${inviteCode}', inviteCode)
+  let text = template.replace('${inviteCode}', inviteCode)
+  let senderName = ''
+  if(message && message.from){
+    const userInfo = message.from
+    const arr = []
+    if(userInfo.first_name){
+      arr.push(userInfo.first_name)
+    }
+    if(userInfo.last_name){
+      arr.push(userInfo.last_name)
+    }
+    senderName = arr.join(' ')
+    text = text.replace('${senderName}', senderName)
+  }
+  return text
 }
 
 const saveInviteCode = async (inviteCode, message) => {
