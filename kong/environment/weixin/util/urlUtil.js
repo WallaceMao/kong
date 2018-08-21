@@ -10,14 +10,16 @@ const combineParams = paramsMap => {
   }
   return arr.join('&')
 }
-const getAuthPageUrl = (projectCode, inviteCode, weixinApp) => {
+const getAuthPageUrl = (inviteCode, link) => {
   const root = constant.WEB_AUTH_ROOT
+  const weixinApp = link.weixinApp
+  const project = link.project
   const paramsString = combineParams({
     appid: weixinApp.appId,
-    redirect_uri: encodeURIComponent(config.weixin.webAuthRedirectUrl),
+    redirect_uri: encodeURIComponent(link.webAuthCallbackUrl),
     response_type: 'code',
     scope: 'snsapi_userinfo',
-    state: `${projectCode}--${inviteCode}`
+    state: `${project.projectCode}--${inviteCode}`
   })
 
   return `${root}?${paramsString}#wechat_redirect`

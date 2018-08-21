@@ -21,7 +21,10 @@ const Project = database.define('Project', {
   defaultUnit: { type: Sequelize.STRING(24), field: 'default_unit', allowNull: false },
   status: { type: Sequelize.STRING(32), field: 'status', allowNull: false },
   platformLink: { type: Sequelize.STRING(255), field: 'platform_link', allowNull: true },
-  frontendRootUrl: { type: Sequelize.STRING(255), field: 'frontend_root_url', allowNull: false }
+  frontendRootUrl: { type: Sequelize.STRING(255), field: 'frontend_root_url', allowNull: false },
+  teleReplyReachLimit: { type: Sequelize.STRING(255), field: 'tele_reply_reach_limit', allowNull: true },
+  teleReplyAlreadyUsed: { type: Sequelize.STRING(255), field: 'tele_reply_already_used', allowNull: true },
+  teleReplySuccess: { type: Sequelize.STRING(255), field: 'tele_reply_success', allowNull: true }
 }, {
   // 表注释信息
   comment: '项目表',

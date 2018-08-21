@@ -8,6 +8,8 @@ const platformConst = require('@const/platform')
 const rewardEngine = require('@base/reward-engine')
 const ossUtil = require('@util/ossUtil')
 const constant = require('@const/constant')
+const telegramConst = require('../const')
+const bizProjectService = require('@serv/bizProjectService')
 
 const generateTelegramSenderId = async (jsonMessage) => {
   let sendIdArray = []
@@ -20,6 +22,34 @@ const generateTelegramSenderId = async (jsonMessage) => {
   return sendIdArray.length === 0 ? null : sendIdArray.join('|')
 }
 
+const replyMessageType = {
+  REACH_LIMIT: 'reachLimit',
+  ALREADY_USED: 'alreadyUsed',
+  SUCCESS: 'success'
+}
+const generateReplyMessage = async (type, inviteCode, message) => {
+  const project = await bizProjectService.getProjectFromInviteCode(inviteCode)
+  if(!project){
+    return 'system error: no project info'
+  }
+  let template
+  switch (type) {
+    case replyMessageType.REACH_LIMIT:
+      template = project.teleReplyReachLimit || telegramConst.TELEGRAM_TEXT_INVITE_CODE_REACH_LIMIT
+      break
+    case replyMessageType.ALREADY_USED:
+      template = project.teleReplyAlreadyUsed || telegramConst.TELEGRAM_TEXT_INVITE_CODE_ALREADY_USED
+      break
+    case replyMessageType.SUCCESS:
+      template = project.teleReplySuccess || telegramConst.TELEGRAM_TEXT_INVITE_CODE_SUCCESS
+      break
+    default:
+      template = ''
+      break
+  }
+  return template.replace('${inviteCode}', inviteCode)
+}
+
 const saveInviteCode = async (inviteCode, message) => {
   //  验证码为空
   if(!inviteCode){
@@ -30,14 +60,14 @@ const saveInviteCode = async (inviteCode, message) => {
   if(senderId){
     const senderRecords = await recordService.listRecordBySenderId(senderId)
     if(senderRecords.length >= constant.INVITE_CODE_LIMIT_PER_SENDER){
-      return `[${inviteCode}]: 您已领取红包，请勿重复领取`
+      return generateReplyMessage(replyMessageType.REACH_LIMIT, inviteCode, message)
     }
   }
 
   //  验证码是否已存在
   const record = await recordService.getRecordByInviteCode(inviteCode)
   if(record){
-    return `[${inviteCode}]: 您的验证码有误，请发送正确的验证码`
+    return generateReplyMessage(replyMessageType.ALREADY_USED, inviteCode, message)
   }
   //  添加消息记录
   await recordService.createRecord(
@@ -51,7 +81,7 @@ const saveInviteCode = async (inviteCode, message) => {
       rewardUser(inviteCode)
     ])
   }, 0)
-  return `[${inviteCode}]: 欢迎加入星币全球官方中文群，您已成功领取100XTX，注册星币，继续瓜分百万糖果，赶快去注册http://xbex.pro/`
+  return generateReplyMessage(replyMessageType.SUCCESS, inviteCode, message)
 }
 
 const rewardUser = async (inviteCode) => {

@@ -16,7 +16,8 @@ const ProjectWeixinAppLink = database.define('ProjectWeixinAppLink', {
   deletedAt: { type: Sequelize.DATE, field: 'deleted_at', allowNull: true },
   projectCode: { type: Sequelize.STRING(64), field: 'project_code', allowNull: false, unique: 'bc_project_weixin_app_link_project_app' },
   appId: { type: Sequelize.STRING(64), field: 'app_id', allowNull: false, unique: 'bc_project_weixin_app_link_project_app' },
-  isActive: { type: Sequelize.BOOLEAN, field: 'is_active', allowNull: false, defaultValue: 0}
+  isActive: { type: Sequelize.BOOLEAN, field: 'is_active', allowNull: false, defaultValue: 0},
+  webAuthCallbackUrl: { type: Sequelize.STRING(255), field: 'web_auth_callback_url', allowNull: true }
 }, {
   // 表注释信息
   comment: '项目与微信公众号关联表',

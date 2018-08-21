@@ -15,7 +15,7 @@ const getAuthUrl= async (projectCode, inviteCode) => {
   if(!link || !link.weixinApp){
     throw makeError(systemCode.BIZ_THIRD_PARTY_INVALID)
   }
-  return util.getAuthPageUrl(projectCode, inviteCode, link.weixinApp)
+  return util.getAuthPageUrl(inviteCode, link)
 }
 
 const saveWeixinUser = async (state, code) => {

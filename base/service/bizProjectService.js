@@ -1,6 +1,7 @@
 const userInfoService = require('./userInfoService')
 const userInviteInfoService = require('./userInviteInfoService')
 const userRewardRecordService = require('./userRewardRecordService')
+const projectService = require('./projectService')
 const rewardEngine = require('../reward-engine')
 
 const addRewardRuleConfig = async (originObject) => {
@@ -36,5 +37,14 @@ const getSummary = async projectCode => {
   }
 }
 
+const getProjectFromInviteCode = async (inviteCode) => {
+  const userInviteInfo = await userInviteInfoService.validateInviteInfo(inviteCode)
+  if(!userInviteInfo){
+    return null
+  }
+  return projectService.getProjectInfo(userInviteInfo.projectCode)
+}
+
 module.exports.getInviteInfo = getInviteInfo
 module.exports.getSummary = getSummary
+module.exports.getProjectFromInviteCode = getProjectFromInviteCode

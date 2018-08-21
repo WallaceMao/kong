@@ -268,3 +268,16 @@ CREATE TABLE `bc_phone_number_jail` (
   UNIQUE INDEX `bc_phone_number_jail_phone_number`(`phone_number`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT='手机号黑名单';
 
+
+## 20180821editioning
+
+ALTER TABLE `bc_project`
+ADD COLUMN `tele_reply_reach_limit` varchar(255) NULL COMMENT '电报群达到上限回复文字模板，可以插入${inviteCode}',
+ADD COLUMN `tele_reply_already_used` varchar(255) NULL COMMENT '电报群验证码已经使用回复文字模板，可以插入${inviteCode}',
+ADD COLUMN `tele_reply_success` varchar(255) NULL COMMENT '电报群验证码验证成功回复文字模板，可以插入${inviteCode}';
+
+ALTER TABLE `bc_project_weixin_app_link`
+ADD COLUMN `web_auth_callback_url` varchar(255) NULL COMMENT '网页获取用户信息授权回调的url';
+
+
+
