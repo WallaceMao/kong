@@ -162,7 +162,7 @@ const updateUserInfo = async (inviteCode, userInfo, proxyAgent) => {
       }).on('response', (resp) => {
         resp.headers['content-type'] = getMimeFromExtengName(extendName)
       }))
-      propsToUpdate.avatar = `${ossUtil.OSS_READ_ROOT}/${avatarUrl}`
+      propsToUpdate.avatar = `${ossUtil.OSS_AVATAR_READ_ROOT}/${avatarUrl}`
     }
 
     console.log('====begin to update local userInfo')

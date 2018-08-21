@@ -44,7 +44,8 @@
     "bucket": "kong-user",
     "userId": "LTAIRmc2yQFFMeDx",
     "secret": "FCwMOzmyBqgwERsL9nVv4FQ7n1LVzV",
-    "readRoot": "http://candy-user-cdn.etoutiao.cn"
+    "baseReadRoot": "http://candy-user-project-cdn.etoutiao.cn",
+    "avatarReadRoot": "http://candy-user-cdn.etoutiao.cn"
   },
   "telegram": {
     "useAgent": true,
