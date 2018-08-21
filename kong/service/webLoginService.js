@@ -92,7 +92,7 @@ const registerWithThirdParty = async (projectCode, phoneNumber, inviteCode, othe
     projectCode,
     thirdPartyUserInfo.name,
     phoneNumber,
-    { avatar: thirdPartyUserInfo.avatar, infoFrom: others.thirdParty })
+    { avatar: thirdPartyUserInfo.avatar, infoFrom: others.thirdParty, ip: others.ip })
   await userRelationService.createUserRelation(projectCode, userInviteInfo.userCode, userInfo.userCode)
 
   // 绑定第三方
