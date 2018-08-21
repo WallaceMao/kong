@@ -51,7 +51,7 @@ const saveInviteCode = async (inviteCode, message) => {
       rewardUser(inviteCode)
     ])
   }, 0)
-  return `[${inviteCode}]: 欢迎加入星币全球官方中文群，您已成功领取100XTX，注册星币，继续瓜分百万糖果，赶快去注册XBEX.PRO`
+  return `[${inviteCode}]: 欢迎加入星币全球官方中文群，您已成功领取100XTX，注册星币，继续瓜分百万糖果，赶快去注册http://xbex.pro/`
 }
 
 const rewardUser = async (inviteCode) => {
