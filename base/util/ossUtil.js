@@ -12,6 +12,7 @@ let client = new OSS({
   internal: true  // 走内网
 })
 
+const OSS_READ_ROOT = config.oss.readRoot  //这里会使用cdn的路径作为读的根目录
 const OSS_ROOT = `https://${bucket}.${region}.aliyuncs.com`
 const streamUpload = async (key, stream) => {
     // use 'chunked encoding'
@@ -27,3 +28,4 @@ const streamUpload = async (key, stream) => {
 
 module.exports.streamUpload = streamUpload
 module.exports.OSS_ROOT = OSS_ROOT
+module.exports.OSS_READ_ROOT = OSS_READ_ROOT

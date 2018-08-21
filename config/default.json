@@ -43,7 +43,8 @@
     "region": "oss-cn-beijing",
     "bucket": "kong-user",
     "userId": "LTAIRmc2yQFFMeDx",
-    "secret": "FCwMOzmyBqgwERsL9nVv4FQ7n1LVzV"
+    "secret": "FCwMOzmyBqgwERsL9nVv4FQ7n1LVzV",
+    "readRoot": "http://candy-user-cdn.etoutiao.cn"
   },
   "telegram": {
     "useAgent": true,
