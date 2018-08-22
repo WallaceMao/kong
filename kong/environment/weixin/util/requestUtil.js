@@ -48,7 +48,6 @@ const getJssdkAccessToken = async (weixinApp) => {
 
 const getJssdkApiTicket = async (accessToken) => {
   const url = urlUtil.getJssdkApiTicketUrl(accessToken)
-  console.log('====url is: ' + url)
   const body = await request({uri: url, json: true})
   if(body.errcode){
     throw makeError(systemCode.SYS_ERROR, `getJssdkApiTicket result: ${JSON.stringify(body)}`)

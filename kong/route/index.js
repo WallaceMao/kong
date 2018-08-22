@@ -5,9 +5,7 @@ const randomUtil = require('@util/randomUtil')
 const redisUtil = require('@util/redisUtil')
 const responseUtil = require('@util/httpUtil')
 const systemCode = require('@const/systemCode')
-const jwtUtil = require('@util/jwtUtil')
 const httpUtil = require('@util/httpUtil')
-const rateLimiter = require('@base/rate-limiter')
 
 /* GET home page. */
 // router.get('/', (req, res) => {
@@ -30,7 +28,6 @@ router.get('/login', (req, res) => {
 
 router.get('/test', passport.authenticate('jwt', { session: false }), async (req, res, next) => {
   try {
-    console.log('req.user: ' + JSON.stringify(req.user))
     const str = await randomUtil.generateValidateCode()
     res.json(responseUtil.renderResult(systemCode.OK, {code: str}))
   }catch (err){

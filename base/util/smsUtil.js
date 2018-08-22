@@ -1,7 +1,5 @@
 const SMSClient = require('@alicloud/sms-sdk')
 const config = require('config')
-const systemCode = require('../constant/systemCode')
-const { makeError } = require('./errorUtil')
 const accessKeyId = config.sms.userId
 const secretAccessKey = config.sms.secret
 const signName = '活动验证'

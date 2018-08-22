@@ -63,10 +63,8 @@ const stopListen = () => {
 const fetchUserInfo = async message => {
   const telegram = telegraf.telegram
   // 获取telegram中的用户头像
-  console.log('====message: ' + JSON.stringify(message))
   const msgUser = message.from
   const photoObject = await telegram.getUserProfilePhotos(msgUser.id, 0, 1)
-  console.log('====photoObject: ' + JSON.stringify(photoObject))
   let imageUrl = null
   if(photoObject['total_count'] && photoObject['total_count'] > 0){
     const file = await telegram.getFile(photoObject.photos[0][0].file_id)

@@ -1,5 +1,3 @@
-const request = require('request-promise')
-
 const redisUtil = require('@util/redisUtil')
 const randomUtil = require('@util/randomUtil')
 const constant = require('../const')
@@ -13,14 +11,14 @@ const fetchAndSaveToken = async (weixinApp) => {
     token: json,
     time: new Date().getTime()
   }
-  console.log(`========accessToken from weixin: ${JSON.stringify(cachedObject)}`)
+  global.logger.info(`========accessToken from weixin: ${JSON.stringify(cachedObject)}`)
   await redisClient.setAsync(`${constant.JSSDK_TOKEN_CACHE_PREFIX}${weixinApp.appId}`, JSON.stringify(cachedObject))
   return json.accessToken
 }
 
 const getJssdkAccessToken = async (weixinApp) => {
   const cachedData = await redisClient.getAsync(`${constant.JSSDK_TOKEN_CACHE_PREFIX}${weixinApp.appId}`)
-  console.log(`========accessToken in cache: ${cachedData}, appId: ${weixinApp.appId}`)
+  global.logger.info(`========accessToken in cache: ${cachedData}, appId: ${weixinApp.appId}`)
 
   if(!cachedData){
     return fetchAndSaveToken(weixinApp)
@@ -42,14 +40,14 @@ const fetchAndSaveTicket = async (weixinApp) => {
     ticket: json,
     time: new Date().getTime()
   }
-  console.log(`========ticket from weixin: ${JSON.stringify(cachedObject)}`)
+  global.logger.info(`========ticket from weixin: ${JSON.stringify(cachedObject)}`)
   await redisClient.setAsync(`${constant.JSSDK_TICKET_CACHE_PREFIX}${weixinApp.appId}`, JSON.stringify(cachedObject))
   return json.ticket
 }
 
 const getJssdkTicket = async (weixinApp) => {
   const cachedData = await redisClient.getAsync(`${constant.JSSDK_TICKET_CACHE_PREFIX}${weixinApp.appId}`)
-  console.log(`========ticket in cache: ${cachedData}, appId: ${weixinApp.appId}`)
+  global.logger.info(`========ticket in cache: ${cachedData}, appId: ${weixinApp.appId}`)
 
   if(!cachedData){
     return fetchAndSaveTicket(weixinApp)
@@ -82,7 +80,6 @@ const sign = async (ticket, url, nonceString, timestamp) => {
     url: url
   }
   const str = combine(result)
-  console.log(`combined: ${str}`)
   const jsSHA = require('jssha');
   const shaObj = new jsSHA('SHA-1', 'TEXT');  //new jsSHA(string, 'TEXT');
   shaObj.update(str);

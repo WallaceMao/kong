@@ -1,4 +1,3 @@
-const config = require('config')
 const constant = require('../const')
 
 const combineParams = paramsMap => {

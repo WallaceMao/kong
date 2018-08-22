@@ -129,7 +129,6 @@ const getMimeFromExtengName = (extendName) => {
 
 const updateUserInfo = async (inviteCode, userInfo, proxyAgent) => {
   try {
-    console.log('====user from telegram: ' + JSON.stringify(userInfo))
     const userInviteInfo = await userInviteInfoService.validateInviteInfo(inviteCode)
 
     const propsToUpdate = {
@@ -155,7 +154,6 @@ const updateUserInfo = async (inviteCode, userInfo, proxyAgent) => {
 
       // 将telegram中的头像上传到阿里云OSS
       const avatarUrl = `project/${userInviteInfo.projectCode}/user/${userInviteInfo.userCode}/avatar.${extendName}`
-      console.log('====avatarUrl: ' + JSON.stringify(avatarUrl))
       await ossUtil.streamUpload(avatarUrl, request({
         url: originalAvatar,
         agent: proxyAgent
@@ -165,7 +163,6 @@ const updateUserInfo = async (inviteCode, userInfo, proxyAgent) => {
       propsToUpdate.avatar = `${ossUtil.OSS_AVATAR_READ_ROOT}/${avatarUrl}`
     }
 
-    console.log('====begin to update local userInfo')
     // 更新userInfo中的name和头像
     return userInfoService.updateUserInfo(
       userInviteInfo.projectCode,

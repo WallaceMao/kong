@@ -2,7 +2,6 @@ const Sequelize = require('sequelize')
 const Op = Sequelize.Op
 const moment = require('moment')
 const UserInfo = require('../domain/UserInfo')
-const UserInviteInfo = require('../domain/UserInviteInfo')
 
 /**
  * 根据id查找用户

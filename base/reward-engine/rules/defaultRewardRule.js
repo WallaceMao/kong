@@ -84,7 +84,7 @@ const getConfig = async (projectCode) => {
  * @param triggeredUserCode
  * @param params
  */
-const register = async (projectCode, triggeredUserCode, params) => {
+const register = async (projectCode, triggeredUserCode) => {
   const config = await getConfig(projectCode)
   // 注册奖励只能奖励一次，如果已经奖励过，那么就不再奖励
   const recordList = userRewardRecordService.getRewardUserRewardRecordList(projectCode, triggeredUserCode, userAccountConst.reward.REGISTER)
@@ -108,7 +108,7 @@ const register = async (projectCode, triggeredUserCode, params) => {
  * @param triggeredUserCode
  * @param params
  */
-const invite = async (projectCode, triggeredUserCode, params) => {
+const invite = async (projectCode, triggeredUserCode) => {
   const config = await getConfig(projectCode)
   // 如果一个用户，已经奖励过他的上级，那么就不会再次奖励
   const recordList = userRewardRecordService.getRelatedUserRewardRecordList(projectCode, triggeredUserCode, userAccountConst.reward.INVITE)

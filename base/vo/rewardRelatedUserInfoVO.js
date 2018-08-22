@@ -19,8 +19,12 @@ const renderList = list => {
  */
 const renderObject = obj => {
   const user = obj.relatedUser
+  let rewardValue = Number(obj.rewardValue)
+  if(isNaN(rewardValue)){
+    rewardValue = 0
+  }
   return {
-    rewardValue: obj.rewardValue,
+    rewardValue: rewardValue,
     rewardValueUnit: obj.rewardValueUnit,
     rewardType: obj.rewardType,
     relatedUserName: user.name,
