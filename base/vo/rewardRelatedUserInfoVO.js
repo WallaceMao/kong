@@ -28,7 +28,7 @@ const renderObject = obj => {
     rewardValueUnit: obj.rewardValueUnit,
     rewardType: obj.rewardType,
     relatedUserName: user.name,
-    relatedUserAvatar: user.avatar || constant.DEFAULT_AVATAR
+    relatedUserAvatar: user.avatar || constant.DEFAULT.AVATAR
   }
 }
 

@@ -21,7 +21,7 @@ const renderObject = userRelation => {
   const user = userRelation.downUser
   return {
     name: user.name,
-    avatar: user.avatar || constant.DEFAULT_AVATAR,
+    avatar: user.avatar || constant.DEFAULT.AVATAR,
   }
 }
 

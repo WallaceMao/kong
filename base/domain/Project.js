@@ -15,6 +15,7 @@ const Project = database.define('Project', {
   projectName: { type: Sequelize.STRING(255), field: 'project_name', allowNull: false },
   projectLogoUrl: { type: Sequelize.STRING(255), field: 'project_logo_url', allowNull: true },
   projectTextLogoUrl: { type: Sequelize.STRING(255), field: 'project_text_logo_url', allowNull: true },
+  projectHeaderNote: { type: Sequelize.STRING(255), field: 'project_header_note', allowNull: true },
   projectNote: { type: Sequelize.STRING(4096), field: 'project_note', allowNull: true },
   telegramJoinLink: { type: Sequelize.STRING(255), field: 'telegram_join_link', allowNull: true },
   rewardRule: { type: Sequelize.STRING(128), field: 'reward_rule', allowNull: true },
@@ -24,7 +25,12 @@ const Project = database.define('Project', {
   frontendRootUrl: { type: Sequelize.STRING(255), field: 'frontend_root_url', allowNull: false },
   teleReplyReachLimit: { type: Sequelize.STRING(255), field: 'tele_reply_reach_limit', allowNull: true },
   teleReplyAlreadyUsed: { type: Sequelize.STRING(255), field: 'tele_reply_already_used', allowNull: true },
-  teleReplySuccess: { type: Sequelize.STRING(255), field: 'tele_reply_success', allowNull: true }
+  teleReplySuccess: { type: Sequelize.STRING(255), field: 'tele_reply_success', allowNull: true },
+  teleGroupName: { type: Sequelize.STRING(64), field: 'tele_group_name', allowNull: true },
+  shareTitle: { type: Sequelize.STRING(128), field: 'share_title', allowNull: true },
+  shareDesc: { type: Sequelize.STRING(255), field: 'share_desc', allowNull: true },
+  shareLink: { type: Sequelize.STRING(255), field: 'share_link', allowNull: true },
+  shareImageLink: { type: Sequelize.STRING(255), field: 'share_image_link', allowNull: true }
 }, {
   // 表注释信息
   comment: '项目表',

@@ -279,5 +279,14 @@ ADD COLUMN `tele_reply_success` varchar(255) NULL COMMENT '电报群验证码验
 ALTER TABLE `bc_project_weixin_app_link`
 ADD COLUMN `web_auth_callback_url` varchar(255) NULL COMMENT '网页获取用户信息授权回调的url';
 
+## 20180823
+ALTER TABLE `bc_project`
+ADD COLUMN `tele_group_name` varchar(255) NULL COMMENT '电报群的名称',
+ADD COLUMN `project_header_note` varchar(255) NULL COMMENT '项目页面头部的文案',
+ADD COLUMN `share_title` varchar(255) NULL COMMENT '分享的标题',
+ADD COLUMN `share_desc` varchar(255) NULL COMMENT '分享的描述',
+ADD COLUMN `share_link` varchar(255) NULL COMMENT '分享点击跳转的链接',
+ADD COLUMN `share_image_link` varchar(255) NULL COMMENT '分享图片的链接';
+
 
 

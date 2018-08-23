@@ -19,7 +19,7 @@ const renderObject = userInfo => {
     userCode: userInfo.userCode,
     name: userInfo.name,
     phoneNumber: userInfo.phoneNumber,
-    avatar: userInfo.avatar || constant.DEFAULT_AVATAR,
+    avatar: userInfo.avatar || constant.DEFAULT.AVATAR,
     isSeedUser: userInfo.isSeedUser,
     status: userInfo.status
   }

@@ -16,7 +16,7 @@ const renderList = list => {
 const renderObject = obj => {
   return {
     name: obj.name,
-    avatar: obj.avatar || constant.DEFAULT_AVATAR,
+    avatar: obj.avatar || constant.DEFAULT.AVATAR,
     registerRewardValue: obj.registerRewardValue,
     registerRewardValueUnit: obj.registerRewardUnit,
     registerRewardLimit: obj.registerRewardLimit,
