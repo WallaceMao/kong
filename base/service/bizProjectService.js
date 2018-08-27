@@ -38,7 +38,7 @@ const getSummary = async projectCode => {
 }
 
 const getProjectFromInviteCode = async (inviteCode) => {
-  const userInviteInfo = await userInviteInfoService.validateInviteInfo(inviteCode)
+  const userInviteInfo = await userInviteInfoService.getUserInviteInfoByInviteCode(inviteCode)
   if(!userInviteInfo){
     return null
   }

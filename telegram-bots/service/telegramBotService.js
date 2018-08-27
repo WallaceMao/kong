@@ -23,17 +23,22 @@ const generateTelegramSenderId = async (jsonMessage) => {
 }
 
 const replyMessageType = {
+  INVALID: 'invalid',
   REACH_LIMIT: 'reachLimit',
   ALREADY_USED: 'alreadyUsed',
   SUCCESS: 'success'
 }
 const generateReplyMessage = async (type, inviteCode, message) => {
   const project = await bizProjectService.getProjectFromInviteCode(inviteCode)
-  if(!project){
-    return 'system error: no project info'
-  }
   let template
+
+  if(!project){
+    template = telegramConst.TELEGRAM_TEXT_INVITE_CODE_INVALID
+  }
   switch (type) {
+    case replyMessageType.INVALID:
+      template = telegramConst.TELEGRAM_TEXT_INVITE_CODE_INVALID
+      break
     case replyMessageType.REACH_LIMIT:
       template = project.teleReplyReachLimit || telegramConst.TELEGRAM_TEXT_INVITE_CODE_REACH_LIMIT
       break
@@ -68,6 +73,11 @@ const saveInviteCode = async (inviteCode, message) => {
   //  验证码为空
   if(!inviteCode){
     return 'ERROR: NO INVITE CODE FOUND!'
+  }
+
+  const userInviteInfo = await userInviteInfoService.getUserInviteInfoByInviteCode(inviteCode)
+  if(!userInviteInfo){
+    return null
   }
   //  检查发送人是否已经超过限制
   const senderId = await generateTelegramSenderId(message)
@@ -106,7 +116,7 @@ const rewardUser = async (inviteCode) => {
       rewardEngine.executeReward(userInviteInfo.projectCode, userInviteInfo.userCode, 'invite')
     ])
   } catch (err) {
-    global.logger.error(err)
+    global.logger.error(err.stack)
   }
 }
 
@@ -115,7 +125,7 @@ const needUpdateUserInfo = async (inviteCode) => {
   return userInviteInfo && !userInviteInfo.userInfo.infoFrom
 }
 
-const getMimeFromExtengName = (extendName) => {
+const getMimeFromExtendName = (extendName) => {
   const lowerCase = extendName ? extendName.toLowerCase() : extendName
   switch (lowerCase){
     case 'jpg':
@@ -158,7 +168,7 @@ const updateUserInfo = async (inviteCode, userInfo, proxyAgent) => {
         url: originalAvatar,
         agent: proxyAgent
       }).on('response', (resp) => {
-        resp.headers['content-type'] = getMimeFromExtengName(extendName)
+        resp.headers['content-type'] = getMimeFromExtendName(extendName)
       }))
       propsToUpdate.avatar = `${ossUtil.OSS_AVATAR_READ_ROOT}/${avatarUrl}`
     }

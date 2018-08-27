@@ -33,17 +33,25 @@ const startListen = () => {
       const allMessage = ctx.message
       const inviteCode = allMessage.text
       const resultText = await telegramBotService.saveInviteCode(inviteCode, allMessage)
+      if(!resultText){
+        return global.logger.warn(`invalid invite code: ${JSON.stringify(allMessage)}`)
+      }
       ctx.reply(resultText)
 
       //  异步读取读取用户信息，然后交由service来更新数据库
       setTimeout( async () => {
-        if(await telegramBotService.needUpdateUserInfo(inviteCode)){
-          const userInfo = await fetchUserInfo(allMessage)
-          telegramBotService.updateUserInfo(inviteCode, userInfo, socksAgent)
+        try {
+            if(await telegramBotService.needUpdateUserInfo(inviteCode)){
+                const userInfo = await fetchUserInfo(allMessage)
+                telegramBotService.updateUserInfo(inviteCode, userInfo, socksAgent)
+            }
+        } catch (err) {
+          global.logger.error(err.stack)
+          ctx.reply(`error updating user information, please contact the administrator`)
         }
       }, 0)
     } catch (err) {
-      global.logger.error(err)
+      global.logger.error(err.stack)
       ctx.reply(`error occurred during receiving invite code, please contact the administrator`)
     }
   })
